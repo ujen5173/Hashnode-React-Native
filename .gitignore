@@ -1,0 +1,10 @@
+# app
+/app/node_modules/
+/app/.expo
+/app/.env
+
+# backend
+/backend/node_modules/
+/backend/dist
+/backend/.env
+/backend/seed.ts
