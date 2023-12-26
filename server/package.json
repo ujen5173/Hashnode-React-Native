@@ -1,6 +1,6 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
+  "name": "server",
+  "version": "0.0.1",
   "main": "dist/src/index.js",
   "license": "MIT",
   "type": "module",

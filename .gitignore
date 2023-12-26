@@ -1,10 +1,10 @@
-# app
-/app/node_modules/
-/app/.expo
-/app/.env
+# client
+/client/node_modules/
+/client/.expo
+/client/.env
 
-# backend
-/backend/node_modules/
-/backend/dist
-/backend/.env
-/backend/seed.ts
+# server
+/server/node_modules/
+/server/dist
+/server/.env
+/server/seed.ts
