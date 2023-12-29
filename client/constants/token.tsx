@@ -6,7 +6,6 @@ export const tokenCache = {
     try {
       return SecureStore.getItemAsync(key);
     } catch (error) {
-      console.log({ error });
       return;
     }
   },
@@ -14,7 +13,6 @@ export const tokenCache = {
     try {
       return SecureStore.setItemAsync(key, value);
     } catch (error) {
-      console.log({ error });
       return;
     }
   },
