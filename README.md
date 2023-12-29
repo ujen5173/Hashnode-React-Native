@@ -1,3 +1,5 @@
+> Warning This is a work-in-progress and not the finished project.
+
 # Hashnode Clone using React Native
 
 A full-stack application clone of Hashnode built with a modern tech stack, utilizing React Native, Tailwind CSS, Express.js, and MongoDB. This project aims to replicate the functionality and design of Hashnode while incorporating various technologies for a seamless experience.
@@ -14,6 +16,7 @@ Contributions are welcome to enhance and improve this project!
 - Expo-Router
 - Express.js
 - MongoDB Atlas
+- Clerk
 - Zod Validation
 - [Cloudinary](https://cloudinary.com/)
 - [Clerk](https://clerk.com)
