@@ -20,6 +20,10 @@ const users = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
     image: {
       type: String,
       required: false,
