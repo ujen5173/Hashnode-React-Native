@@ -7,14 +7,14 @@ import tw from '../lib/tailwind';
 type RootContextType = {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
-  themeValue: string;
+  themeValue: 'light' | 'dark' | null | undefined;
   setTheme: (value: "light" | "dark") => Promise<void>;
 }
 
 export const C = createContext<RootContextType>({
   user: null,
   setUser: () => null,
-  themeValue: "",
+  themeValue: null,
   setTheme: () => Promise.resolve()
 });
 
@@ -28,8 +28,8 @@ export type User = {
 
 const RootContext = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [themeValue, setThemeValue] = useState('');
-  const [_, __, setColorScheme] = useAppColorScheme(tw);
+  // const [themeValue, setThemeValue] = useState('');
+  const [themeValue, __, setColorScheme] = useAppColorScheme(tw);
   const userTheme = useColorScheme(); // user device theme
 
 
@@ -39,21 +39,20 @@ const RootContext = ({ children }: { children: ReactNode }) => {
 
       if (!theme) {
         themeHandler.saveTheme("theme", userTheme || "dark");
-        setThemeValue(userTheme || "dark");
+        // setThemeValue(userTheme || "dark");
         setColorScheme(userTheme || "dark");
         return;
       }
 
-      setThemeValue(theme);
+      // setThemeValue(theme);
       setColorScheme(theme as "light" | "dark");
     })();
   }, [userTheme]);
 
   const setTheme = async (theme: "light" | "dark") => {
-    await themeHandler.saveTheme("theme", theme);
-
-    setThemeValue(theme);
+    // setThemeValue(theme);
     setColorScheme(theme);
+    await themeHandler.saveTheme("theme", theme);
   }
 
   return (

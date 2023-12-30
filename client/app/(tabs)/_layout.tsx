@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Bell, Bookmark, CircleUserRound, Home, Moon, Pencil, Search, Sun } from 'lucide-react-native';
+import { Bell, Bookmark, CircleUserRound, Home, Pencil, Search } from 'lucide-react-native';
 import { useContext } from 'react';
 import { StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../constants/Colors';
@@ -22,8 +22,9 @@ export default function TabLayout() {
         {
           [{
             label: "index",
-            icon: ({ focused }: { focused: boolean }) => <Home size={20} color={focused ? colors.blue["600"] : themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]} />,
+            icon: ({ focused }: { focused: boolean }) => <Home size={22} color={focused ? colors.blue["600"] : themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]} />,
             headerOptions: {
+
               headerRight: () => (
                 <View style={tw`flex-row gap-2 px-4`}>
                   <TouchableOpacity activeOpacity={.8} style={tw`rounded-full p-2`}>
@@ -32,18 +33,6 @@ export default function TabLayout() {
                   <TouchableOpacity activeOpacity={.8} style={tw`rounded-full p-2`}>
                     <Bell size={20} style={tw`text-slate-700 dark:text-slate-200`} />
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={.8} style={tw`rounded-full p-2`}
-                    onPress={() => {
-                      setTheme(themeValue === "dark" ? "light" : "dark");
-                    }}>
-                    {
-                      themeValue === "dark" ? (
-                        <Moon size={20} style={tw`text-slate-700 dark:text-slate-200`} />
-                      ) : (
-                        <Sun size={20} style={tw`text-slate-700 dark:text-slate-200`} />
-                      )
-                    }
-                  </TouchableOpacity>
                 </View>
               ),
               headerTitle: () => <Text style={tw`text-slate-900 dark:text-white text-base`}>My Feed</Text>,
@@ -51,21 +40,21 @@ export default function TabLayout() {
           },
           {
             label: "search",
-            icon: ({ focused }: { focused: boolean }) => <Search size={20} color={focused ? colors.blue["600"] : themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]} />,
+            icon: ({ focused }: { focused: boolean }) => <Search size={22} color={focused ? colors.blue["600"] : themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]} />,
             headerOptions: {
               headerTitle: () => <Text style={tw`text-slate-900 dark:text-white text-base`}>Search</Text>,
             }
           },
           {
             label: "bookmarks",
-            icon: ({ focused }: { focused: boolean }) => <Bookmark size={20} color={focused ? colors.blue["600"] : themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]} />,
+            icon: ({ focused }: { focused: boolean }) => <Bookmark size={22} color={focused ? colors.blue["600"] : themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]} />,
             headerOptions: {
               headerTitle: () => <Text style={tw`text-slate-900 dark:text-white text-base`}>Bookmarks</Text>,
             }
           },
           {
             label: "profile",
-            icon: ({ focused }: { focused: boolean }) => <CircleUserRound size={20} color={focused ? colors.blue["600"] : themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]} />,
+            icon: ({ focused }: { focused: boolean }) => <CircleUserRound size={22} color={focused ? colors.blue["600"] : themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]} />,
             headerOptions: {
               headerTitle: () => <Text style={tw`text-slate-900 dark:text-white text-base`}>Profile</Text>,
             }

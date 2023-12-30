@@ -1,13 +1,18 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
+import Card from '../../components/Card'
 import tw from '../../lib/tailwind'
 
 const Bookmarks = () => {
   return (
-    <View style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
-      <Text style={tw`text-slate-700 dark:text-slate-200`}>
-        Bookmarks</Text>
-    </View>
+    <ScrollView style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
+      {["", "", "", "", "", "", "", "", "", "", "", "", "", "", ""].map((e, index) => (
+        <View key={index} style={tw`${index === 2 ? "border-0" : "border-b"} border-slate-300 dark:border-slate-600`}>
+          <Card />
+        </View>
+      ))}
+    </ScrollView>
+
   )
 }
 

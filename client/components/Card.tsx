@@ -24,25 +24,25 @@ const Card = () => {
           Develop the right thing every time and become a 10x engineer 🏆: The art of writing RFCs 🥋
         </Text>
         <View style={tw`flex-row items-center gap-2 mb-2`}>
-          <Text style={tw`text-base text-slate-600 dark:text-slate-400`}>
+          <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
             wasp-lang.hashnode.dev
           </Text>
-          <Text style={tw`text-base text-slate-600 dark:text-slate-400`}>•</Text>
+          <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>•</Text>
           <View style={tw`flex-row gap-2 items-center`}>
             <BookOpenText style={tw`text-blue-600`} size={16} />
-            <Text style={tw`text-base text-slate-600 dark:text-slate-400`}>
+            <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
               12 min read
             </Text>
           </View>
         </View>
-        <Text numberOfLines={2} style={tw`text-lg text-slate-600 dark:text-slate-400`}>
+        <Text numberOfLines={2} style={tw`text-base text-slate-600 dark:text-slate-400`}>
           Imagin you've been tasked to implement a crucial new feature in the product you're working on. You've been thinking about it for a while and you have a pretty good idea of how it should work. You're excited to get started and you're confident that you can implement it in a way that will make your users happy.
         </Text>
       </View>
 
       <Image style={tw`w-full h-58 rounded-md mt-3 mb-4`} resizeMode='cover' source={{ uri: 'https://picsum.photos/800/400' }} />
 
-      <View style={tw`flex-row gap-4 items-center justify-between`}>
+      <View style={tw`flex-row gap-4 mb-4 items-center justify-between`}>
         <View style={tw`flex-row gap-4`}>
           <TouchableOpacity style={tw`flex-row items-center gap-1`} activeOpacity={.9}>
             <Heart style={tw`text-slate-600 dark:text-slate-400`} size={22} />
@@ -59,6 +59,24 @@ const Card = () => {
         </View>
         <TouchableOpacity style={tw`flex-row items-center gap-1`} activeOpacity={.9}>
           <BookmarkPlus style={tw`text-slate-600 dark:text-slate-400`} size={22} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={tw`flex-row flex-wrap gap-2`}>
+        <TouchableOpacity style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`} activeOpacity={.9}>
+          <Text style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}>
+            Beginner Developer
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`} activeOpacity={.9}>
+          <Text style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}>
+            Remote
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`} activeOpacity={.9}>
+          <Text style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}>
+            +3
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
