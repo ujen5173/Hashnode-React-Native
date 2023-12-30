@@ -17,3 +17,20 @@ export const tokenCache = {
     }
   },
 };
+
+export const themeHandler = {
+  async getTheme(key: string) {
+    try {
+      return SecureStore.getItemAsync(key);
+    } catch (error) {
+      return;
+    }
+  },
+  async saveTheme(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (error) {
+      return;
+    }
+  },
+}

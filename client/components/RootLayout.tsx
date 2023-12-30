@@ -10,10 +10,10 @@ import useWarmUpBrowser from '../hooks/useWarmUpBrowser';
 
 const RootLayoutNav = () => {
   useWarmUpBrowser();
+  useDeviceContext(tw, { withDeviceColorScheme: false });
 
   const { setUser } = useContext(C);
   const router = useRouter();
-  useDeviceContext(tw);
 
   const { userId, isLoaded, isSignedIn } = useAuth();
 
@@ -26,13 +26,11 @@ const RootLayoutNav = () => {
         const userData = await fetchData<User>(url);
 
         if (userData.error) {
-          console.log({ userData });
           return;
         }
 
         setUser(userData.data);
       } catch (err) {
-        console.log({ err })
       }
     })();
   }, [userId]);

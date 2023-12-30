@@ -37,10 +37,7 @@ const getCurrent = async (req: Request, res: Response) => {
 const newUser = async (req: Request, res: Response) => {
   try {
     await Users.create(usersData);
-    console.log("User Created!");
   } catch (error) {
-    console.log("Something went wrong!");
-    console.log({ error });
     res.send({
       sucess: false,
       message: "Failed to fetch articles",
