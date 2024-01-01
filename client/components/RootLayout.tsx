@@ -1,9 +1,9 @@
 
 import { useAuth } from '@clerk/clerk-expo';
 import { SplashScreen, Stack, useRouter } from 'expo-router';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useLayoutEffect } from 'react';
 import tw, { useDeviceContext } from "twrnc";
-import { serverEndPoint } from '../contants/url';
+import { serverEndPoint } from '../constants/url';
 import { C, User } from '../contexts/RootContext';
 import fetchData from '../helpers/fetch';
 import useWarmUpBrowser from '../hooks/useWarmUpBrowser';
@@ -17,7 +17,7 @@ const RootLayoutNav = () => {
 
   const { userId, isLoaded, isSignedIn } = useAuth();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!userId) return;
 
     void (async () => {
@@ -28,9 +28,9 @@ const RootLayoutNav = () => {
         if (userData.error) {
           return;
         }
-
         setUser(userData.data);
       } catch (err) {
+        console.log({ err });
       }
     })();
   }, [userId]);
@@ -55,6 +55,9 @@ const RootLayoutNav = () => {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(models)/onboard" options={{ headerShown: false }} />
+      <Stack.Screen name="articles/[slug]" options={{
+        headerTitle: '',
+      }} />
     </Stack>
   );
 }

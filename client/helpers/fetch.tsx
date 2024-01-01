@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 type FetchDataProps<T> = {
-  success: boolean; data: T | null; error: string | null
+  success: boolean; data: T | null; error: string | null;
 }
 
 async function fetchData<T>(
@@ -10,7 +10,6 @@ async function fetchData<T>(
 ): Promise<FetchDataProps<T>> {
   try {
     const response: AxiosResponse<FetchDataProps<T>> = await axios(url, options);
-
     return response.data;
 
   } catch (error: unknown) {

@@ -1,86 +1,182 @@
-import { BookOpenText, BookmarkPlus, Heart, MessageCircleMore } from 'lucide-react-native';
-import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import tw from '../lib/tailwind';
+import { Link } from "expo-router";
+import {
+  BookOpenText,
+  BookmarkMinus,
+  BookmarkPlus,
+  Heart,
+  MessageCircleMore,
+} from "lucide-react-native";
+import React, { FC } from "react";
+import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
+import { Article } from "../app/(tabs)";
+import formatDate from "../helpers/date";
+import storage from "../helpers/storage";
+import tw from "../lib/tailwind";
 
-const Card = () => {
+type CardProps = {
+  article: Article;
+  bookmarks: string[];
+};
+
+const Card: FC<CardProps> = ({ bookmarks, article }) => {
+  const { width } = Dimensions.get("window");
+  const [hasBookmark, setHasBookmark] = React.useState(false);
+
+  const handleBookmark = async () => {
+    storage.save({
+      key: "bookmarks",
+      data: hasBookmark
+        ? bookmarks.filter((id) => id !== article._id)
+        : [...bookmarks, article._id],
+      expires: null,
+    });
+    setHasBookmark(!hasBookmark);
+  };
+
   return (
-    <View style={tw`bg-slate-100 dark:bg-slate-900 p-4`}>
-      <View style={tw`flex-row gap-2 items-center mb-3`}>
-        <Image style={tw`w-12 h-12 rounded-full`} source={{ uri: 'https://picsum.photos/200/300' }} />
+    <Link href={`/articles/${article.slug}`}>
+      <View style={tw`bg-slate-100 flex-1 dark:bg-slate-900 p-4`}>
+        <View style={tw`flex-row gap-2 items-center mb-3`}>
+          <Image
+            style={tw`w-12 h-12 rounded-full`}
+            source={{ uri: article.user.image }}
+          />
 
-        <View>
-          <Text numberOfLines={2} style={tw`w-8/12 text-slate-800 dark:text-slate-200 text-lg font-bold mb-1`}>
-            Matija Sosic for Wasp - full-stack with React & Node.js
-          </Text>
-          <Text style={tw`text-sm text-slate-500 dark:text-slate-400`}>
-            Dec 13, 2023
-          </Text>
-        </View>
-      </View>
-
-      <View>
-        <Text style={tw`text-slate-800 dark:text-slate-200 text-2xl mb-2 font-bold`}>
-          Develop the right thing every time and become a 10x engineer 🏆: The art of writing RFCs 🥋
-        </Text>
-        <View style={tw`flex-row items-center gap-2 mb-2`}>
-          <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
-            wasp-lang.hashnode.dev
-          </Text>
-          <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>•</Text>
-          <View style={tw`flex-row gap-2 items-center`}>
-            <BookOpenText style={tw`text-blue-600`} size={16} />
-            <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
-              12 min read
+          <View>
+            <Text
+              style={tw`leading-1 text-slate-800 dark:text-slate-200 text-lg font-bold`}
+            >
+              {article.user.name}
+            </Text>
+            <Text style={tw`text-sm text-slate-500 dark:text-slate-400`}>
+              {formatDate(article.createdAt)}
             </Text>
           </View>
         </View>
-        <Text numberOfLines={2} style={tw`text-base text-slate-600 dark:text-slate-400`}>
-          Imagin you've been tasked to implement a crucial new feature in the product you're working on. You've been thinking about it for a while and you have a pretty good idea of how it should work. You're excited to get started and you're confident that you can implement it in a way that will make your users happy.
-        </Text>
-      </View>
 
-      <Image style={tw`w-full h-58 rounded-md mt-3 mb-4`} resizeMode='cover' source={{ uri: 'https://picsum.photos/800/400' }} />
+        <View style={tw`mb-4`}>
+          <Text
+            style={[
+              tw`text-slate-800 dark:text-slate-200 text-2xl mb-2 font-bold`,
+              {
+                width: width - 32,
+              },
+            ]}
+          >
+            {article.title}
+          </Text>
+          <View style={tw`flex-row items-center gap-2 mb-2`}>
+            <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
+              {article.user.username}.hashnode.dev
+            </Text>
+            <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
+              •
+            </Text>
+            <View style={tw`flex-row gap-2 items-center`}>
+              <BookOpenText style={tw`text-blue-600`} size={16} />
+              <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
+                {article.readCount} min read
+              </Text>
+            </View>
+          </View>
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={[
+              tw`text-base text-slate-600 dark:text-slate-400`,
+              {
+                width: width - 32,
+              },
+            ]}
+          >
+            {article.content.slice(0, 255)}
+          </Text>
+        </View>
 
-      <View style={tw`flex-row gap-4 mb-4 items-center justify-between`}>
-        <View style={tw`flex-row gap-4`}>
-          <TouchableOpacity style={tw`flex-row items-center gap-1`} activeOpacity={.9}>
-            <Heart style={tw`text-slate-600 dark:text-slate-400`} size={22} />
-            <Text style={tw`text-slate-600 dark:text-slate-400 text-base`}>
-              35
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={tw`flex-row items-center gap-1`} activeOpacity={.9}>
-            <MessageCircleMore style={tw`text-slate-600 dark:text-slate-400`} size={22} />
-            <Text style={tw`text-slate-600 dark:text-slate-400 text-base`}>
-              8
-            </Text>
+        <Image
+          style={[
+            tw`h-58 rounded-md`,
+            {
+              width: width - 32,
+            },
+          ]}
+          resizeMode="cover"
+          source={{ uri: article.cover_image }}
+        />
+
+        <View style={tw`flex-row gap-4 my-4 items-center justify-between`}>
+          <View style={tw`flex-row gap-4`}>
+            <TouchableOpacity
+              style={tw`flex-row items-center gap-1`}
+              activeOpacity={0.9}
+            >
+              <Heart style={tw`text-slate-600 dark:text-slate-400`} size={22} />
+              <Text style={tw`text-slate-600 dark:text-slate-400 text-base`}>
+                {article.likesCount}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={tw`flex-row items-center gap-1`}
+              activeOpacity={0.9}
+            >
+              <MessageCircleMore
+                style={tw`text-slate-600 dark:text-slate-400`}
+                size={22}
+              />
+              <Text style={tw`text-slate-600 dark:text-slate-400 text-base`}>
+                {article.commentsCount}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            onPress={handleBookmark}
+            style={tw`flex-row items-center gap-1`}
+            activeOpacity={0.9}
+          >
+            {hasBookmark ? (
+              <BookmarkMinus
+                style={tw`text-slate-600 dark:text-slate-400`}
+                size={22}
+              />
+            ) : (
+              <BookmarkPlus
+                style={tw`text-slate-600 dark:text-slate-400`}
+                size={22}
+              />
+            )}
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={tw`flex-row items-center gap-1`} activeOpacity={.9}>
-          <BookmarkPlus style={tw`text-slate-600 dark:text-slate-400`} size={22} />
-        </TouchableOpacity>
-      </View>
 
-      <View style={tw`flex-row flex-wrap gap-2`}>
-        <TouchableOpacity style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`} activeOpacity={.9}>
-          <Text style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}>
-            Beginner Developer
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`} activeOpacity={.9}>
-          <Text style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}>
-            Remote
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`} activeOpacity={.9}>
-          <Text style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}>
-            +3
-          </Text>
-        </TouchableOpacity>
+        <View style={tw`flex-row flex-wrap gap-2`}>
+          {article.tags.slice(0, 3).map((tag, index) => (
+            <TouchableOpacity
+              key={index}
+              style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`}
+              activeOpacity={0.9}
+            >
+              <Text
+                style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}
+              >
+                {tag}
+              </Text>
+            </TouchableOpacity>
+          ))}
+          {article.tags.length > 3 && (
+            <TouchableOpacity
+              style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`}
+              activeOpacity={0.9}
+            >
+              <Text
+                style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}
+              >
+                +{article.tags.length - 3}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
-    </View>
-  )
-}
+    </Link>
+  );
+};
 
 export default Card;

@@ -18,15 +18,15 @@ export const tokenCache = {
   },
 };
 
-export const themeHandler = {
-  async getTheme(key: string) {
+export const storage = {
+  async get(key: string) {
     try {
       return SecureStore.getItemAsync(key);
     } catch (error) {
       return;
     }
   },
-  async saveTheme(key: string, value: string) {
+  async save(key: string, value: string) {
     try {
       return SecureStore.setItemAsync(key, value);
     } catch (error) {

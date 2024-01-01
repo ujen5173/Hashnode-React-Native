@@ -1,21 +1,28 @@
-import React, { Dispatch, ReactNode, SetStateAction, createContext, useLayoutEffect, useState } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
-import { useAppColorScheme } from 'twrnc';
-import { themeHandler } from '../helpers/token';
-import tw from '../lib/tailwind';
+import React, {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useLayoutEffect,
+  useState,
+} from "react";
+import { StatusBar, useColorScheme } from "react-native";
+import { useAppColorScheme } from "twrnc";
+import { storage } from "../helpers/token";
+import tw from "../lib/tailwind";
 
 type RootContextType = {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
-  themeValue: 'light' | 'dark' | null | undefined;
+  themeValue: "light" | "dark" | null | undefined;
   setTheme: (value: "light" | "dark") => Promise<void>;
-}
+};
 
 export const C = createContext<RootContextType>({
   user: null,
   setUser: () => null,
   themeValue: null,
-  setTheme: () => Promise.resolve()
+  setTheme: () => Promise.resolve(),
 });
 
 export type User = {
@@ -24,7 +31,7 @@ export type User = {
   name: string;
   email: string;
   image: string;
-}
+};
 
 const RootContext = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -32,37 +39,34 @@ const RootContext = ({ children }: { children: ReactNode }) => {
   const [themeValue, __, setColorScheme] = useAppColorScheme(tw);
   const userTheme = useColorScheme(); // user device theme
 
-
   useLayoutEffect(() => {
     (async () => {
-      const theme = await themeHandler.getTheme("theme");
+      const theme = await storage.get("theme");
 
       if (!theme) {
-        themeHandler.saveTheme("theme", userTheme || "dark");
-        // setThemeValue(userTheme || "dark");
+        storage.save("theme", userTheme || "dark");
         setColorScheme(userTheme || "dark");
         return;
       }
 
-      // setThemeValue(theme);
       setColorScheme(theme as "light" | "dark");
     })();
   }, [userTheme]);
 
   const setTheme = async (theme: "light" | "dark") => {
-    // setThemeValue(theme);
-    setColorScheme(theme);
-    await themeHandler.saveTheme("theme", theme);
-  }
+    // setColorScheme(theme);
+    __();
+    await storage.save("theme", theme);
+  };
 
   return (
     <C.Provider value={{ user, setUser, themeValue, setTheme }}>
       {children}
       <StatusBar
-        barStyle={themeValue === "dark" ? 'light-content' : "dark-content"}
+        barStyle={themeValue === "dark" ? "light-content" : "dark-content"}
       />
     </C.Provider>
-  )
-}
+  );
+};
 
-export default RootContext
+export default RootContext;
