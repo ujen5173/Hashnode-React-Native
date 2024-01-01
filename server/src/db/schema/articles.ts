@@ -4,7 +4,7 @@ const articles = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "user",
     },
     title: {
       type: String,
@@ -25,6 +25,9 @@ const articles = new mongoose.Schema(
     read_time: {
       type: Number,
       required: true,
+    },
+    tags: {
+      type: [String],
     },
     seoTitle: {
       type: String,

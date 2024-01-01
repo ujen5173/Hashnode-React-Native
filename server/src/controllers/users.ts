@@ -34,10 +34,18 @@ const getCurrent = async (req: Request, res: Response) => {
   }
 };
 
-const newUser = async (req: Request, res: Response) => {
+const seedUsers = async (req: Request, res: Response) => {
   try {
-    await Users.create(usersData);
+    console.log("seeding users");
+    await Users.insertMany(
+      usersData.map((e) => ({ ...e, userId: "as6d8c432as1d6" }))
+    );
+    return res.json({
+      sucess: true,
+      message: "Successfully seeded users",
+    });
   } catch (error) {
+    console.log({ error });
     res.send({
       sucess: false,
       message: "Failed to fetch articles",
@@ -46,4 +54,4 @@ const newUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getCurrent, newUser };
+export { getCurrent, seedUsers };

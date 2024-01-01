@@ -1,7 +1,13 @@
 import { StrictAuthProp } from "@clerk/clerk-sdk-node";
+import bodyParser from "body-parser";
 import express from "express";
-import { getAll } from "../controllers/articles.js";
-import { getCurrent, newUser } from "../controllers/users.js";
+import {
+  getAll,
+  multiple,
+  seedArticles,
+  single,
+} from "../controllers/articles.js";
+import { getCurrent, seedUsers } from "../controllers/users.js";
 
 const router = express.Router();
 
@@ -13,9 +19,13 @@ declare global {
 }
 
 router.get("/articles", getAll);
+router.post("/articles/multiple", bodyParser.json(), multiple);
+router.post("/articles/seed", seedArticles);
+router.get("/articles/:slug", single);
 
 router.get("/users/get-current", getCurrent);
+router.post("/users/seed", seedUsers);
 router.get("/users/:userId", getCurrent);
-router.post("/users/new", newUser);
+// router.post("/users/new", newUser);
 
 export default router;

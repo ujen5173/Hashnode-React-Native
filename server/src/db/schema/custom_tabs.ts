@@ -20,7 +20,7 @@ const custom_tabs = new mongoose.Schema(
     },
     handle: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "handles",
+      ref: "handle",
     },
   },
   {

@@ -17,7 +17,7 @@ const handles = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "user",
     },
     social: {
       github: String,

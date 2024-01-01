@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
+import { Articles } from "./index.js";
 
 const comments = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+      ref: "user",
     },
     article: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "articles",
+      ref: Articles,
     },
     body: {
       type: String,
@@ -26,7 +27,7 @@ const comments = new mongoose.Schema(
     },
     parent: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "comments",
+      ref: "comment",
     },
   },
   {

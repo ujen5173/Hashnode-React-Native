@@ -54,7 +54,7 @@ const users = new mongoose.Schema(
     },
     articles: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: "articles",
+      ref: "article",
     },
     social: {
       github: String,
