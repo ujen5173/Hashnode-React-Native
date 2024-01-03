@@ -1,54 +1,33 @@
-import React, { useEffect } from 'react';
-import { FlatList, View } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { Article } from '.';
 import Card from '../../components/Card';
 import CardLoading from '../../components/CardLoading';
 import { serverEndPoint } from '../../constants/url';
 import fetchData from '../../helpers/fetch';
-import storage from '../../helpers/storage';
+import useBookmark from '../../hooks/useBookmark';
 import tw from '../../lib/tailwind';
 
 const Bookmarks = () => {
-  const [bookmarks, setBookmarks] = React.useState<string[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [articles, setArticles] = React.useState<Article[]>([]);
+  const bookmarks = useBookmark();
+  const url = `${serverEndPoint}/api/v1/articles/multiple`
 
-  useEffect(() => {
-    if (!bookmarks.length) return;
+  const { data, isFetching, refetch } = useQuery({
+    queryKey: ["bookmarks"],
+    queryFn: async () => await fetchData<Article[]>(url, {
+      method: 'POST',
+      data: { ids: bookmarks }
+    }),
+    enabled: bookmarks.length > 0
+  });
 
-    void (async () => {
-      setLoading(true);
-      const url = `${serverEndPoint}/api/v1/articles/multiple`
-      const res = await fetchData<Article[]>(url, {
-        method: 'POST',
-        data: { ids: bookmarks }
-      });
-
-      if (res.success && res.data) {
-        setArticles(res.data);
-      }
-
-      setLoading(false);
-    })()
-  }, [bookmarks]);
-
-  storage.load({
-    key: 'bookmarks',
-    autoSync: true,
-    syncInBackground: true,
-    syncParams: {
-      extraFetchOptions: {},
-      someFlag: true,
-    },
-  }).then((res) => {
-    setBookmarks(res || []);
-    return res
-  })
 
   return (
     <View style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
       {
-        loading ? (
+        isFetching ? (
           <View>
             {
               Array(7).fill(0).map((_, index) => (
@@ -58,15 +37,20 @@ const Bookmarks = () => {
               ))
             }
           </View>
-        ) : (<FlatList
-          data={articles}
-          keyExtractor={item => item._id}
-          renderItem={({ item, index }) => (
-            <View key={index} style={tw`${index === articles.length - 1 ? "border-0" : "border-b"} border-slate-400 dark:border-slate-600`}>
-              <Card article={item} />
-            </View>
-          )}
-        />)
+        ) : data && (data.data ?? []).length > 0 ? (
+          <FlatList
+            data={data.data}
+            keyExtractor={item => item._id}
+            renderItem={({ item, index }) => (
+              <View key={index} style={tw`${index === (data.data ?? []).length - 1 ? "border-0" : "border-b"} border-slate-400 dark:border-slate-600`}>
+                <Card bookmarks={bookmarks} article={item} />
+              </View>
+            )}
+          />) : (
+          <View style={tw`flex-1 justify-center items-center`}>
+            <Text style={tw`text-slate-500 dark:text-slate-400`}>No bookmarks yet</Text>
+          </View>
+        )
       }
     </View>
 

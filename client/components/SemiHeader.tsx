@@ -7,9 +7,11 @@ import tw from "../lib/tailwind";
 const SemiHeader = ({
   feedType,
   setFeedType,
+  handlePresentModalPress
 }: {
   feedType: FeedType;
   setFeedType: React.Dispatch<React.SetStateAction<FeedType>>;
+  handlePresentModalPress: () => void;
 }) => {
   return (
     <View
@@ -38,11 +40,12 @@ const SemiHeader = ({
         ))}
       </ScrollView>
 
-      <View
+      <Pressable
+        onPress={handlePresentModalPress}
         style={tw`px-4 border-l flex-row items-center border-slate-300 dark:border-slate-600`}
       >
         <Filter size={20} style={tw`text-slate-500 dark:text-slate-200`} />
-      </View>
+      </Pressable>
     </View>
   );
 };

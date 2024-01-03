@@ -13,6 +13,7 @@ async function fetchData<T>(
     return response.data;
 
   } catch (error: unknown) {
+    console.log({ error })
     let errorMessage = 'Unknown error occurred';
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;

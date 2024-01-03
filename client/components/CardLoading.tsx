@@ -7,7 +7,7 @@ const CardLoading = () => {
     <View style={tw`p-4`}>
       <View style={tw`flex-row mb-4 items-center gap-2`}>
         <View
-          style={tw`w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800`}
+          style={tw`w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-800`}
         />
 
         <View style={tw`flex-1`}>

@@ -22,7 +22,7 @@ const RootLayoutNav = () => {
 
     void (async () => {
       try {
-        const url = `${serverEndPoint}/api/v1/users/${userId}`;
+        const url = `${serverEndPoint}/api/v1/users/id/${userId}`;
         const userData = await fetchData<User>(url);
 
         if (userData.error) {
@@ -56,6 +56,9 @@ const RootLayoutNav = () => {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(models)/onboard" options={{ headerShown: false }} />
       <Stack.Screen name="articles/[slug]" options={{
+        headerTitle: '',
+      }} />
+      <Stack.Screen name="(user)/[username]" options={{
         headerTitle: '',
       }} />
     </Stack>

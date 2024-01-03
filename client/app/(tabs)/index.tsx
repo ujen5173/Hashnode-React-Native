@@ -1,12 +1,18 @@
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal
+} from "@gorhom/bottom-sheet";
+import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FlatList, View } from "react-native";
 import Card from "../../components/Card";
 import CardLoading from "../../components/CardLoading";
+import BottomSheetBody from "../../components/FilterModal/BottomSheetBody";
 import SemiHeader from "../../components/SemiHeader";
 import { serverEndPoint } from "../../constants/url";
 import fetchData from "../../helpers/fetch";
-import storage from "../../helpers/storage";
+import useBookmark from "../../hooks/useBookmark";
 import tw from "../../lib/tailwind";
 
 export type Article = {
@@ -36,6 +42,13 @@ export type Article = {
   };
 };
 
+export type Tag = {
+  _id: string;
+  name: string;
+  slug: string;
+
+}
+
 export enum FeedType {
   MyFeed = "My Feed",
   Following = "Following",
@@ -44,13 +57,19 @@ export enum FeedType {
 
 const HomePage = () => {
   const [feedType, setFeedType] = useState<FeedType>(FeedType.MyFeed);
-  const [bookmarks, setBookmarks] = React.useState<string[]>([]);
+  const [filters, setFilters] = useState<{
+    tags: string[];
+    readTime: number | null;
+  }>({
+    tags: [],
+    readTime: null,
+  });
   const url = `${serverEndPoint}/api/v1/articles?type=${feedType
     .toLowerCase()
     .replace(" ", "-")}`;
 
   const { data, isFetching, refetch } = useQuery({
-    queryKey: ["all_articles"],
+    queryKey: [feedType],
     queryFn: async () => await fetchData<Article[]>(url),
   });
 
@@ -58,35 +77,36 @@ const HomePage = () => {
     refetch();
   }, [feedType]);
 
-  storage
-    .load({
-      key: "bookmarks",
-      autoSync: true,
-      syncInBackground: true,
-      syncParams: {
-        extraFetchOptions: {},
-        someFlag: true,
-      },
-    })
-    .then((res) => {
-      setBookmarks(res || []);
-      return res;
-    })
-    .catch((err) => {
-      if (err.name === "NotFoundError") {
-        storage.save({
-          key: "bookmarks",
-          data: [],
-          expires: null,
-        });
-      }
-    });
+  const bookmarks = useBookmark();
+  // ref
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ["15%", "55%"], []);
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  // renders
+  const renderBackdrop = useCallback(
+    (
+      props: React.JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps
+    ) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={1}
+        appearsOnIndex={2}
+      />
+    ),
+    []
+  );
 
   return (
     <>
       <View style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
-        <SemiHeader feedType={feedType} setFeedType={setFeedType} />
-
+        <SemiHeader handlePresentModalPress={handlePresentModalPress} feedType={feedType} setFeedType={setFeedType} />
         {isFetching ? (
           <View>
             {Array(7)
@@ -94,9 +114,8 @@ const HomePage = () => {
               .map((_, index) => (
                 <View
                   key={index}
-                  style={tw`${
-                    index === 2 ? "border-0" : "border-b"
-                  } border-slate-300 dark:border-slate-600`}
+                  style={tw`${index === 2 ? "border-0" : "border-b"
+                    } border-slate-300 dark:border-slate-600`}
                 >
                   <CardLoading />
                 </View>
@@ -109,11 +128,10 @@ const HomePage = () => {
             renderItem={({ item, index }) => (
               <View
                 key={index}
-                style={tw`${
-                  index === (data?.data ?? []).length - 1
-                    ? "border-0"
-                    : "border-b"
-                } border-slate-300 dark:border-slate-600`}
+                style={tw`${index === (data?.data ?? []).length - 1
+                  ? "border-0"
+                  : "border-b"
+                  } border-slate-400 dark:border-slate-700`}
               >
                 <Card bookmarks={bookmarks} article={item} />
               </View>
@@ -121,6 +139,19 @@ const HomePage = () => {
           />
         )}
       </View>
+
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        keyboardBehavior="fillParent"
+        topInset={50}
+        backdropComponent={renderBackdrop}
+        backgroundStyle={tw`bg-slate-100 dark:bg-slate-800`}
+        handleIndicatorStyle={tw`bg-slate-600 dark:bg-slate-400`}
+      >
+        <BottomSheetBody ref={bottomSheetModalRef} />
+      </BottomSheetModal>
     </>
   );
 };

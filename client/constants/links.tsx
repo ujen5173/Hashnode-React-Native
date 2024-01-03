@@ -23,11 +23,10 @@ export const feedLinks = [
     icon: (feedType: FeedType) => (
       <Newspaper
         size={20}
-        style={tw`${
-          feedType === FeedType.MyFeed
-            ? "text-blue-600"
-            : "text-slate-500 dark:text-slate-400"
-        }`}
+        style={tw`${feedType === FeedType.MyFeed
+          ? "text-blue-600"
+          : "text-slate-500 dark:text-slate-400"
+          }`}
       />
     ),
     type: FeedType.MyFeed,
@@ -37,11 +36,10 @@ export const feedLinks = [
     icon: (feedType: FeedType) => (
       <UsersRound
         size={20}
-        style={tw`${
-          feedType === FeedType.Following
-            ? "text-blue-600"
-            : "text-slate-500 dark:text-slate-400"
-        }`}
+        style={tw`${feedType === FeedType.Following
+          ? "text-blue-600"
+          : "text-slate-500 dark:text-slate-400"
+          }`}
       />
     ),
     type: FeedType.Following,
@@ -51,11 +49,10 @@ export const feedLinks = [
     icon: (feedType: FeedType) => (
       <Clock
         size={20}
-        style={tw`${
-          feedType === FeedType.Recent
-            ? "text-blue-600"
-            : "text-slate-500 dark:text-slate-400"
-        }`}
+        style={tw`${feedType === FeedType.Recent
+          ? "text-blue-600"
+          : "text-slate-500 dark:text-slate-400"
+          }`}
       />
     ),
     type: FeedType.Recent,
@@ -66,18 +63,18 @@ export const profileLinks = {
   section1: [
     {
       icon: (
-        <PanelsTopLeft style={tw`text-gray-600 dark:text-gray-200`} size={20} />
+        <PanelsTopLeft style={tw`text-gray-600 dark:text-gray-300`} size={20} />
       ),
       label: "My blogs",
       isSwitch: false,
     },
     {
-      icon: <FileEdit style={tw`text-gray-600 dark:text-gray-200`} size={20} />,
+      icon: <FileEdit style={tw`text-gray-600 dark:text-gray-300`} size={20} />,
       label: "My drafts",
       isSwitch: false,
     },
     {
-      icon: <History style={tw`text-gray-600 dark:text-gray-200`} size={20} />,
+      icon: <History style={tw`text-gray-600 dark:text-gray-300`} size={20} />,
       label: "My reading history",
       isSwitch: false,
     },
@@ -85,18 +82,18 @@ export const profileLinks = {
   section2: [
     {
       icon: (
-        <PanelsTopLeft style={tw`text-gray-600 dark:text-gray-200`} size={20} />
+        <PanelsTopLeft style={tw`text-gray-600 dark:text-gray-300`} size={20} />
       ),
       label: "My profile",
       isSwitch: false,
     },
     {
-      icon: <Settings style={tw`text-gray-600 dark:text-gray-200`} size={20} />,
+      icon: <Settings style={tw`text-gray-600 dark:text-gray-300`} size={20} />,
       label: "Settings",
       isSwitch: false,
     },
     {
-      icon: <Bell style={tw`text-gray-600 dark:text-gray-200`} size={20} />,
+      icon: <Bell style={tw`text-gray-600 dark:text-gray-300`} size={20} />,
       label: "Notifications",
       isSwitch: false,
     },
@@ -104,14 +101,14 @@ export const profileLinks = {
   section3: [
     {
       icon: (
-        <PanelsTopLeft style={tw`text-gray-600 dark:text-gray-200`} size={20} />
+        <PanelsTopLeft style={tw`text-gray-600 dark:text-gray-300`} size={20} />
       ),
       label: "Dark Mode",
       isSwitch: true,
     },
     {
       icon: (
-        <HelpCircle style={tw`text-gray-600 dark:text-gray-200`} size={20} />
+        <HelpCircle style={tw`text-gray-600 dark:text-gray-300`} size={20} />
       ),
       label: "Support",
       isSwitch: false,

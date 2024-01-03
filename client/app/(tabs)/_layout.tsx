@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Tabs } from "expo-router";
 import {
   Bell,
@@ -17,7 +18,7 @@ export default function TabLayout() {
   const { themeValue } = useContext(C);
 
   return (
-    <>
+    <BottomSheetModalProvider>
       <Tabs
         screenOptions={{
           headerShadowVisible: false,
@@ -39,8 +40,8 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                    ? colors.slate["100"]
-                    : colors.slate["600"]
+                      ? colors.slate["100"]
+                      : colors.slate["600"]
                 }
               />
             ),
@@ -83,8 +84,8 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                    ? colors.slate["100"]
-                    : colors.slate["600"]
+                      ? colors.slate["100"]
+                      : colors.slate["600"]
                 }
               />
             ),
@@ -105,8 +106,8 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                    ? colors.slate["100"]
-                    : colors.slate["600"]
+                      ? colors.slate["100"]
+                      : colors.slate["600"]
                 }
               />
             ),
@@ -127,8 +128,8 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                    ? colors.slate["100"]
-                    : colors.slate["600"]
+                      ? colors.slate["100"]
+                      : colors.slate["600"]
                 }
               />
             ),
@@ -160,6 +161,6 @@ export default function TabLayout() {
       <StatusBar
         barStyle={themeValue === "dark" ? "light-content" : "dark-content"}
       />
-    </>
+    </BottomSheetModalProvider>
   );
 }
