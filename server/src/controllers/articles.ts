@@ -99,9 +99,10 @@ const single = async (req: Request, res: Response) => {
 const multiple = async (req: Request, res: Response) => {
   try {
     const { ids } = req.body;
+
     const articles = await Articles.find(
       { _id: { $in: ids } },
-      "_id title userId subtitle content createdAt cover_image cover_image_key read_time disabledComments likesCount commentsCount readCount"
+      "_id title userId subtitle content createdAt tags cover_image cover_image_key read_time disabledComments likesCount commentsCount readCount"
     ).populate("user", "_id name username image");
 
     res.send({

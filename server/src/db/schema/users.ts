@@ -24,11 +24,11 @@ const users = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
+    tagline: {
       type: String,
       required: false,
     },
-    tagline: {
+    image: {
       type: String,
       required: false,
     },

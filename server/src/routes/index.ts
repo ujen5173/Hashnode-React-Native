@@ -7,7 +7,8 @@ import {
   seedArticles,
   single,
 } from "../controllers/articles.js";
-import { getCurrent, seedUsers } from "../controllers/users.js";
+import { searchTags } from "../controllers/tags.js";
+import { getCurrent, getUserByUsername } from "../controllers/users.js";
 
 const router = express.Router();
 
@@ -24,8 +25,9 @@ router.post("/articles/seed", seedArticles);
 router.get("/articles/:slug", single);
 
 router.get("/users/get-current", getCurrent);
-router.post("/users/seed", seedUsers);
-router.get("/users/:userId", getCurrent);
-// router.post("/users/new", newUser);
+router.get("/users/id/:userId", getCurrent);
+router.get("/users/username/:username", getUserByUsername);
+
+router.get("/tags", searchTags);
 
 export default router;
