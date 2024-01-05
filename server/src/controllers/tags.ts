@@ -7,4 +7,24 @@ const searchTags = async (req: Request, res: Response) => {
   res.json(tags);
 };
 
-export { searchTags };
+const singleTag = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    console.log({ slug });
+    const tag = await Tag.findOne({
+      slug: {
+        $regex: slug,
+        $options: "i",
+      },
+    });
+    res.json({
+      data: tag,
+      error: null,
+      success: true,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "err.message" });
+  }
+};
+
+export { searchTags, singleTag };

@@ -132,4 +132,30 @@ const seedArticles = async (req: Request, res: Response) => {
   }
 };
 
-export { getAll, multiple, seedArticles, single };
+const getArticlesByTag = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    const articles = await Articles.find({
+      tags: { $in: [slug] },
+    })
+      .select(
+        "_id title userId subtitle content createdAt tags cover_image cover_image_key read_time disabledComments likesCount commentsCount readCount"
+      )
+      .populate("user", "_id name username image");
+
+    res.send({
+      success: true,
+      error: null,
+      data: articles,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      success: false,
+      data: null,
+      error: "Internal server error",
+    });
+  }
+};
+
+export { getAll, getArticlesByTag, multiple, seedArticles, single };
