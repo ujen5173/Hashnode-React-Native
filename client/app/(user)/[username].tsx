@@ -106,7 +106,6 @@ const UserProfile = () => {
     });
   }, [username]);
 
-
   const socials: { [key: string]: JSX.Element } = {
     twitter: <Twitter size={18} style={tw`text-black dark:text-white`} />,
     github: <Github size={18} style={tw`text-black dark:text-white`} />,

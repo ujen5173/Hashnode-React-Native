@@ -50,13 +50,13 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
 
         <View>
           <Link href={`/(user)/${article.user.username}`}>
-
             <Text
               style={tw`leading-1 text-slate-800 dark:text-slate-200 text-lg font-bold`}
             >
               {article.user.name}
             </Text>
           </Link>
+
           <Text style={tw`text-sm text-slate-500 dark:text-slate-400`}>
             {formatDate(article.createdAt)}
           </Text>
@@ -64,13 +64,21 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
       </View>
 
       <View style={tw`mb-4`}>
-        <Link href={`/articles/${article.slug}`}>
-
+        <Link href={`/articles/${article.slug}`}
+          numberOfLines={2}
+          style={[
+            {
+              width: width - 42,
+            },
+          ]}
+          ellipsizeMode="tail">
           <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
             style={[
-              tw`text-slate-800 dark:text-slate-200 text-2xl mb-2 font-bold`,
+              tw`text-slate-800 dark:text-slate-200 text-2xl font-bold`,
               {
-                width: width - 32,
+                width: width - 42,
               },
             ]}
           >
@@ -78,9 +86,8 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
           </Text>
         </Link>
 
-        <View style={tw`flex-row items-center gap-2 mb-2`}>
+        <View style={tw`flex-row items-center gap-2 mt-2 mb-3`}>
           <Link href={`/articles/${article.slug}`}>
-
             <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
               {article.user.username}.hashnode.dev
             </Text>
@@ -146,6 +153,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
             </Text>
           </TouchableOpacity>
         </View>
+
         <TouchableOpacity
           onPress={handleBookmark}
           style={tw`flex-row items-center gap-1`}
@@ -167,22 +175,23 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
 
       <View style={tw`flex-row flex-wrap gap-2`}>
         {article.tags.slice(0, 3).map((tag, index) => (
-          <TouchableOpacity
+          <Link
+            href={`/tags/${tag}`}
             key={index}
             style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`}
-            activeOpacity={0.9}
           >
             <Text
               style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}
             >
               {tag}
             </Text>
-          </TouchableOpacity>
+          </Link>
         ))}
+
         {article.tags.length > 3 && (
           <TouchableOpacity
+            activeOpacity={.9}
             style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`}
-            activeOpacity={0.9}
           >
             <Text
               style={tw`text-slate-600 dark:text-slate-400 text-sm font-medium`}

@@ -1,5 +1,5 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Tabs } from "expo-router";
+import { Link, Tabs } from "expo-router";
 import {
   Bell,
   Bookmark,
@@ -57,15 +57,15 @@ export default function TabLayout() {
                       style={tw`text-slate-700 dark:text-slate-200`}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    activeOpacity={0.8}
+                  <Link
+                    href="/notifications"
                     style={tw`rounded-full p-2`}
                   >
                     <Bell
                       size={20}
                       style={tw`text-slate-700 dark:text-slate-200`}
                     />
-                  </TouchableOpacity>
+                  </Link>
                 </View>
               ),
               headerTitle: () => (

@@ -1,3 +1,4 @@
+import { useOAuth } from '@clerk/clerk-expo';
 import {
   Chrome,
   Facebook,
@@ -10,6 +11,9 @@ import useWarmUpBrowser from '../../hooks/useWarmUpBrowser';
 import tw from '../../lib/tailwind';
 
 const Login = () => {
+  const { startOAuthFlow } = useOAuth({
+    strategy: 'oauth_google',
+  });
   useWarmUpBrowser();
 
   return (
@@ -36,7 +40,19 @@ const Login = () => {
           <TouchableOpacity activeOpacity={.9} style={tw`primary-btn bg-black`}>
             <Github size={24} color={"#fff"} />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={.9} style={tw`primary-btn bg-gray-100`}>
+          <TouchableOpacity onPress={async () => {
+            try {
+              const { createdSessionId, signIn, signUp, setActive } =
+                await startOAuthFlow();
+
+              if (createdSessionId && setActive) {
+                setActive({ session: createdSessionId });
+              } else {
+              }
+            } catch (err) {
+              console.error("OAuth error", err);
+            }
+          }} activeOpacity={.9} style={tw`primary-btn bg-gray-100`}>
             <Chrome size={24} color={"#000"} />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={.9} style={tw`primary-btn bg-blue-500`}>

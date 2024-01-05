@@ -61,6 +61,10 @@ const RootLayoutNav = () => {
       <Stack.Screen name="(user)/[username]" options={{
         headerTitle: '',
       }} />
+      <Stack.Screen name="notifications" options={{
+      }} />
+      <Stack.Screen name="tags/[slug]" options={{
+      }} />
     </Stack>
   );
 }

@@ -16,6 +16,7 @@ export const unstable_settings = { initialRouteName: "(tabs)" };
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
+
 export default function RootLayout() {
   return (
     <View style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
