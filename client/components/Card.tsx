@@ -115,10 +115,10 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
       </View>
 
       <Link href={`/articles/${article.slug}`}>
-        <View style={tw`w-full h-58`}>
+        <View style={tw`w-full h-50`}>
           <Image
             style={[
-              tw`h-58 rounded-md`,
+              tw`h-50 rounded-md`,
               {
                 width: width - 32,
               },
@@ -133,7 +133,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
         <View style={tw`flex-row gap-4`}>
           <TouchableOpacity
             style={tw`flex-row items-center gap-1`}
-            activeOpacity={0.9}
+            activeOpacity={0.7}
           >
             <Heart style={tw`text-slate-600 dark:text-slate-400`} size={22} />
             <Text style={tw`text-slate-600 dark:text-slate-400 text-base`}>
@@ -142,7 +142,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={tw`flex-row items-center gap-1`}
-            activeOpacity={0.9}
+            activeOpacity={0.7}
           >
             <MessageCircleMore
               style={tw`text-slate-600 dark:text-slate-400`}
@@ -157,7 +157,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
         <TouchableOpacity
           onPress={handleBookmark}
           style={tw`flex-row items-center gap-1`}
-          activeOpacity={0.9}
+          activeOpacity={0.7}
         >
           {hasBookmark ? (
             <BookmarkMinus

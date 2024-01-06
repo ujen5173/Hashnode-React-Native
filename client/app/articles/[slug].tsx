@@ -5,12 +5,15 @@ import {
 } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { Link, useLocalSearchParams, useNavigation } from "expo-router";
 import {
   ArrowLeft,
   BookOpen,
+  Bookmark,
   Flag,
   Heart,
+  List,
+  MessageCircleMore,
   MoreVertical,
   PlusCircle,
   Share2,
@@ -18,6 +21,7 @@ import {
 } from "lucide-react-native";
 import React, { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import {
+  Animated,
   Image,
   Pressable,
   ScrollView,
@@ -34,6 +38,14 @@ import fetchData from "../../helpers/fetch";
 import tw from "../../lib/tailwind";
 
 const SingleArticle = () => {
+  const scrollY = new Animated.Value(0);
+  const scrollYClamped = Animated.diffClamp(scrollY, 0, 60);
+  const traslateY = scrollYClamped.interpolate({
+    inputRange: [0, 60],
+    outputRange: [0, 60],
+    extrapolate: "clamp",
+  });
+
   const { slug } = useLocalSearchParams();
   const url = `${serverEndPoint}/api/v1/articles/${slug}`;
 
@@ -92,12 +104,14 @@ const SingleArticle = () => {
       headerRight: () => (
         <View style={tw`gap-2 flex-row`}>
           <TouchableOpacity
+            activeOpacity={0.9}
             style={tw`p-2 rounded-full`}
             onPress={() => shareListing(data?.data?.title)}
           >
             <Share2 size={20} style={tw`text-slate-700 dark:text-slate-200`} />
           </TouchableOpacity>
           <TouchableOpacity
+            activeOpacity={0.9}
             style={tw`p-2 rounded-full`}
             onPress={() => {
               handlePresentModalPress();
@@ -133,7 +147,13 @@ const SingleArticle = () => {
 
   return (
     <BottomSheetModalProvider>
-      <ScrollView style={tw`bg-slate-100 dark:bg-slate-900`}>
+      <ScrollView
+        onScroll={(event) => {
+          scrollY.setValue(event.nativeEvent.contentOffset.y);
+        }}
+        scrollEventThrottle={16}
+        style={tw`bg-slate-100 dark:bg-slate-900`}
+      >
         <Image
           source={{ uri: data?.data?.cover_image }}
           style={tw`w-full h-54`}
@@ -156,18 +176,27 @@ const SingleArticle = () => {
             style={tw`flex-1 flex-row mb-4 gap-8 items-center justify-center`}
           >
             <View style={tw`flex-row gap-3 items-center`}>
-              <Image
-                source={{ uri: data?.data?.user?.image }}
-                style={tw`w-10 h-10 rounded-full`}
-                resizeMode="cover"
-              />
-              <Text
-                style={tw`text-lg font-bold text-slate-800 dark:text-slate-100`}
-              >
-                {data?.data?.user.name}
-              </Text>
+              <Link href={`/dev/${data?.data?.user._id}`}>
+                <View>
+                  <Image
+                    source={{ uri: data?.data?.user?.image }}
+                    style={tw`w-10 h-10 rounded-full`}
+                    resizeMode="cover"
+                  />
+                </View>
+              </Link>
+              <Link href={`/dev/${data?.data?.user._id}`}>
+                <Text
+                  style={tw`text-lg font-bold text-slate-800 dark:text-slate-100`}
+                >
+                  {data?.data?.user.name}
+                </Text>
+              </Link>
             </View>
-            <TouchableOpacity style={tw`bg-blue-600 py-2 px-4 rounded-full`}>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={tw`bg-blue-600 py-2 px-4 rounded-full`}
+            >
               <Text style={tw`text-base text-slate-100`}>Follow</Text>
             </TouchableOpacity>
           </View>
@@ -198,6 +227,7 @@ const SingleArticle = () => {
             {data?.data?.tags.map((tag, index) => (
               <TouchableOpacity
                 key={index}
+                activeOpacity={0.9}
                 style={tw`bg-slate-300 dark:bg-slate-800 py-1 px-3 rounded-lg mb-2`}
               >
                 <Text
@@ -211,6 +241,34 @@ const SingleArticle = () => {
         </View>
       </ScrollView>
 
+      <Animated.View
+        style={[
+          tw`absolute bottom-0 left-0 bg-slate-300 border-t border-slate-300 dark:border-slate-600 dark:bg-slate-800 w-full px-4 pt-1 pb-4`,
+          { transform: [{ translateY: traslateY }] },
+        ]}
+      >
+        <View style={tw`flex-row gap-2`}>
+          <Pressable style={tw`px-4 py-2 flex-1`}>
+            <List size={22} style={tw`text-slate-700 dark:text-slate-200`} />
+          </Pressable>
+          <Pressable style={tw`px-4 py-2 flex-1`}>
+            <Heart size={22} style={tw`text-slate-700 dark:text-slate-200`} />
+          </Pressable>
+          <Pressable style={tw`px-4 py-2 flex-1`}>
+            <MessageCircleMore
+              size={22}
+              style={tw`text-slate-700 dark:text-slate-200`}
+            />
+          </Pressable>
+          <Pressable style={tw`px-4 py-2 flex-1`}>
+            <Bookmark
+              size={22}
+              style={tw`text-slate-700 dark:text-slate-200`}
+            />
+          </Pressable>
+        </View>
+      </Animated.View>
+
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}
@@ -219,7 +277,10 @@ const SingleArticle = () => {
         backgroundStyle={tw`bg-slate-100 dark:bg-slate-800`}
         handleIndicatorStyle={tw`bg-slate-600 dark:bg-slate-400`}
       >
-        <BottomSheet name={data?.data?.user.name} handlePresentModalClose={handlePresentModalClose} />
+        <BottomSheet
+          name={data?.data?.user.name}
+          handlePresentModalClose={handlePresentModalClose}
+        />
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );
@@ -227,60 +288,59 @@ const SingleArticle = () => {
 
 export default SingleArticle;
 
+const BottomSheet = ({
+  name,
+  handlePresentModalClose,
+}: {
+  name?: string;
+  handlePresentModalClose: () => void;
+}) => {
+  return (
+    <View style={tw`flex-1 bg-slate-100 dark:bg-slate-800 p-4`}>
+      <View style={tw`flex-row justify-between items-center`}>
+        <Text style={tw`text-slate-900 dark:text-white text-xl font-bold`}>
+          More Options
+        </Text>
+        <Pressable onPress={handlePresentModalClose}>
+          <X size={30} style={tw`text-slate-700 dark:text-slate-200`} />
+        </Pressable>
+      </View>
 
-const BottomSheet = ({ name, handlePresentModalClose }: { name?: string, handlePresentModalClose: () => void }) => {
-  return <View style={tw`flex-1 bg-slate-100 dark:bg-slate-800 p-4`}>
-    <View style={tw`flex-row justify-between items-center`}>
-      <Text
-        style={tw`text-slate-900 dark:text-white text-xl font-bold`}
-      >
-        More Options
-      </Text>
-      <Pressable onPress={handlePresentModalClose}>
-        <X size={30} style={tw`text-slate-700 dark:text-slate-200`} />
-      </Pressable>
-    </View>
+      <View style={tw`py-2`}>
+        <View
+          style={tw`px-3 py-5 border-b border-slate-300 dark:border-slate-600 flex-row gap-4 items-center`}
+        >
+          <PlusCircle
+            size={22}
+            style={tw`text-slate-700 dark:text-slate-200`}
+          />
+          <View style={tw`flex-row items-center gap-1`}>
+            <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
+              Follow
+            </Text>
+            <Text
+              style={tw`text-slate-700 dark:text-slate-200 text-lg font-extrabold`}
+            >
+              {name}
+            </Text>
+          </View>
+        </View>
 
-    <View style={tw`py-2`}>
-      <View
-        style={tw`px-3 py-5 border-b border-slate-300 dark:border-slate-600 flex-row gap-4 items-center`}
-      >
-        <PlusCircle
-          size={22}
-          style={tw`text-slate-700 dark:text-slate-200`}
-        />
-        <View style={tw`flex-row items-center gap-1`}>
+        <View
+          style={tw`px-3 py-5 border-b border-slate-300 dark:border-slate-600 flex-row gap-4 items-center`}
+        >
+          <Heart size={22} style={tw`text-slate-700 dark:text-slate-200`} />
           <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
-            Follow
+            Show Likes
           </Text>
-          <Text
-            style={tw`text-slate-700 dark:text-slate-200 text-lg font-extrabold`}
-          >
-            {name}
+        </View>
+        <View style={tw`px-3 py-5 flex-row gap-4 items-center`}>
+          <Flag size={22} style={tw`text-slate-700 dark:text-slate-200`} />
+          <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
+            Report
           </Text>
         </View>
       </View>
-
-      <View
-        style={tw`px-3 py-5 border-b border-slate-300 dark:border-slate-600 flex-row gap-4 items-center`}
-      >
-        <Heart
-          size={22}
-          style={tw`text-slate-700 dark:text-slate-200`}
-        />
-        <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
-          Show Likes
-        </Text>
-      </View>
-      <View style={tw`px-3 py-5 flex-row gap-4 items-center`}>
-        <Flag
-          size={22}
-          style={tw`text-slate-700 dark:text-slate-200`}
-        />
-        <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
-          Report
-        </Text>
-      </View>
     </View>
-  </View>
-}
+  );
+};

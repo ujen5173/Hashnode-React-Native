@@ -49,7 +49,7 @@ export default function TabLayout() {
               headerRight: () => (
                 <View style={tw`flex-row gap-2 px-4`}>
                   <TouchableOpacity
-                    activeOpacity={0.8}
+                    activeOpacity={0.7}
                     style={tw`rounded-full p-2`}
                   >
                     <Pencil

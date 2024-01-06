@@ -10,13 +10,13 @@ const searchTags = async (req: Request, res: Response) => {
 const singleTag = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
-    console.log({ slug });
     const tag = await Tag.findOne({
       slug: {
         $regex: slug,
         $options: "i",
       },
     });
+
     res.json({
       data: tag,
       error: null,

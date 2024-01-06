@@ -39,13 +39,13 @@ const ReadingComponent: FC<Props> = ({
 
     <View style={tw`flex-row gap-2 items-center`}>
       <View style={tw`flex-1`}>
-        <TouchableOpacity style={tw`border-blue-600 px-4 py-2 rounded-full border border-blue-600`}>
+        <TouchableOpacity activeOpacity={.9} style={tw`border-blue-600 px-4 py-2 rounded-full border border-blue-600`}>
           <Text style={tw`text-blue-600 text-base text-center`}>Clear Filters</Text>
         </TouchableOpacity>
       </View>
 
       <View style={tw`flex-1`}>
-        <TouchableOpacity style={tw`text-center bg-blue-600 px-4 py-2 rounded-full border border-blue-600`}>
+        <TouchableOpacity activeOpacity={.9} style={tw`text-center bg-blue-600 px-4 py-2 rounded-full border border-blue-600`}>
           <Text style={tw`text-white text-base text-center`}>Apply</Text>
         </TouchableOpacity>
       </View>

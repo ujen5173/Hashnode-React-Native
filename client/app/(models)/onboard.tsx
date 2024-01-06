@@ -40,7 +40,7 @@ const Login = () => {
           <TouchableOpacity activeOpacity={.9} style={tw`primary-btn bg-black`}>
             <Github size={24} color={"#fff"} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={async () => {
+          <TouchableOpacity activeOpacity={.9} onPress={async () => {
             try {
               const { createdSessionId, signIn, signUp, setActive } =
                 await startOAuthFlow();
@@ -52,7 +52,7 @@ const Login = () => {
             } catch (err) {
               console.error("OAuth error", err);
             }
-          }} activeOpacity={.9} style={tw`primary-btn bg-gray-100`}>
+          }} style={tw`primary-btn bg-gray-100`}>
             <Chrome size={24} color={"#000"} />
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={.9} style={tw`primary-btn bg-blue-500`}>

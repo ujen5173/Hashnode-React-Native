@@ -72,10 +72,14 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
     }));
     setOptions(newOptions)
   }
-  const handler = () => {
+  const selectTag = () => {
     setSearchState(false);
-    // @ts-ignore
-    ref?.current?.snapToPosition("55%")
+
+    //? 👇 so that the animation will start after the mobile keyboard has been dismissed!
+    setTimeout(() => {
+      // @ts-ignore
+      ref?.current?.snapToPosition("55%")
+    }, 200)
     // @ts-ignore
     inputRef?.current?.blur();
     setValue("");
@@ -85,8 +89,12 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
     setValue("");
     if (searchState) {
       setSearchState(false);
-      // @ts-ignore
-      ref?.current?.snapToPosition("55%")
+
+      //? 👇 so that the animation will start after the mobile keyboard has been dismissed!
+      setTimeout(() => {
+        // @ts-ignore
+        ref?.current?.snapToPosition("55%")
+      }, 200)
       // @ts-ignore
       inputRef?.current?.blur();
     } else {
@@ -134,7 +142,7 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
 
         {
           searchState ? (
-            <InputComponent isLoading={isLoading} handler={handler} value={value} tags={tags} />
+            <InputComponent isLoading={isLoading} selectTag={selectTag} value={value} tags={tags} />
           ) : (
             <ReadingComponent options={options} readingChange={readingChange} />
           )

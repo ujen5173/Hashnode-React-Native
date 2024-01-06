@@ -65,6 +65,7 @@ const Profile = () => {
                   {link.label}
                 </Text>
               </View>
+
               <View>
                 {link.isSwitch ? (
                   <Switch

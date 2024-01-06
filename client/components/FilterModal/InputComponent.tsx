@@ -6,14 +6,14 @@ import tw from "../../lib/tailwind";
 import TagComponent from "./Tag";
 
 type Props = {
-  handler: () => void;
+  selectTag: () => void;
   value: string;
   tags: Tag[];
   isLoading: boolean;
 }
 
 const InputComponent: FC<Props> = ({
-  handler,
+  selectTag,
   value,
   tags,
   isLoading
@@ -33,7 +33,7 @@ const InputComponent: FC<Props> = ({
                   data={tags}
                   keyExtractor={(item) => item._id}
                   renderItem={({ item, index }) => (
-                    <TagComponent handler={handler} index={index} item={item} length={tags.length} />
+                    <TagComponent selectTag={selectTag} index={index} item={item} length={tags.length} />
                   )}
                 />
               ) : (

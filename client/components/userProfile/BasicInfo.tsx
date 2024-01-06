@@ -27,23 +27,27 @@ const BasicInfo = ({ data }: {
       <Text style={tw`text-slate-600 mb-2 text-xl dark:text-slate-300 text-center`}>{data?.tagline}.</Text>
 
       <View style={tw`flex-row gap-2 mb-4 items-center`}>
-        <Text style={tw`text-slate-600 dark:text-slate-400 text-lg`}>{data?.followerCount} followers</Text>
+        <Text style={tw`text-slate-600 dark:text-slate-400 text-lg`}>{
+          Intl.NumberFormat('en-US', { notation: 'compact' }).format(data?.followerCount ?? 0)
+        } followers</Text>
         <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
           •
         </Text>
-        <Text style={tw`text-slate-600 dark:text-slate-400 text-lg`}>{data?.followingCount} followings</Text>
+        <Text style={tw`text-slate-600 dark:text-slate-400 text-lg`}>{
+          Intl.NumberFormat('en-US', { notation: 'compact' }).format(data?.followingCount ?? 0)
+        } followings</Text>
       </View>
 
       <View style={tw`flex-row gap-2 mb-4 items-center`}>
         <View style={tw`flex-1`}>
-          <TouchableOpacity style={tw`bg-blue-600 border border-blue-600 rounded-full py-2 px-6 flex-row items-center justify-center`}>
+          <TouchableOpacity activeOpacity={.9} style={tw`bg-blue-600 border border-blue-600 rounded-full py-2 px-6 flex-row items-center justify-center`}>
             <Plus size={18} style={tw`text-slate-100 mr-2`} />
             <Text style={tw`text-white text-base`}>Follow</Text>
           </TouchableOpacity>
         </View>
 
         <View style={tw`flex-1`}>
-          <TouchableOpacity style={tw`border border-blue-600 rounded-full py-2 px-6 flex-row items-center justify-center`}>
+          <TouchableOpacity activeOpacity={.9} style={tw`border border-blue-600 rounded-full py-2 px-6 flex-row items-center justify-center`}>
             <Share size={18} style={tw`text-blue-600 mr-2`} />
             <Text style={tw`text-blue-600 text-base`}>Share Profile</Text>
           </TouchableOpacity>

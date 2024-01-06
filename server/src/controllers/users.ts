@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Users } from "../db/schema/index.js";
+import { Articles, Users } from "../db/schema/index.js";
 
 const getCurrent = async (req: Request, res: Response) => {
   try {
@@ -32,6 +32,7 @@ const getCurrent = async (req: Request, res: Response) => {
     });
   }
 };
+
 const getUserByUsername = async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
@@ -60,4 +61,40 @@ const getUserByUsername = async (req: Request, res: Response) => {
   }
 };
 
-export { getCurrent, getUserByUsername };
+const userArticles = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  const articles = await Articles.find({ user: userId }).select(
+    "_id title content createdAt read_time readCount cover_image"
+  );
+
+  res.json({
+    sucess: true,
+    message: "User articles fetched successfully",
+    data: articles,
+  });
+};
+
+const getUserById = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  const user = await Users.findById(userId).select(
+    "_id username name email image followersCount followingCount social"
+  );
+
+  if (!user) {
+    return res.json({
+      sucess: false,
+      message: "User not found",
+      data: null,
+    });
+  }
+
+  res.json({
+    sucess: true,
+    message: "User fetched successfully",
+    data: user,
+  });
+};
+
+export { getCurrent, getUserById, getUserByUsername, userArticles };

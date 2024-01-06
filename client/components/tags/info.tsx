@@ -1,49 +1,30 @@
-import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
 import { Newspaper, Plus, Users } from "lucide-react-native";
-import React from "react";
+import React, { FC } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { serverEndPoint } from "../../constants/url";
-import fetchData from "../../helpers/fetch";
+import { Tag } from "../../app/tags/[slug]";
 import tw from "../../lib/tailwind";
 
-type Tag = {
-  _id: string;
-  name: string;
-  image: string;
-  followersCount: number;
-  articlesCount: number;
+type Props = {
+  data: Tag | undefined;
 }
 
-const TagsInfoHeader = () => {
-  const { slug } = useLocalSearchParams();
-
-  const url = `${serverEndPoint}/api/v1/tags/${slug}`;
-
-  const { data, } = useQuery({
-    queryKey: ["tags_data", slug],
-    queryFn: async () => await fetchData<Tag>(url),
-    enabled: !!slug
-  });
-
-  if (!data) return null;
-
+const TagsInfoHeader: FC<Props> = ({ data }) => {
   return (
     <View style={tw`border-b border-slate-300 dark:border-slate-600 px-4 py-6`}>
       <View style={tw`justify-center flex-row gap-2 items-center`}>
         <Image
-          style={tw`w-10 h-10 rounded-lg`}
-          source={{ uri: data?.data?.image }}
+          style={tw`w-12 h-12 rounded-md`}
+          source={{ uri: data?.image }}
         />
 
         <Text style={tw`text-slate-900 dark:text-slate-100 text-2xl font-bold`}>
-          #{data?.data?.name}
+          #{data?.name}
         </Text>
       </View>
 
       <View style={tw`items-center mb-4`}>
-        <TouchableOpacity
+        <TouchableOpacity activeOpacity={.9}
           style={tw`flex-row gap-2 border border-blue-600 rounded-full px-4 py-2 mt-4`}
         >
           <Plus size={20} style={tw`text-blue-600`} />
@@ -59,7 +40,7 @@ const TagsInfoHeader = () => {
             {Intl.NumberFormat("en-US", {
               notation: "compact",
               compactDisplay: "short",
-            }).format(data?.data?.followersCount ?? 0)}{" "}
+            }).format(data?.followersCount ?? 0)}{" "}
             followers
           </Text>
         </View>
@@ -73,7 +54,7 @@ const TagsInfoHeader = () => {
             {Intl.NumberFormat("en-US", {
               notation: "compact",
               compactDisplay: "short",
-            }).format(data?.data?.articlesCount ?? 0)}{" "}
+            }).format(data?.articlesCount ?? 0)}{" "}
             articles
           </Text>
         </View>
