@@ -72,8 +72,9 @@ const TagPage = () => {
         data={data?.data}
         renderItem={({ item, index }) => (
           <View
-            style={tw`${index === (data?.data ?? []).length - 1 ? "border-0" : "border-b"
-              } border-slate-400 dark:border-slate-700`}
+            style={tw`${
+              index === (data?.data ?? []).length - 1 ? "border-0" : "border-b"
+            } border-slate-400 dark:border-slate-700`}
             key={item._id}
           >
             <Card bookmarks={bookmarks} article={item} />

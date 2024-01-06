@@ -1,10 +1,13 @@
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal
-} from "@gorhom/bottom-sheet";
+import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useQuery } from "@tanstack/react-query";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { FlatList, View } from "react-native";
 import Card from "../../components/Card";
 import CardLoading from "../../components/CardLoading";
@@ -46,7 +49,7 @@ export type Tag = {
   _id: string;
   name: string;
   slug: string;
-}
+};
 
 export enum FeedType {
   MyFeed = "My Feed",
@@ -105,7 +108,11 @@ const HomePage = () => {
   return (
     <>
       <View style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
-        <SemiHeader handlePresentModalPress={handlePresentModalPress} feedType={feedType} setFeedType={setFeedType} />
+        <SemiHeader
+          handlePresentModalPress={handlePresentModalPress}
+          feedType={feedType}
+          setFeedType={setFeedType}
+        />
         {isFetching ? (
           <View>
             {Array(7)
@@ -113,8 +120,9 @@ const HomePage = () => {
               .map((_, index) => (
                 <View
                   key={index}
-                  style={tw`${index === 2 ? "border-0" : "border-b"
-                    } border-slate-300 dark:border-slate-600`}
+                  style={tw`${
+                    index === 2 ? "border-0" : "border-b"
+                  } border-slate-300 dark:border-slate-600`}
                 >
                   <CardLoading />
                 </View>
@@ -127,10 +135,11 @@ const HomePage = () => {
             renderItem={({ item, index }) => (
               <View
                 key={index}
-                style={tw`${index === (data?.data ?? []).length - 1
-                  ? "border-0"
-                  : "border-b"
-                  } border-slate-400 dark:border-slate-700`}
+                style={tw`${
+                  index === (data?.data ?? []).length - 1
+                    ? "border-0"
+                    : "border-b"
+                } border-slate-400 dark:border-slate-700`}
               >
                 <Card bookmarks={bookmarks} article={item} />
               </View>

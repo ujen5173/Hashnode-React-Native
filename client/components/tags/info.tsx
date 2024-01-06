@@ -7,16 +7,13 @@ import tw from "../../lib/tailwind";
 
 type Props = {
   data: Tag | undefined;
-}
+};
 
 const TagsInfoHeader: FC<Props> = ({ data }) => {
   return (
     <View style={tw`border-b border-slate-300 dark:border-slate-600 px-4 py-6`}>
       <View style={tw`justify-center flex-row gap-2 items-center`}>
-        <Image
-          style={tw`w-12 h-12 rounded-md`}
-          source={{ uri: data?.image }}
-        />
+        <Image style={tw`w-12 h-12 rounded-md`} source={{ uri: data?.image }} />
 
         <Text style={tw`text-slate-900 dark:text-slate-100 text-2xl font-bold`}>
           #{data?.name}
@@ -24,7 +21,8 @@ const TagsInfoHeader: FC<Props> = ({ data }) => {
       </View>
 
       <View style={tw`items-center mb-4`}>
-        <TouchableOpacity activeOpacity={.9}
+        <TouchableOpacity
+          activeOpacity={0.9}
           style={tw`flex-row gap-2 border border-blue-600 rounded-full px-4 py-2 mt-4`}
         >
           <Plus size={20} style={tw`text-blue-600`} />

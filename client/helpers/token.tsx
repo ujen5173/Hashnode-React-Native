@@ -33,4 +33,4 @@ export const storage = {
       return;
     }
   },
-}
+};

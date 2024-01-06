@@ -254,12 +254,23 @@ const SingleArticle = () => {
           <Pressable style={tw`px-4 py-2 flex-1`}>
             <Heart size={22} style={tw`text-slate-700 dark:text-slate-200`} />
           </Pressable>
-          <Pressable style={tw`px-4 py-2 flex-1`}>
-            <MessageCircleMore
-              size={22}
-              style={tw`text-slate-700 dark:text-slate-200`}
-            />
-          </Pressable>
+          <Link
+            href={{
+              pathname: `/(models)/comment/`,
+              params: {
+                id: data?.data?._id || "",
+                title: data?.data?.title || "",
+              },
+            }}
+            asChild
+          >
+            <Pressable style={tw`px-4 py-2 flex-1`}>
+              <MessageCircleMore
+                size={22}
+                style={tw`text-slate-700 dark:text-slate-200`}
+              />
+            </Pressable>
+          </Link>
           <Pressable style={tw`px-4 py-2 flex-1`}>
             <Bookmark
               size={22}

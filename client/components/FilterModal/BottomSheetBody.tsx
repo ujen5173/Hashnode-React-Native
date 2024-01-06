@@ -1,7 +1,7 @@
 import {
   BottomSheetModal,
   BottomSheetTextInput,
-  useBottomSheetModal
+  useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { Search, X } from "lucide-react-native";
@@ -23,24 +23,29 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
 
   const { dismiss } = useBottomSheetModal();
 
-  const [options, setOptions] = useState([{
-    label: '< 5 mins',
-    value: "LESS_THAN_5",
-    checked: false
-  }, {
-    label: '5 - 10 mins',
-    value: "5_TO_10",
-    checked: false
-  }, {
-    label: '> 10 mins',
-    value: "MORE_THAN_10",
-    checked: false
-  }]);
+  const [options, setOptions] = useState([
+    {
+      label: "< 5 mins",
+      value: "LESS_THAN_5",
+      checked: false,
+    },
+    {
+      label: "5 - 10 mins",
+      value: "5_TO_10",
+      checked: false,
+    },
+    {
+      label: "> 10 mins",
+      value: "MORE_THAN_10",
+      checked: false,
+    },
+  ]);
 
   const [isLoading, setIsLoading] = useState(false);
   const { refetch } = useQuery({
     queryKey: ["tags_search"],
-    queryFn: async () => await fetchData<Tag[]>(`${serverEndPoint}/api/v1/tags?q=${value}`),
+    queryFn: async () =>
+      await fetchData<Tag[]>(`${serverEndPoint}/api/v1/tags?q=${value}`),
     enabled: true,
   });
 
@@ -49,9 +54,9 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
     if (criteria.trim().length > 0) {
       setIsLoading(true);
       response = await refetch();
-      const newData = (response.data as Tag[] | undefined)?.filter((tag) => (
-        !tags.includes(tag)
-      ));
+      const newData = (response.data as Tag[] | undefined)?.filter(
+        (tag) => !tags.includes(tag)
+      );
       setIsLoading(false);
       return newData ?? [];
     }
@@ -68,22 +73,22 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
   const readingChange = (index: number) => {
     const newOptions = options.map((val, i) => ({
       ...val,
-      checked: i === index
+      checked: i === index,
     }));
-    setOptions(newOptions)
-  }
+    setOptions(newOptions);
+  };
   const selectTag = () => {
     setSearchState(false);
 
     //? 👇 so that the animation will start after the mobile keyboard has been dismissed!
     setTimeout(() => {
       // @ts-ignore
-      ref?.current?.snapToPosition("55%")
-    }, 200)
+      ref?.current?.snapToPosition("55%");
+    }, 200);
     // @ts-ignore
     inputRef?.current?.blur();
     setValue("");
-  }
+  };
 
   const onClose = () => {
     setValue("");
@@ -93,21 +98,19 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
       //? 👇 so that the animation will start after the mobile keyboard has been dismissed!
       setTimeout(() => {
         // @ts-ignore
-        ref?.current?.snapToPosition("55%")
-      }, 200)
+        ref?.current?.snapToPosition("55%");
+      }, 200);
       // @ts-ignore
       inputRef?.current?.blur();
     } else {
       void dismiss();
     }
-  }
+  };
 
   return (
     <View style={tw`flex-1 p-4 bg-slate-100 dark:bg-slate-800`}>
       <View style={tw`flex-row justify-between items-center`}>
-        <Text
-          style={tw`text-slate-900 dark:text-white text-xl font-bold`}
-        >
+        <Text style={tw`text-slate-900 dark:text-white text-xl font-bold`}>
           Filters
         </Text>
         <Pressable onPress={onClose}>
@@ -117,7 +120,9 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
 
       <View style={tw`py-2`}>
         <View>
-          <Text style={tw`text-slate-900 dark:text-white text-base mb-2 font-bold`}>
+          <Text
+            style={tw`text-slate-900 dark:text-white text-base mb-2 font-bold`}
+          >
             Tags
           </Text>
           <View style={tw`rounded-input flex-row gap-2 items-center w-full`}>
@@ -140,17 +145,19 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
           </View>
         </View>
 
-        {
-          searchState ? (
-            <InputComponent isLoading={isLoading} selectTag={selectTag} value={value} tags={tags} />
-          ) : (
-            <ReadingComponent options={options} readingChange={readingChange} />
-          )
-        }
+        {searchState ? (
+          <InputComponent
+            isLoading={isLoading}
+            selectTag={selectTag}
+            value={value}
+            tags={tags}
+          />
+        ) : (
+          <ReadingComponent options={options} readingChange={readingChange} />
+        )}
       </View>
     </View>
-  )
+  );
 });
-
 
 export default BottomSheetBody;

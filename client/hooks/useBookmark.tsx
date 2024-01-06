@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import storage from '../helpers/storage';
+import { useState } from "react";
+import storage from "../helpers/storage";
 
 const useBookmark = () => {
   const [_, setBookmarks] = useState<string[]>([]);
@@ -28,6 +28,6 @@ const useBookmark = () => {
     });
 
   return _;
-}
+};
 
-export default useBookmark
+export default useBookmark;

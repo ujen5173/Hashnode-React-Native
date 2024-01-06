@@ -1,4 +1,3 @@
-
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
@@ -233,7 +232,6 @@ const UserProfile = () => {
 
             <Pressable
               onPress={() => {
-                console.log(`/dev/${data?.data?._id}`)
                 router.push(`/dev/${data?.data?._id}`);
               }}
               style={tw`border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 p-3 rounded-lg`}
@@ -253,9 +251,7 @@ const UserProfile = () => {
                     Hack, Stack and Roll
                   </Text>
                   <View style={tw`flex-row gap-2`}>
-                    <Text
-                      style={tw`text-slate-700 flex-1 dark:text-slate-400`}
-                    >
+                    <Text style={tw`text-slate-700 flex-1 dark:text-slate-400`}>
                       hashnode-t3.vercel.app
                     </Text>
                     <ChevronRight
@@ -316,7 +312,7 @@ const UserProfile = () => {
       >
         <BottomSheet handlePresentModalClose={handlePresentModalClose} />
       </BottomSheetModal>
-    </BottomSheetModalProvider >
+    </BottomSheetModalProvider>
   );
 };
 

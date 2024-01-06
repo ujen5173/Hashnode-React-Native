@@ -4,7 +4,7 @@ import {
   BookmarkMinus,
   BookmarkPlus,
   Heart,
-  MessageCircleMore
+  MessageCircleMore,
 } from "lucide-react-native";
 import React, { FC } from "react";
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
@@ -20,7 +20,9 @@ type CardProps = {
 
 const Card: FC<CardProps> = ({ bookmarks, article }) => {
   const { width } = Dimensions.get("window");
-  const [hasBookmark, setHasBookmark] = React.useState(bookmarks.includes(article._id));
+  const [hasBookmark, setHasBookmark] = React.useState(
+    bookmarks.includes(article._id)
+  );
 
   const handleBookmark = async () => {
     storage.save({
@@ -37,8 +39,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
     <View style={tw`bg-slate-100 flex-1 dark:bg-slate-900 p-4`}>
       <View style={tw`flex-row gap-2 items-center mb-3`}>
         <View>
-          <Link
-            href={`/(user)/${article.user.username}`}>
+          <Link href={`/(user)/${article.user.username}`}>
             <View>
               <Image
                 style={tw`w-12 h-12 rounded-full`}
@@ -64,14 +65,16 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
       </View>
 
       <View style={tw`mb-4`}>
-        <Link href={`/articles/${article.slug}`}
+        <Link
+          href={`/articles/${article.slug}`}
           numberOfLines={2}
           style={[
             {
               width: width - 42,
             },
           ]}
-          ellipsizeMode="tail">
+          ellipsizeMode="tail"
+        >
           <Text
             numberOfLines={2}
             ellipsizeMode="tail"
@@ -92,9 +95,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
               {article.user.username}.hashnode.dev
             </Text>
           </Link>
-          <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
-            •
-          </Text>
+          <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>•</Text>
           <View style={tw`flex-row gap-2 items-center`}>
             <BookOpenText style={tw`text-blue-600`} size={16} />
             <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
@@ -104,12 +105,18 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
         </View>
 
         <View>
-          <Link href={`/articles/${article.slug}`} style={[tw`text-slate-700 dark:text-slate-300`, {
-            width: width - 32,
-          }]} numberOfLines={2} ellipsizeMode="tail">
-            {
-              article.content
-            }
+          <Link
+            href={`/articles/${article.slug}`}
+            style={[
+              tw`text-slate-700 dark:text-slate-300`,
+              {
+                width: width - 32,
+              },
+            ]}
+            numberOfLines={2}
+            ellipsizeMode="tail"
+          >
+            {article.content}
           </Link>
         </View>
       </View>
@@ -190,7 +197,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
 
         {article.tags.length > 3 && (
           <TouchableOpacity
-            activeOpacity={.9}
+            activeOpacity={0.9}
             style={tw`border border-slate-300 dark:border-slate-600 px-3 py-1 rounded-lg`}
           >
             <Text

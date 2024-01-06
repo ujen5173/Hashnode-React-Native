@@ -55,9 +55,11 @@ const Profile = () => {
           {value.map((link, index) => (
             <View
               key={index}
-              style={tw`flex-row justify-between items-center px-2 ${link.isSwitch ? "pb-1" : "py-3"
-                } ${index === value.length - 1 ? "border-0" : "border-b"
-                } border-slate-300 dark:border-slate-600`}
+              style={tw`flex-row justify-between items-center px-2 ${
+                link.isSwitch ? "pb-1" : "py-3"
+              } ${
+                index === value.length - 1 ? "border-0" : "border-b"
+              } border-slate-300 dark:border-slate-600`}
             >
               <View style={tw`flex-row gap-2 items-center`}>
                 {link.icon}

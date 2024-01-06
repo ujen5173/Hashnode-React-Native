@@ -1,17 +1,17 @@
-import { useAuth } from '@clerk/clerk-expo';
-import { useQuery } from '@tanstack/react-query';
-import { useNavigation } from 'expo-router';
-import { ArrowLeft } from 'lucide-react-native';
-import React, { useLayoutEffect } from 'react';
-import { Pressable, Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import CommentCard from '../components/notifications/CommentCard';
-import FollowCard from '../components/notifications/FollowCard';
-import LikeCard from '../components/notifications/LIkeCard';
-import NotificationNavigation from '../components/notifications/navigation';
-import { serverEndPoint } from '../constants/url';
-import fetchData from '../helpers/fetch';
-import tw from '../lib/tailwind';
+import { useAuth } from "@clerk/clerk-expo";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigation } from "expo-router";
+import { ArrowLeft } from "lucide-react-native";
+import React, { useLayoutEffect } from "react";
+import { Pressable, Text, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import CommentCard from "../components/notifications/CommentCard";
+import FollowCard from "../components/notifications/FollowCard";
+import LikeCard from "../components/notifications/LikeCard";
+import NotificationNavigation from "../components/notifications/Navigation";
+import { serverEndPoint } from "../constants/url";
+import fetchData from "../helpers/fetch";
+import tw from "../lib/tailwind";
 
 export type Notification = {
   _id: string;
@@ -35,19 +35,23 @@ const Notifications = () => {
 
   const { data } = useQuery({
     queryKey: [`notifications${activeTab.toString()}`],
-    queryFn: async () => await fetchData<Notification[]>(`${serverEndPoint}/api/v1/notifications`, {
-      method: "POST",
-      data: {
-        userId: userId,
-      }
-    }),
+    queryFn: async () =>
+      await fetchData<Notification[]>(
+        `${serverEndPoint}/api/v1/notifications`,
+        {
+          method: "POST",
+          data: {
+            userId: userId,
+          },
+        }
+      ),
     enabled: !!userId,
   });
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: tw`bg-slate-100 dark:bg-slate-900`,
-      headerTitle: 'Notifications',
+      headerTitle: "Notifications",
       headerTitleStyle: tw`text-slate-900 dark:text-white`,
       headerLeft: () => (
         <View style={tw`flex-row gap-2`}>
@@ -64,24 +68,33 @@ const Notifications = () => {
           </Pressable>
         </View>
       ),
-
-    })
+    });
   }, []);
 
   return (
     <View style={tw`flex-1 bg-slate-100 dark:bg-slate-900`}>
-      <NotificationNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <NotificationNavigation
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
       <View>
         <FlatList
           data={data?.data}
-          keyExtractor={item => item._id}
+          keyExtractor={(item) => item._id}
           renderItem={({ item, index }) => (
-            <View key={index} style={tw`${index === (data?.data ?? []).length - 1 ? "border-0" : "border-b"} border-slate-400 dark:border-slate-600`}>
+            <View
+              key={index}
+              style={tw`${
+                index === (data?.data ?? []).length - 1
+                  ? "border-0"
+                  : "border-b"
+              } border-slate-400 dark:border-slate-600`}
+            >
               {
                 {
-                  "COMMENT": <CommentCard card={item} />,
-                  "LIKE": <LikeCard card={item} />,
-                  "FOLLOW": <FollowCard card={item} />,
+                  COMMENT: <CommentCard card={item} />,
+                  LIKE: <LikeCard card={item} />,
+                  FOLLOW: <FollowCard card={item} />,
                   // "MENTION": <MentionCard card={item} />,
                   // "ARTICLE": <ArticleCard card={item} />,
                 }[item.type as "COMMENT" | "LIKE" | "FOLLOW"]
@@ -92,13 +105,15 @@ const Notifications = () => {
 
         {/* end */}
         <View style={tw`px-4 py-3`}>
-          <Text style={tw`text-lg font-bold text-slate-900 dark:text-slate-100 text-center`}>
+          <Text
+            style={tw`text-lg font-bold text-slate-900 dark:text-slate-100 text-center`}
+          >
             You have reached the end! 👋
           </Text>
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default Notifications; 
+export default Notifications;

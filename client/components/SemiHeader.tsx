@@ -7,7 +7,7 @@ import tw from "../lib/tailwind";
 const SemiHeader = ({
   feedType,
   setFeedType,
-  handlePresentModalPress
+  handlePresentModalPress,
 }: {
   feedType: FeedType;
   setFeedType: React.Dispatch<React.SetStateAction<FeedType>>;
@@ -21,18 +21,20 @@ const SemiHeader = ({
         {feedLinks.map((item, index) => (
           <Pressable
             key={index}
-            style={tw`flex-row flex-1 gap-2 items-center px-2 mx-1 border-b-[3px] ${feedType === item.type ? "border-blue-600" : "border-transparent"
-              } py-4`}
+            style={tw`flex-row flex-1 gap-2 items-center px-2 mx-1 border-b-[3px] ${
+              feedType === item.type ? "border-blue-600" : "border-transparent"
+            } py-4`}
             onPress={() => {
               setFeedType(item.type);
             }}
           >
             {item.icon(feedType)}
             <Text
-              style={tw`${feedType === item.type
-                ? "text-blue-600"
-                : "text-slate-500 dark:text-slate-400"
-                } text-sm`}
+              style={tw`${
+                feedType === item.type
+                  ? "text-blue-600"
+                  : "text-slate-500 dark:text-slate-400"
+              } text-sm`}
             >
               {item.label}
             </Text>
