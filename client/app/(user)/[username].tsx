@@ -6,7 +6,7 @@ import {
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import { Link, router, useLocalSearchParams, useNavigation } from "expo-router";
 import {
   ArrowLeft,
   Calendar,
@@ -20,21 +20,31 @@ import {
   Linkedin,
   MapPin,
   MoreVertical,
+  Pencil,
   Twitter,
   X,
   Youtube,
 } from "lucide-react-native";
 import React, {
+  FC,
   useCallback,
   useContext,
   useLayoutEffect,
   useMemo,
   useRef,
 } from "react";
-import { Image, Linking, Pressable, Text, View } from "react-native";
+import {
+  Image,
+  Linking,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import UserProfileLoading from "../../components/UserProfileLoading";
 import BasicInfo from "../../components/userProfile/BasicInfo";
+import { colors } from "../../constants/Colors";
 import { serverEndPoint } from "../../constants/url";
 import { C } from "../../contexts/RootContext";
 import fetchData from "../../helpers/fetch";
@@ -65,6 +75,13 @@ type User = {
     instagram: string;
   };
 };
+export interface Activity {
+  _id: string;
+  title: string;
+  slug: string;
+  activity_type: "ARTICLE" | "JOINED";
+  createdAt: Date | undefined;
+}
 
 const UserProfile = () => {
   const { username } = useLocalSearchParams();
@@ -72,10 +89,19 @@ const UserProfile = () => {
   const { user } = useContext(C);
 
   const url = `${serverEndPoint}/api/v1/users/username/${username}`;
+  const recent_activities_url = `${serverEndPoint}/api/v1/users/articles/recent_activities/${username}`;
+
   const { data, isFetching, error } = useQuery({
     queryKey: ["single_user"],
     queryFn: async () => await fetchData<User>(url),
   });
+  const { data: recent_data } = useQuery({
+    queryKey: ["user_recent_activities"],
+    queryFn: async () =>
+      await fetchData<[string, Activity[]][]>(recent_activities_url),
+  });
+
+  console.log({ recent_data: JSON.stringify(recent_data, null, 2) });
 
   if (!user) {
     router.push("/(models)/onboard");
@@ -289,7 +315,7 @@ const UserProfile = () => {
                 <TouchableOpacity
                   activeOpacity={0.9}
                   key={lang}
-                  style={tw`bg-slate-200 dark:bg-slate-800 py-2 px-4 rounded-full`}
+                  style={tw`border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 py-2 px-4 rounded-full`}
                 >
                   <Text
                     style={tw`text-sm text-slate-900 dark:text-white font-medium`}
@@ -301,7 +327,39 @@ const UserProfile = () => {
             </View>
           </View>
         </View>
+        {/* Recent activities: */}
+        <View style={tw`my-4`}>
+          <Text
+            style={tw`text-lg font-bold text-slate-800 dark:text-slate-100 mb-4`}
+          >
+            Recent Activities
+          </Text>
+          {recent_data?.data?.map(([date, activitiesArray], index) => (
+            <View style={tw`flex-row gap-2`} key={index}>
+              <View style={styles.activity_date}>
+                <Text style={tw`text-center text-xs text-white`}>{date}</Text>
+                {activitiesArray[0]?.activity_type !== "JOINED" && (
+                  <View style={styles.activity_date_dots}></View>
+                )}
+              </View>
+
+              <View style={tw`flex flex-1 flex-col justify-center`}>
+                {activitiesArray.map((item) => {
+                  return (
+                    <ActivityCard
+                      index={index}
+                      item={item}
+                      key={item._id}
+                      activityLength={(recent_data?.data ?? []).length}
+                    />
+                  );
+                })}
+              </View>
+            </View>
+          ))}
+        </View>
       </ScrollView>
+
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}
@@ -345,3 +403,72 @@ const BottomSheet = ({
     </View>
   );
 };
+
+interface Props {
+  index: number;
+  item: Activity;
+  activityLength: number;
+}
+const ActivityCard: FC<Props> = ({ index, item, activityLength }) => {
+  return (
+    <View
+      style={tw`${
+        index === activityLength - 1 ? "" : "border-b"
+      } border-slate-300 dark:border-slate-600 py-4 px-2`}
+    >
+      <View style={tw`mb-2 flex-row items-center gap-2`}>
+        {item.activity_type === "JOINED" ? (
+          // <LogonoText style="h-4 w-4 fill-secondary" />
+          <Text>H</Text>
+        ) : (
+          <Pencil style={tw`text-slate-600 dark:text-slate-300`} size={16} />
+        )}
+        <Text style={tw` text-white`}>
+          {item.activity_type === "JOINED"
+            ? "Joined Hashnode"
+            : "Wrote an article"}
+        </Text>
+      </View>
+
+      {item.activity_type !== "JOINED" && (
+        <Link
+          href={{
+            pathname: `/articles/[slug]`,
+            params: {
+              slug: item.slug,
+            },
+          }}
+          style={tw`mb-2`}
+        >
+          <Text
+            style={tw`text-base font-bold text-slate-800 dark:text-slate-100`}
+          >
+            {item.title}
+          </Text>
+        </Link>
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  activity_date: {
+    alignItems: "center",
+    paddingTop: 16,
+    paddingBottom: 16,
+    fontSize: 14,
+    lineHeight: 20,
+    flexDirection: "column",
+    display: "flex",
+    width: 58,
+    color: "rgb(226 232 240 / 1)",
+  },
+  activity_date_dots: {
+    marginTop: 8,
+    width: 1,
+    flex: 1,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: colors.blue["600"],
+  },
+});

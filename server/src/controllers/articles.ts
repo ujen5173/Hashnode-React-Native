@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { Articles } from "../db/schema/index.js";
+import User from "../db/schema/users.js";
+import { Activity, refactorActivityHelper } from "../helpers/activity.js";
 
 export type Article = {
   _id: string;
@@ -158,4 +160,66 @@ const getArticlesByTag = async (req: Request, res: Response) => {
   }
 };
 
-export { getAll, getArticlesByTag, multiple, seedArticles, single };
+const recentActivities = async (req: Request, res: Response) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({ username }).select("_id");
+
+    if (!user)
+      return res.json({
+        success: false,
+        error: "User not found",
+        data: null,
+      });
+
+    const articles = await Articles.find(
+      {
+        user: user._id,
+      },
+      "_id title userId createdAt slug"
+    ).sort({
+      createdAt: -1,
+    });
+
+    const newActivities = articles.map((e) => ({
+      _id: e._id.toString(),
+      title: e.title,
+      slug: e.slug,
+      createdAt: e.createdAt,
+      activity_type: "ARTICLE",
+    })) as Activity[];
+
+    const refactoredActivities = refactorActivityHelper([
+      ...newActivities,
+      {
+        _id: "0001",
+        title: "Joined Hashnode Clone",
+        slug: "",
+        createdAt: user?.createdAt,
+        activity_type: "JOINED",
+      },
+    ]);
+
+    return res.json({
+      data: Array.from(refactoredActivities),
+      success: true,
+      error: null,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      success: false,
+      data: null,
+      error: "Internal server error",
+    });
+  }
+};
+
+export {
+  getAll,
+  getArticlesByTag,
+  multiple,
+  recentActivities,
+  seedArticles,
+  single,
+};

@@ -5,6 +5,7 @@ import {
   getAll,
   getArticlesByTag,
   multiple,
+  recentActivities,
   seedArticles,
   single,
 } from "../controllers/articles.js";
@@ -37,6 +38,7 @@ router.get("/users/id/:userId", getUserById);
 router.get("/users/clerk/id/:userId", getCurrent);
 router.get("/users/username/:username", getUserByUsername);
 router.get("/users/articles/:userId", userArticles);
+router.get("/users/articles/recent_activities/:username", recentActivities);
 
 router.get("/tags", searchTags);
 router.get("/tags/:slug", singleTag);
