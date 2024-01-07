@@ -36,7 +36,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
   };
 
   return (
-    <View style={tw`bg-slate-100 flex-1 dark:bg-slate-900 p-4`}>
+    <View style={tw`bg-white flex-1 dark:bg-slate-900 p-4`}>
       <View style={tw`flex-row gap-2 items-center mb-3`}>
         <View>
           <Link href={`/(user)/${article.user.username}`}>

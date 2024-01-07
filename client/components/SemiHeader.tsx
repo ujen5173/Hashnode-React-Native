@@ -15,7 +15,7 @@ const SemiHeader = ({
 }) => {
   return (
     <View
-      style={tw`border-t border-b bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-slate-600 flex-row`}
+      style={tw`border-t border-b bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 flex-row`}
     >
       <ScrollView horizontal>
         {feedLinks.map((item, index) => (

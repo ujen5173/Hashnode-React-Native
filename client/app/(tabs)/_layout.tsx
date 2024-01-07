@@ -22,12 +22,8 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           headerShadowVisible: false,
-          tabBarStyle: {
-            borderColor:
-              themeValue === "dark" ? colors.slate["500"] : colors.slate["200"],
-            backgroundColor:
-              themeValue === "dark" ? colors.slate["900"] : colors.slate["100"],
-          },
+          headerStyle: tw`shadow-xl`,
+          tabBarStyle: tw`border-t border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900`,
         }}
       >
         {[
@@ -40,8 +36,8 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                      ? colors.slate["100"]
-                      : colors.slate["600"]
+                    ? colors.slate["100"]
+                    : colors.slate["600"]
                 }
               />
             ),
@@ -49,7 +45,7 @@ export default function TabLayout() {
               headerRight: () => (
                 <View style={tw`flex-row gap-2 px-4`}>
                   <TouchableOpacity
-                    activeOpacity={0.7}
+                    activeOpacity={0.9}
                     style={tw`rounded-full p-2`}
                   >
                     <Pencil
@@ -57,10 +53,7 @@ export default function TabLayout() {
                       style={tw`text-slate-700 dark:text-slate-200`}
                     />
                   </TouchableOpacity>
-                  <Link
-                    href="/notifications"
-                    style={tw`rounded-full p-2`}
-                  >
+                  <Link href="/notifications" style={tw`rounded-full p-2`}>
                     <Bell
                       size={20}
                       style={tw`text-slate-700 dark:text-slate-200`}
@@ -69,7 +62,9 @@ export default function TabLayout() {
                 </View>
               ),
               headerTitle: () => (
-                <Text style={tw`text-slate-900 dark:text-white text-base`}>
+                <Text
+                  style={tw`text-slate-900 dark:text-white text-lg font-bold`}
+                >
                   My Feed
                 </Text>
               ),
@@ -84,14 +79,16 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                      ? colors.slate["100"]
-                      : colors.slate["600"]
+                    ? colors.slate["100"]
+                    : colors.slate["600"]
                 }
               />
             ),
             headerOptions: {
               headerTitle: () => (
-                <Text style={tw`text-slate-900 dark:text-white text-base`}>
+                <Text
+                  style={tw`text-slate-900 dark:text-white text-lg font-bold`}
+                >
                   Search
                 </Text>
               ),
@@ -106,14 +103,16 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                      ? colors.slate["100"]
-                      : colors.slate["600"]
+                    ? colors.slate["100"]
+                    : colors.slate["600"]
                 }
               />
             ),
             headerOptions: {
               headerTitle: () => (
-                <Text style={tw`text-slate-900 dark:text-white text-base`}>
+                <Text
+                  style={tw`text-slate-900 dark:text-white text-lg font-bold`}
+                >
                   Bookmarks
                 </Text>
               ),
@@ -128,14 +127,16 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                      ? colors.slate["100"]
-                      : colors.slate["600"]
+                    ? colors.slate["100"]
+                    : colors.slate["600"]
                 }
               />
             ),
             headerOptions: {
               headerTitle: () => (
-                <Text style={tw`text-slate-900 dark:text-white text-base`}>
+                <Text
+                  style={tw`text-slate-900 dark:text-white text-lg font-bold`}
+                >
                   Profile
                 </Text>
               ),
@@ -148,7 +149,7 @@ export default function TabLayout() {
             options={{
               tabBarShowLabel: false,
               unmountOnBlur: true,
-              headerStyle: tw`bg-slate-100 dark:bg-slate-900`,
+              headerStyle: tw`bg-white dark:bg-slate-900`,
               ...screen.headerOptions,
               tabBarIcon: ({ focused }) =>
                 screen.icon({

@@ -25,7 +25,7 @@ const Bookmarks = () => {
   });
 
   return (
-    <View style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
+    <View style={tw`bg-white dark:bg-slate-900 flex-1`}>
       {isFetching ? (
         <View>
           {Array(7)
@@ -35,7 +35,7 @@ const Bookmarks = () => {
                 key={index}
                 style={tw`${
                   index === 2 ? "border-0" : "border-b"
-                } border-slate-400 dark:border-slate-600`}
+                } border-slate-300 dark:border-slate-600`}
               >
                 <CardLoading />
               </View>
@@ -50,7 +50,7 @@ const Bookmarks = () => {
               key={index}
               style={tw`${
                 index === (data.data ?? []).length - 1 ? "border-0" : "border-b"
-              } border-slate-400 dark:border-slate-600`}
+              } border-slate-300 dark:border-slate-600`}
             >
               <Card bookmarks={bookmarks} article={item} />
             </View>

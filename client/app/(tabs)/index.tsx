@@ -107,7 +107,7 @@ const HomePage = () => {
 
   return (
     <>
-      <View style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
+      <View style={tw`bg-white dark:bg-slate-900 flex-1`}>
         <SemiHeader
           handlePresentModalPress={handlePresentModalPress}
           feedType={feedType}
@@ -139,7 +139,7 @@ const HomePage = () => {
                   index === (data?.data ?? []).length - 1
                     ? "border-0"
                     : "border-b"
-                } border-slate-400 dark:border-slate-700`}
+                } border-slate-300 dark:border-slate-600`}
               >
                 <Card bookmarks={bookmarks} article={item} />
               </View>
@@ -151,6 +151,7 @@ const HomePage = () => {
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}
+        style={tw`border border-slate-300 dark:border-slate-600 rounded-t-xl shadow-lg`}
         snapPoints={snapPoints}
         keyboardBehavior="fillParent"
         topInset={50}

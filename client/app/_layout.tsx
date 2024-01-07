@@ -19,7 +19,7 @@ const queryClient = new QueryClient();
 
 export default function RootLayout() {
   return (
-    <View style={tw`bg-slate-100 dark:bg-slate-900 flex-1`}>
+    <View style={tw`bg-white dark:bg-slate-900 flex-1`}>
       <ClerkProvider
         publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
         tokenCache={tokenCache}

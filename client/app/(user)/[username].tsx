@@ -160,14 +160,54 @@ const UserProfile = () => {
   }, [username]);
 
   const socials: { [key: string]: JSX.Element } = {
-    twitter: <Twitter size={18} style={tw`text-black dark:text-white`} />,
-    github: <Github size={18} style={tw`text-black dark:text-white`} />,
-    website: <Globe size={18} style={tw`text-black dark:text-white`} />,
-    linkedin: <Linkedin size={18} style={tw`text-black dark:text-white`} />,
-    stackoverflow: <Layers size={18} style={tw`text-black dark:text-white`} />,
-    youtube: <Youtube size={18} style={tw`text-black dark:text-white`} />,
-    facebook: <Facebook size={18} style={tw`text-black dark:text-white`} />,
-    instagram: <Instagram size={18} style={tw`text-black dark:text-white`} />,
+    twitter: (
+      <Twitter
+        size={18}
+        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+      />
+    ),
+    github: (
+      <Github
+        size={18}
+        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+      />
+    ),
+    website: (
+      <Globe
+        size={18}
+        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+      />
+    ),
+    linkedin: (
+      <Linkedin
+        size={18}
+        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+      />
+    ),
+    stackoverflow: (
+      <Layers
+        size={18}
+        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+      />
+    ),
+    youtube: (
+      <Youtube
+        size={18}
+        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+      />
+    ),
+    facebook: (
+      <Facebook
+        size={18}
+        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+      />
+    ),
+    instagram: (
+      <Instagram
+        size={18}
+        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+      />
+    ),
   };
 
   // renders
@@ -200,6 +240,7 @@ const UserProfile = () => {
             followingCount: data?.data?.followingCount,
           }}
         />
+
         <View
           style={tw`border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg my-4`}
         >
@@ -318,7 +359,7 @@ const UserProfile = () => {
                   style={tw`border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 py-2 px-4 rounded-full`}
                 >
                   <Text
-                    style={tw`text-sm text-slate-900 dark:text-white font-medium`}
+                    style={tw`text-sm text-slate-900 dark:text-slate-700 dark:text-slate-100 font-medium`}
                   >
                     {lang}
                   </Text>
@@ -327,6 +368,7 @@ const UserProfile = () => {
             </View>
           </View>
         </View>
+
         {/* Recent activities: */}
         <View style={tw`my-4`}>
           <Text
@@ -337,7 +379,11 @@ const UserProfile = () => {
           {recent_data?.data?.map(([date, activitiesArray], index) => (
             <View style={tw`flex-row gap-2`} key={index}>
               <View style={styles.activity_date}>
-                <Text style={tw`text-center text-xs text-white`}>{date}</Text>
+                <Text
+                  style={tw`text-center text-xs text-slate-700 dark:text-slate-100`}
+                >
+                  {date}
+                </Text>
                 {activitiesArray[0]?.activity_type !== "JOINED" && (
                   <View style={styles.activity_date_dots}></View>
                 )}
@@ -365,6 +411,7 @@ const UserProfile = () => {
         index={1}
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
+        style={tw`border border-slate-300 dark:border-slate-600 rounded-t-xl shadow-lg`}
         backgroundStyle={tw`bg-slate-100 dark:bg-slate-800`}
         handleIndicatorStyle={tw`bg-slate-600 dark:bg-slate-400`}
       >
@@ -384,7 +431,9 @@ const BottomSheet = ({
   return (
     <View style={tw`flex-1 bg-slate-100 dark:bg-slate-800 p-4`}>
       <View style={tw`flex-row justify-between items-center`}>
-        <Text style={tw`text-slate-900 dark:text-white text-xl font-bold`}>
+        <Text
+          style={tw`text-slate-900 dark:text-slate-700 dark:text-slate-100 text-xl font-bold`}
+        >
           More Options
         </Text>
         <Pressable onPress={handlePresentModalClose}>
@@ -418,12 +467,17 @@ const ActivityCard: FC<Props> = ({ index, item, activityLength }) => {
     >
       <View style={tw`mb-2 flex-row items-center gap-2`}>
         {item.activity_type === "JOINED" ? (
-          // <LogonoText style="h-4 w-4 fill-secondary" />
-          <Text>H</Text>
+          <Image
+            style={tw`w-6 h-6 rounded-full`}
+            source={require("../../assets/images/icon-transparent.png")}
+            resizeMode="cover"
+          />
         ) : (
           <Pencil style={tw`text-slate-600 dark:text-slate-300`} size={16} />
         )}
-        <Text style={tw` text-white`}>
+        <Text
+          style={tw`text-base font-bold text-slate-700 dark:text-slate-100`}
+        >
           {item.activity_type === "JOINED"
             ? "Joined Hashnode"
             : "Wrote an article"}
@@ -438,10 +492,9 @@ const ActivityCard: FC<Props> = ({ index, item, activityLength }) => {
               slug: item.slug,
             },
           }}
-          style={tw`mb-2`}
         >
           <Text
-            style={tw`text-base font-bold text-slate-800 dark:text-slate-100`}
+            style={tw`text-lg font-bold text-slate-800 dark:text-slate-100`}
           >
             {item.title}
           </Text>

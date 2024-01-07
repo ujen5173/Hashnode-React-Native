@@ -85,7 +85,7 @@ const SingleArticle = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerStyle: tw`bg-slate-100 dark:bg-slate-900`,
+      headerStyle: tw`bg-white dark:bg-slate-900`,
       headerLeft: () => (
         <View style={tw`flex-row gap-2`}>
           <Pressable
@@ -152,7 +152,7 @@ const SingleArticle = () => {
           scrollY.setValue(event.nativeEvent.contentOffset.y);
         }}
         scrollEventThrottle={16}
-        style={tw`bg-slate-100 dark:bg-slate-900`}
+        style={tw`bg-white dark:bg-slate-900`}
       >
         <Image
           source={{ uri: data?.data?.cover_image }}
@@ -231,7 +231,9 @@ const SingleArticle = () => {
                 style={tw`bg-slate-300 dark:bg-slate-800 py-1 px-3 rounded-lg mb-2`}
               >
                 <Text
-                  style={tw`text-sm text-slate-900 dark:text-white font-medium`}
+                  style={[
+                    tw`text-sm text-slate-900 dark:text-white font-medium`,
+                  ]}
                 >
                   {tag}
                 </Text>
@@ -243,8 +245,10 @@ const SingleArticle = () => {
 
       <Animated.View
         style={[
-          tw`absolute bottom-0 left-0 bg-slate-300 border-t border-slate-300 dark:border-slate-600 dark:bg-slate-800 w-full px-4 pt-1 pb-4`,
-          { transform: [{ translateY: traslateY }] },
+          tw`absolute bottom-0 left-0 bg-white border-t border-slate-300 dark:border-slate-600 dark:bg-slate-800 w-full px-4 pt-1 pb-4`,
+          {
+            transform: [{ translateY: traslateY }],
+          },
         ]}
       >
         <View style={tw`flex-row gap-2`}>
@@ -282,10 +286,11 @@ const SingleArticle = () => {
 
       <BottomSheetModal
         ref={bottomSheetModalRef}
+        style={tw`border border-slate-300 dark:border-slate-600 rounded-t-xl shadow-lg`}
         index={1}
         snapPoints={snapPoints}
         backdropComponent={renderBackdrop}
-        backgroundStyle={tw`bg-slate-100 dark:bg-slate-800`}
+        backgroundStyle={tw`bg-white dark:bg-slate-800`}
         handleIndicatorStyle={tw`bg-slate-600 dark:bg-slate-400`}
       >
         <BottomSheet
@@ -307,7 +312,7 @@ const BottomSheet = ({
   handlePresentModalClose: () => void;
 }) => {
   return (
-    <View style={tw`flex-1 bg-slate-100 dark:bg-slate-800 p-4`}>
+    <View style={tw`flex-1 bg-white dark:bg-slate-800 p-4`}>
       <View style={tw`flex-row justify-between items-center`}>
         <Text style={tw`text-slate-900 dark:text-white text-xl font-bold`}>
           More Options

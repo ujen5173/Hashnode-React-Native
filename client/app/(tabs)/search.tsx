@@ -25,10 +25,10 @@ const SearchPage = () => {
   const [type, setType] = React.useState<Type>(Type.Top);
 
   return (
-    <View style={tw`bg-slate-100 px-2 dark:bg-slate-900 flex-1`}>
+    <View style={tw`bg-white px-2 dark:bg-slate-900 flex-1`}>
       <View style={tw`py-4`}>
         <View
-          style={tw`px-3 rounded-full border border-slate-200 dark:border-slate-500 mb-2 bg-slate-200 dark:bg-slate-900 flex-row items-center gap-2`}
+          style={tw`px-3 rounded-full border border-slate-200 dark:border-slate-500 mb-2 bg-slate-100 dark:bg-slate-900 flex-row items-center gap-2`}
         >
           <Search style={tw`text-slate-500 dark:text-slate-400`} size={20} />
           <TextInput

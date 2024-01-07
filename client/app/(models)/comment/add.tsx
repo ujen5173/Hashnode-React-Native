@@ -26,10 +26,11 @@ const AddComment = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerStyle: tw`bg-slate-100 dark:bg-slate-900`,
+      headerStyle: tw`bg-white dark:bg-slate-900`,
       headerTitleStyle: tw`text-slate-900 dark:text-slate-100`,
       headerLeft: () => (
         <TouchableOpacity
+          activeOpacity={0.9}
           onPress={() => {
             router.back();
           }}
@@ -42,8 +43,10 @@ const AddComment = () => {
   }, []);
 
   return (
-    <View style={tw`p-4 flex-1 bg-slate-100 dark:bg-slate-900`}>
-      <Text style={tw`text-xl mb-2 text-slate-600 dark:text-slate-100`}>
+    <View style={tw`p-4 flex-1 bg-white dark:bg-slate-900`}>
+      <Text
+        style={tw`text-xl font-bold mb-2 text-slate-600 dark:text-slate-100`}
+      >
         {title}
       </Text>
 

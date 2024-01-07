@@ -13,10 +13,11 @@ const Comment = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerStyle: tw`bg-slate-100 dark:bg-slate-900`,
+      headerStyle: tw`bg-white dark:bg-slate-900`,
       headerTitleStyle: tw`text-slate-900 dark:text-slate-100`,
       headerLeft: () => (
         <TouchableOpacity
+          activeOpacity={0.9}
           onPress={() => {
             router.back();
           }}
@@ -29,16 +30,20 @@ const Comment = () => {
   }, []);
 
   return (
-    <View style={tw`flex-1 bg-slate-100 dark:bg-slate-900`}>
+    <View style={tw`flex-1 bg-white dark:bg-slate-900`}>
       <ScrollView style={tw`flex-1 p-4`}>
-        <Text style={tw`text-xl mb-2 text-slate-600 dark:text-slate-100`}>
+        <Text
+          style={tw`text-xl font-bold mb-2 text-slate-600 dark:text-slate-100`}
+        >
           {title}
         </Text>
 
         {/* comments area */}
         <CommentCard />
         <CommentCard />
-        <CommentCard />
+        <View style={tw`mb-8`}>
+          <CommentCard />
+        </View>
       </ScrollView>
 
       {/* Footer */}
@@ -52,7 +57,7 @@ const Comment = () => {
           }}
         >
           <View
-            style={tw`rounded-input flex-row gap-2 items-center bg-slate-200 dark:bg-slate-800 px-4 py-3`}
+            style={tw`rounded-input flex-row gap-2 items-center bg-slate-100 dark:bg-slate-800 px-4 py-3`}
           >
             <MessageCircleMore
               size={20}

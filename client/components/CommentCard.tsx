@@ -7,7 +7,7 @@ import tw from "../lib/tailwind";
 const CommentCard = () => {
   return (
     <View
-      style={tw`border border-slate-300 dark:border-slate-600 rounded-md my-2`}
+      style={tw`border border-slate-300 dark:border-slate-600 rounded-xl my-2`}
     >
       <View style={tw`p-2 flex-row gap-4 justify-between`}>
         <View style={tw`flex-row gap-2 flex-1`}>
