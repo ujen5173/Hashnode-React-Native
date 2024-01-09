@@ -1,4 +1,7 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
+import Article from "../db/schema/articles.js";
+import Comment from "../db/schema/comments.js";
 import { Articles } from "../db/schema/index.js";
 import User from "../db/schema/users.js";
 import { Activity, refactorActivityHelper } from "../helpers/activity.js";
@@ -14,6 +17,7 @@ export type Article = {
   read_time: number;
   disabledComments: boolean;
   likesCount: number;
+  likes: { _id: string }[];
   commentsCount: number;
   readCount: number;
   createdAt: string;
@@ -31,29 +35,39 @@ export type Article = {
 
 const getAll = async (req: Request, res: Response) => {
   try {
-    const requestType = req.query.type;
+    const { requestType, userId } = req.query;
+
+    const requiredFields =
+      "_id title userId subtitle content createdAt tags slug cover_image cover_image_key read_time disabledComments likesCount commentsCount readCount";
+
+    let populateOptions: mongoose.PopulateOptions[] = [];
+
+    const user = await User.findOne({ _id: userId }).select("userId");
+
+    if (userId !== undefined) {
+      populateOptions.push({
+        path: "likes",
+        match: { userId: user?.userId },
+        select: "_id",
+      });
+    }
 
     let articles = [];
     if (requestType === "following") {
       // TODO: Get following users after adding following feature
-      articles = await Articles.find(
-        {},
-        "_id title userId subtitle content createdAt tags slug cover_image cover_image_key read_time disabledComments likesCount commentsCount readCount"
-      ).populate("user", "_id name username image");
-    } else if (requestType === "recent") {
-      articles = await Articles.find(
-        {},
-        "_id title userId subtitle content createdAt tags slug cover_image cover_image_key read_time disabledComments likesCount commentsCount readCount"
-      )
+      articles = await Articles.find({}, requiredFields)
         .populate("user", "_id name username image")
+        .populate(populateOptions);
+    } else if (requestType === "recent") {
+      articles = await Articles.find({}, requiredFields)
+        .populate("user", "_id name username image")
+        .populate(populateOptions)
         .sort({ createdAt: -1 });
     } else {
-      articles = await Articles.find(
-        {},
-        "_id title userId subtitle content createdAt tags slug cover_image cover_image_key read_time disabledComments likesCount commentsCount readCount"
-      )
+      articles = await Articles.find({}, requiredFields)
         .select({})
         .populate("user", "_id name username image")
+        .populate(populateOptions)
         .sort({
           likesCount: -1,
           commentsCount: -1,
@@ -215,9 +229,143 @@ const recentActivities = async (req: Request, res: Response) => {
   }
 };
 
+const like = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    const { sessionUser } = req.body;
+
+    const article = await Article.findOne({
+      slug,
+    })
+      .select("_id title likesCount")
+      .populate("user", "_id username")
+      .populate({
+        path: "likes",
+        model: "user",
+        match: {
+          _id: sessionUser,
+        },
+        select: "_id",
+      });
+
+    if (!article) {
+      return res.json({
+        success: false,
+        error: "Internal server error",
+        data: null,
+      });
+    }
+
+    if (article.likes.length > 0) {
+      await Article.findOneAndUpdate(
+        {
+          slug,
+        },
+        {
+          $inc: {
+            likesCount: -1,
+          },
+          $pull: {
+            likes: sessionUser,
+          },
+        }
+      );
+
+      return res.json({
+        success: true,
+        error: null,
+        data: "ok",
+      });
+    } else {
+      await Article.findOneAndUpdate(
+        {
+          slug,
+        },
+        {
+          $inc: {
+            likesCount: 1,
+          },
+          $push: {
+            likes: sessionUser,
+          },
+        }
+      );
+
+      return res.json({
+        success: true,
+        error: null,
+        data: "ok",
+      });
+    }
+  } catch (error) {
+    console.log({ error });
+    return res.json({
+      success: false,
+      error: "Internal server error",
+      data: null,
+    });
+  }
+};
+
+const comment = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    const { content, sessionUser, isReply, replyTo } = req.body;
+
+    const article = await Article.findOne({
+      slug,
+    }).select("_id");
+
+    if (!article) {
+      return res.json({
+        success: false,
+        error: "Internal server error",
+        data: null,
+      });
+    }
+
+    const newComment = await Comment.create({
+      article: article._id,
+      content,
+      user: sessionUser,
+      type: isReply ? "REPLY" : "COMMENT",
+      parent: isReply ? replyTo : null,
+    });
+
+    await Article.findOneAndUpdate(
+      {
+        slug,
+      },
+      {
+        $inc: {
+          commentsCount: 1,
+        },
+        $push: {
+          comments: newComment._id,
+        },
+      }
+    );
+
+    return res.json({
+      success: true,
+      error: null,
+      data: "ok",
+    });
+  } catch (error) {
+    console.log({ error });
+    return res.json({
+      success: false,
+      error: "Internal server error",
+      data: null,
+    });
+  }
+};
+
 export {
+  comment,
   getAll,
   getArticlesByTag,
+  like,
   multiple,
   recentActivities,
   seedArticles,

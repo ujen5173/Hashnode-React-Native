@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { ArrowLeft } from "lucide-react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import { Pressable, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Article } from "../(tabs)";
 import Card from "../../components/Card";
+import Icons from "../../components/Icons";
 import TagsInfoHeader from "../../components/tags/info";
+import { colors } from "../../constants/Colors";
 import { serverEndPoint } from "../../constants/url";
-import fetchData from "../../helpers/fetch";
+import { C } from "../../contexts/RootContext";
+import fetchData from "../../helpers/fetchData";
 import useBookmark from "../../hooks/useBookmark";
 import tw from "../../lib/tailwind";
 
@@ -23,6 +25,7 @@ export type Tag = {
 const TagPage = () => {
   const navigation = useNavigation();
   const bookmarks = useBookmark();
+  const { themeValue } = useContext(C);
   const { slug } = useLocalSearchParams();
 
   const url = `${serverEndPoint}/api/v1/articles/tag/${slug}`;
@@ -53,9 +56,14 @@ const TagPage = () => {
             }}
             style={tw`rounded-full p-2`}
           >
-            <ArrowLeft
+            <Icons.arrowLeft
               size={20}
-              style={tw`text-slate-700 dark:text-slate-200`}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           </Pressable>
         </View>

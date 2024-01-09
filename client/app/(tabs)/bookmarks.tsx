@@ -6,7 +6,7 @@ import { Article } from ".";
 import Card from "../../components/Card";
 import CardLoading from "../../components/CardLoading";
 import { serverEndPoint } from "../../constants/url";
-import fetchData from "../../helpers/fetch";
+import fetchData from "../../helpers/fetchData";
 import useBookmark from "../../hooks/useBookmark";
 import tw from "../../lib/tailwind";
 

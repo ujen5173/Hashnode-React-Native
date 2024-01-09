@@ -1,17 +1,13 @@
 import { Link } from "expo-router";
-import {
-  BookOpenText,
-  BookmarkMinus,
-  BookmarkPlus,
-  Heart,
-  MessageCircleMore,
-} from "lucide-react-native";
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import { Article } from "../app/(tabs)";
+import { colors } from "../constants/Colors";
+import { C } from "../contexts/RootContext";
 import formatDate from "../helpers/date";
 import storage from "../helpers/storage";
 import tw from "../lib/tailwind";
+import Icons from "./Icons";
 
 type CardProps = {
   article: Article;
@@ -19,6 +15,7 @@ type CardProps = {
 };
 
 const Card: FC<CardProps> = ({ bookmarks, article }) => {
+  const { themeValue } = useContext(C);
   const { width } = Dimensions.get("window");
   const [hasBookmark, setHasBookmark] = React.useState(
     bookmarks.includes(article._id)
@@ -96,10 +93,10 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
             </Text>
           </Link>
           <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>•</Text>
-          <View style={tw`flex-row gap-2 items-center`}>
-            <BookOpenText style={tw`text-blue-600`} size={16} />
+          <View style={tw`flex-row gap-1 items-center`}>
+            <Icons.bookOpen size={16} fill={colors.blue["600"]} />
             <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
-              {article.readCount} min read
+              {article.read_time} min read
             </Text>
           </View>
         </View>
@@ -139,21 +136,38 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
       <View style={tw`flex-row gap-4 my-4 items-center justify-between`}>
         <View style={tw`flex-row gap-4`}>
           <TouchableOpacity
-            style={tw`flex-row items-center gap-1`}
+            style={tw`flex-row items-center gap-2`}
             activeOpacity={0.7}
           >
-            <Heart style={tw`text-slate-600 dark:text-slate-400`} size={22} />
-            <Text style={tw`text-slate-600 dark:text-slate-400 text-base`}>
+            <Icons.heart
+              size={20}
+              fill={
+                (article?.likes ?? []).length > 0 ? colors.red["500"] : "none"
+              }
+              stroke={
+                (article?.likes ?? []).length > 0
+                  ? colors.red["500"]
+                  : themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
+            />
+            <Text style={tw`text-slate-600 dark:text-slate-400 text-lg`}>
               {article.likesCount}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={tw`flex-row items-center gap-1`}
+            style={tw`flex-row items-center gap-2`}
             activeOpacity={0.7}
           >
-            <MessageCircleMore
-              style={tw`text-slate-600 dark:text-slate-400`}
-              size={22}
+            <Icons.singleComment
+              size={20}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
             <Text style={tw`text-slate-600 dark:text-slate-400 text-base`}>
               {article.commentsCount}
@@ -163,18 +177,27 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
 
         <TouchableOpacity
           onPress={handleBookmark}
-          style={tw`flex-row items-center gap-1`}
+          style={tw`flex-row items-center gap-2`}
           activeOpacity={0.7}
         >
           {hasBookmark ? (
-            <BookmarkMinus
-              style={tw`text-slate-600 dark:text-slate-400`}
+            <Icons.bookmarkAdded
               size={22}
+              fill={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           ) : (
-            <BookmarkPlus
-              style={tw`text-slate-600 dark:text-slate-400`}
+            <Icons.bookmarkAdd
               size={22}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           )}
         </TouchableOpacity>

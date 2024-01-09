@@ -4,19 +4,22 @@ import {
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
-import { Search, X } from "lucide-react-native";
-import React, { forwardRef, useRef, useState } from "react";
+import React, { forwardRef, useContext, useRef, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useDebouncedCallback } from "use-debounce";
 import { Tag } from "../../app/(tabs)";
+import { colors } from "../../constants/Colors";
 import { serverEndPoint } from "../../constants/url";
-import fetchData from "../../helpers/fetch";
+import { C } from "../../contexts/RootContext";
+import fetchData from "../../helpers/fetchData";
 import tw from "../../lib/tailwind";
+import Icons from "../Icons";
 import InputComponent from "./InputComponent";
 import ReadingComponent from "./ReadingComponent";
 
 const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
   const [searchState, setSearchState] = useState(false);
+  const { themeValue } = useContext(C);
   const inputRef = useRef(null);
   const [value, setValue] = useState("");
   const [tags, setTags] = useState<Tag[]>([]);
@@ -114,7 +117,13 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
           Filters
         </Text>
         <Pressable onPress={onClose}>
-          <X size={30} style={tw`text-slate-700 dark:text-slate-200`} />
+          <Icons.times
+            size={20}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
         </Pressable>
       </View>
 
@@ -126,7 +135,15 @@ const BottomSheetBody = forwardRef<BottomSheetModal>((props, ref) => {
             Tags
           </Text>
           <View style={tw`rounded-input flex-row gap-2 items-center w-full`}>
-            <Search size={20} style={tw`text-slate-600 dark:text-slate-300`} />
+            <Icons.search
+              size={20}
+              stroke="none"
+              fill={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
+            />
             <BottomSheetTextInput
               ref={inputRef}
               onChangeText={(text) => setValue(text)}

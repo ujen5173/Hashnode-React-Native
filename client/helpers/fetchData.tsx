@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
-type FetchDataProps<T> = {
+export type FetchDataProps<T> = {
   success: boolean;
   data: T | null;
   error: string | null;
@@ -15,6 +15,7 @@ async function fetchData<T>(
       url,
       options
     );
+
     return response.data;
   } catch (error: unknown) {
     console.log({ error });

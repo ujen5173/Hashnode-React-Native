@@ -1,24 +1,16 @@
-import { ChevronRight } from "lucide-react-native";
+import { useAuth } from "@clerk/clerk-expo";
+import { router } from "expo-router";
 import React, { useContext, useState } from "react";
-import { Image, Switch, Text, View } from "react-native";
+import { Image, Pressable, Switch, Text, View } from "react-native";
+import Icons from "../../components/Icons";
 import { colors } from "../../constants/Colors";
 import { profileLinks } from "../../constants/links";
 import { C } from "../../contexts/RootContext";
 import tw from "../../lib/tailwind";
 
-const defaultUser = {
-  _id: "5f9b2a3b9d3e4a0017b6d5a0",
-  username: "ujenbasi",
-  name: "ujenbasi",
-  email: "test@example.com",
-  createdAt: "2020-10-30T16:55:31.000Z",
-  updatedAt: "2020-10-30T16:55:31.000Z",
-  image:
-    "https://yt3.ggpht.com/yti/AGOGRCoQIypIJe7Vc0UZ34foTsWUDuYU9gdg2TPVYA=s88-c-k-c0x00ffffff-no-rj",
-} as const;
-
 const Profile = () => {
   const { themeValue, user, setTheme } = useContext(C);
+  const { signOut } = useAuth();
 
   const [isEnabled, setIsEnabled] = useState(
     themeValue === "dark" ? true : false
@@ -50,7 +42,7 @@ const Profile = () => {
       {Object.entries(profileLinks).map(([key, value], index) => (
         <View
           key={index}
-          style={tw`p-2 bg-slate-100 dark:bg-slate-900 rounded-lg my-3`}
+          style={tw`p-2 border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 rounded-lg my-3`}
         >
           {value.map((link, index) => (
             <View
@@ -62,7 +54,7 @@ const Profile = () => {
               } border-slate-300 dark:border-slate-600`}
             >
               <View style={tw`flex-row gap-2 items-center`}>
-                {link.icon}
+                {link.icon(isEnabled ? "dark" : "light")}
                 <Text style={tw`text-base text-slate-600 dark:text-slate-300`}>
                   {link.label}
                 </Text>
@@ -78,9 +70,14 @@ const Profile = () => {
                     value={isEnabled}
                   />
                 ) : (
-                  <ChevronRight
-                    style={tw`text-gray-600 dark:text-gray-300`}
-                    size={22}
+                  <Icons.chevonRight
+                    size={16}
+                    fill="none"
+                    stroke={
+                      themeValue === "dark"
+                        ? colors.slate["100"]
+                        : colors.slate["600"]
+                    }
                   />
                 )}
               </View>
@@ -88,6 +85,18 @@ const Profile = () => {
           ))}
         </View>
       ))}
+      <Pressable
+        onPress={async () => {
+          await signOut();
+          router.push("/(models)/onboard");
+        }}
+        style={tw`flex-row justify-between items-center px-2 border px-4 py-3 rounded-md bg-red-500 border-red-500`}
+      >
+        <View style={tw`flex-row gap-2 items-center`}>
+          <Icons.logout size={16} fill="none" stroke={colors.slate["100"]} />
+          <Text style={tw`text-base font-bold text-white`}>Log out</Text>
+        </View>
+      </Pressable>
     </View>
   );
 };

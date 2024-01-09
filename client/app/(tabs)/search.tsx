@@ -1,4 +1,3 @@
-import { Search } from "lucide-react-native";
 import React, { useContext } from "react";
 import {
   Image,
@@ -8,6 +7,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import Icons from "../../components/Icons";
 import { colors } from "../../constants/Colors";
 import { C } from "../../contexts/RootContext";
 import tw from "../../lib/tailwind";
@@ -30,7 +30,13 @@ const SearchPage = () => {
         <View
           style={tw`px-3 rounded-full border border-slate-200 dark:border-slate-500 mb-2 bg-slate-100 dark:bg-slate-900 flex-row items-center gap-2`}
         >
-          <Search style={tw`text-slate-500 dark:text-slate-400`} size={20} />
+          <Icons.search
+            size={20}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["100"]
+            }
+          />
           <TextInput
             placeholderTextColor={
               themeValue === "dark" ? colors.slate["500"] : colors.slate["500"]

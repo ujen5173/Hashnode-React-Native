@@ -1,6 +1,5 @@
 import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
-import { useQuery } from "@tanstack/react-query";
 import React, {
   useCallback,
   useEffect,
@@ -8,20 +7,22 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import Card from "../../components/Card";
 import CardLoading from "../../components/CardLoading";
 import BottomSheetBody from "../../components/FilterModal/BottomSheetBody";
 import SemiHeader from "../../components/SemiHeader";
 import { serverEndPoint } from "../../constants/url";
-import fetchData from "../../helpers/fetch";
 import useBookmark from "../../hooks/useBookmark";
+import useFetch from "../../hooks/useFetch";
 import tw from "../../lib/tailwind";
 
 export type Article = {
   _id: string;
   title: string;
   subtitle: string;
+  likes: { _id: string }[];
   tags: string[];
   content: string;
   cover_image: string;
@@ -66,18 +67,25 @@ const HomePage = () => {
     tags: [],
     readTime: null,
   });
+
   const url = `${serverEndPoint}/api/v1/articles?type=${feedType
     .toLowerCase()
     .replace(" ", "-")}`;
 
-  const { data, isFetching, refetch } = useQuery({
-    queryKey: [feedType],
-    queryFn: async () => await fetchData<Article[]>(url),
+  const { data, isFetching, refetch } = useFetch<Article[]>({
+    queryName: ["articles", feedType],
+    url: url,
+    requireAuth: true,
+    enabled: false,
+    options: {
+      data: filters,
+    },
   });
 
   useEffect(() => {
+    console.log("useEffect called!");
     refetch();
-  }, [feedType]);
+  }, [feedType, filters]);
 
   const bookmarks = useBookmark();
   // ref

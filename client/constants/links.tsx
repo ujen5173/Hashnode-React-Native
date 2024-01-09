@@ -1,15 +1,5 @@
-import {
-  Bell,
-  Clock,
-  FileEdit,
-  HelpCircle,
-  History,
-  Newspaper,
-  PanelsTopLeft,
-  Settings,
-  UsersRound,
-} from "lucide-react-native";
-import tw from "../lib/tailwind";
+import Icons from "../components/Icons";
+import { colors } from "./Colors";
 
 enum FeedType {
   MyFeed = "My Feed",
@@ -20,42 +10,60 @@ enum FeedType {
 export const feedLinks = [
   {
     label: "My Feed",
-    icon: (feedType: FeedType) => (
-      <Newspaper
-        size={20}
-        style={tw`${
+    icon: (
+      feedType: FeedType,
+      themeValue: "light" | "dark" | null | undefined
+    ) => (
+      <Icons.newspaper
+        size={18}
+        stroke="none"
+        fill={
           feedType === FeedType.MyFeed
-            ? "text-blue-600"
-            : "text-slate-500 dark:text-slate-400"
-        }`}
+            ? colors.blue["600"]
+            : themeValue === "dark"
+            ? colors.slate["400"]
+            : colors.slate["600"]
+        }
       />
     ),
     type: FeedType.MyFeed,
   },
   {
     label: "Following",
-    icon: (feedType: FeedType) => (
-      <UsersRound
-        size={20}
-        style={tw`${
+    icon: (
+      feedType: FeedType,
+      themeValue: "light" | "dark" | null | undefined
+    ) => (
+      <Icons.users
+        size={18}
+        fill="none"
+        stroke={
           feedType === FeedType.Following
-            ? "text-blue-600"
-            : "text-slate-500 dark:text-slate-400"
-        }`}
+            ? colors.blue["600"]
+            : themeValue === "dark"
+            ? colors.slate["400"]
+            : colors.slate["600"]
+        }
       />
     ),
     type: FeedType.Following,
   },
   {
     label: "Recent",
-    icon: (feedType: FeedType) => (
-      <Clock
-        size={20}
-        style={tw`${
+    icon: (
+      feedType: FeedType,
+      themeValue: "light" | "dark" | null | undefined
+    ) => (
+      <Icons.clock
+        size={18}
+        stroke="none"
+        fill={
           feedType === FeedType.Recent
-            ? "text-blue-600"
-            : "text-slate-500 dark:text-slate-400"
-        }`}
+            ? colors.blue["600"]
+            : themeValue === "dark"
+            ? colors.slate["400"]
+            : colors.slate["600"]
+        }
       />
     ),
     type: FeedType.Recent,
@@ -65,25 +73,41 @@ export const feedLinks = [
 export const profileLinks = {
   section1: [
     {
-      icon: (
-        <PanelsTopLeft
-          style={tw`text-slate-600 dark:text-slate-300`}
-          size={20}
-        />
-      ),
+      icon: (themeValue: "light" | "dark" | null | undefined) => {
+        return (
+          <Icons.tabChevonDown
+            size={18}
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
+        );
+      },
       label: "My blogs",
       isSwitch: false,
     },
     {
-      icon: (
-        <FileEdit style={tw`text-slate-600 dark:text-slate-300`} size={20} />
+      icon: (themeValue: "light" | "dark" | null | undefined) => (
+        <Icons.paperWithPen
+          stroke="none"
+          fill={
+            themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+          }
+          size={18}
+        />
       ),
       label: "My drafts",
       isSwitch: false,
     },
     {
-      icon: (
-        <History style={tw`text-slate-600 dark:text-slate-300`} size={20} />
+      icon: (themeValue: "light" | "dark" | null | undefined) => (
+        <Icons.readingHistory
+          fill="none"
+          stroke={
+            themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+          }
+          size={18}
+        />
       ),
       label: "My reading history",
       isSwitch: false,
@@ -91,42 +115,68 @@ export const profileLinks = {
   ],
   section2: [
     {
-      icon: (
-        <PanelsTopLeft
-          style={tw`text-slate-600 dark:text-slate-300`}
-          size={20}
+      icon: (themeValue: "light" | "dark" | null | undefined) => (
+        <Icons.tab
+          size={18}
+          stroke="none"
+          fill={
+            themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+          }
         />
       ),
       label: "My profile",
       isSwitch: false,
     },
     {
-      icon: (
-        <Settings style={tw`text-slate-600 dark:text-slate-300`} size={20} />
+      icon: (themeValue: "light" | "dark" | null | undefined) => (
+        <Icons.settings
+          size={18}
+          stroke="none"
+          fill={
+            themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+          }
+        />
       ),
       label: "Settings",
       isSwitch: false,
     },
     {
-      icon: <Bell style={tw`text-slate-600 dark:text-slate-300`} size={20} />,
+      icon: (themeValue: "light" | "dark" | null | undefined) => (
+        <Icons.bell
+          size={18}
+          stroke="none"
+          fill={
+            themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+          }
+        />
+      ),
       label: "Notifications",
       isSwitch: false,
     },
   ],
   section3: [
     {
-      icon: (
-        <PanelsTopLeft
-          style={tw`text-slate-600 dark:text-slate-300`}
-          size={20}
+      icon: (themeValue: "light" | "dark" | null | undefined) => (
+        <Icons.tab
+          size={18}
+          stroke="none"
+          fill={
+            themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+          }
         />
       ),
       label: "Dark Mode",
       isSwitch: true,
     },
     {
-      icon: (
-        <HelpCircle style={tw`text-slate-600 dark:text-slate-300`} size={20} />
+      icon: (themeValue: "light" | "dark" | null | undefined) => (
+        <Icons.help
+          fill="none"
+          stroke={
+            themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+          }
+          size={18}
+        />
       ),
       label: "Support",
       isSwitch: false,

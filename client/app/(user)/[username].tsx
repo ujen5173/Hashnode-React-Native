@@ -7,24 +7,6 @@ import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typesc
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Link, router, useLocalSearchParams, useNavigation } from "expo-router";
-import {
-  ArrowLeft,
-  Calendar,
-  ChevronRight,
-  Facebook,
-  Flag,
-  Github,
-  Globe,
-  Instagram,
-  Layers,
-  Linkedin,
-  MapPin,
-  MoreVertical,
-  Pencil,
-  Twitter,
-  X,
-  Youtube,
-} from "lucide-react-native";
 import React, {
   FC,
   useCallback,
@@ -42,12 +24,13 @@ import {
   View,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import Icons from "../../components/Icons";
 import UserProfileLoading from "../../components/UserProfileLoading";
 import BasicInfo from "../../components/userProfile/BasicInfo";
 import { colors } from "../../constants/Colors";
 import { serverEndPoint } from "../../constants/url";
 import { C } from "../../contexts/RootContext";
-import fetchData from "../../helpers/fetch";
+import fetchData from "../../helpers/fetchData";
 import tw from "../../lib/tailwind";
 
 type User = {
@@ -86,7 +69,7 @@ export interface Activity {
 const UserProfile = () => {
   const { username } = useLocalSearchParams();
   const navigation = useNavigation();
-  const { user } = useContext(C);
+  const { themeValue, user } = useContext(C);
 
   const url = `${serverEndPoint}/api/v1/users/username/${username}`;
   const recent_activities_url = `${serverEndPoint}/api/v1/users/articles/recent_activities/${username}`;
@@ -100,8 +83,6 @@ const UserProfile = () => {
     queryFn: async () =>
       await fetchData<[string, Activity[]][]>(recent_activities_url),
   });
-
-  console.log({ recent_data: JSON.stringify(recent_data, null, 2) });
 
   if (!user) {
     router.push("/(models)/onboard");
@@ -133,9 +114,14 @@ const UserProfile = () => {
             }}
             style={tw`rounded-full p-2`}
           >
-            <ArrowLeft
+            <Icons.arrowLeft
               size={20}
-              style={tw`text-slate-700 dark:text-slate-200`}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           </Pressable>
         </View>
@@ -149,9 +135,14 @@ const UserProfile = () => {
               handlePresentModalPress();
             }}
           >
-            <MoreVertical
+            <Icons.moreVertical
               size={20}
-              style={tw`text-slate-700 dark:text-slate-200`}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           </TouchableOpacity>
         </View>
@@ -161,51 +152,61 @@ const UserProfile = () => {
 
   const socials: { [key: string]: JSX.Element } = {
     twitter: (
-      <Twitter
+      <Icons.twitterX
         size={18}
-        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+        fill="none"
       />
     ),
     github: (
-      <Github
+      <Icons.githubFill
         size={18}
-        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+        stroke="none"
+        fill={themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]}
       />
     ),
     website: (
-      <Globe
+      <Icons.globe
         size={18}
-        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+        stroke="none"
+        fill={themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]}
       />
     ),
     linkedin: (
-      <Linkedin
+      <Icons.linkedin
         size={18}
-        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+        stroke="none"
+        fill={themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]}
       />
     ),
     stackoverflow: (
-      <Layers
+      <Icons.stackoverflow
         size={18}
-        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+        stroke="none"
+        fill={themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]}
       />
     ),
     youtube: (
-      <Youtube
+      <Icons.youtube
         size={18}
-        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+        stroke="none"
+        fill={themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]}
       />
     ),
     facebook: (
-      <Facebook
+      <Icons.facebook
         size={18}
-        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+        stroke="none"
+        fill={themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]}
       />
     ),
     instagram: (
-      <Instagram
+      <Icons.instagram
         size={18}
-        style={tw`text-black dark:text-slate-700 dark:text-slate-100`}
+        stroke="none"
+        fill={themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]}
       />
     ),
   };
@@ -245,15 +246,28 @@ const UserProfile = () => {
           style={tw`border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg my-4`}
         >
           <View style={tw`flex-row items-center gap-2 mb-3`}>
-            <MapPin size={18} style={tw`text-slate-700 dark:text-slate-400`} />
+            <Icons.mapPin
+              size={18}
+              stroke="none"
+              fill={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
+            />
             <Text style={tw`text-base text-slate-700 dark:text-slate-400`}>
               {data?.data?.location}
             </Text>
           </View>
           <View style={tw`flex-row items-center gap-2`}>
-            <Calendar
+            <Icons.calenderWithDots
               size={18}
-              style={tw`text-slate-700 dark:text-slate-400`}
+              stroke="none"
+              fill={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
             <Text style={tw`text-base text-slate-700 dark:text-slate-400`}>
               Member since{" "}
@@ -321,9 +335,14 @@ const UserProfile = () => {
                     <Text style={tw`text-slate-700 flex-1 dark:text-slate-400`}>
                       hashnode-t3.vercel.app
                     </Text>
-                    <ChevronRight
-                      size={18}
-                      style={tw`text-slate-500 dark:text-slate-400`}
+                    <Icons.chevonRight
+                      size={16}
+                      fill="none"
+                      stroke={
+                        themeValue === "dark"
+                          ? colors.slate["100"]
+                          : colors.slate["600"]
+                      }
                     />
                   </View>
                 </View>
@@ -428,6 +447,7 @@ const BottomSheet = ({
 }: {
   handlePresentModalClose: () => void;
 }) => {
+  const { themeValue } = useContext(C);
   return (
     <View style={tw`flex-1 bg-slate-100 dark:bg-slate-800 p-4`}>
       <View style={tw`flex-row justify-between items-center`}>
@@ -437,13 +457,25 @@ const BottomSheet = ({
           More Options
         </Text>
         <Pressable onPress={handlePresentModalClose}>
-          <X size={30} style={tw`text-slate-700 dark:text-slate-200`} />
+          <Icons.times
+            size={16}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]
+            }
+          />
         </Pressable>
       </View>
 
       <View style={tw`py-2`}>
         <View style={tw`px-3 py-5 flex-row gap-4 items-center`}>
-          <Flag size={22} style={tw`text-slate-700 dark:text-slate-200`} />
+          <Icons.report
+            size={16}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]
+            }
+          />
           <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
             Report this profile
           </Text>
@@ -459,6 +491,7 @@ interface Props {
   activityLength: number;
 }
 const ActivityCard: FC<Props> = ({ index, item, activityLength }) => {
+  const { themeValue } = useContext(C);
   return (
     <View
       style={tw`${
@@ -473,7 +506,13 @@ const ActivityCard: FC<Props> = ({ index, item, activityLength }) => {
             resizeMode="cover"
           />
         ) : (
-          <Pencil style={tw`text-slate-600 dark:text-slate-300`} size={16} />
+          <Icons.pen
+            size={18}
+            fill="none"
+            stroke={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
         )}
         <Text
           style={tw`text-base font-bold text-slate-700 dark:text-slate-100`}

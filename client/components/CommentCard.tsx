@@ -1,10 +1,14 @@
-import { Heart, MoreVertical, Reply } from "lucide-react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { colors } from "../constants/Colors";
+import { C } from "../contexts/RootContext";
 import tw from "../lib/tailwind";
+import Icons from "./Icons";
 
 const CommentCard = () => {
+  const { themeValue } = useContext(C);
+
   return (
     <View
       style={tw`border border-slate-300 dark:border-slate-600 rounded-xl my-2`}
@@ -36,9 +40,14 @@ const CommentCard = () => {
 
         <View style={tw`py-2`}>
           <TouchableOpacity activeOpacity={0.9}>
-            <MoreVertical
-              style={tw`text-slate-700 dark:text-slate-400`}
+            <Icons.moreVertical
               size={20}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           </TouchableOpacity>
         </View>
@@ -53,13 +62,25 @@ const CommentCard = () => {
         <View
           style={tw`border-r border-slate-300 flex-row gap-2 dark:border-slate-600 px-4 py-2`}
         >
-          <Reply style={tw`text-slate-700 dark:text-slate-400`} size={20} />
+          <Icons.replyLeft
+            size={20}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
           <Text style={tw`text-base text-slate-700 dark:text-slate-300`}>
             Reply
           </Text>
         </View>
         <View style={tw`px-4 py-2`}>
-          <Heart style={tw`text-slate-700 dark:text-slate-400`} size={20} />
+          <Icons.heart
+            size={20}
+            fill="none"
+            stroke={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
         </View>
       </View>
     </View>

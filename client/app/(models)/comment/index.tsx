@@ -1,14 +1,17 @@
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { MessageCircleMore, X } from "lucide-react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CommentCard from "../../../components/CommentCard";
+import Icons from "../../../components/Icons";
+import { colors } from "../../../constants/Colors";
+import { C } from "../../../contexts/RootContext";
 import tw from "../../../lib/tailwind";
 
 const Comment = () => {
-  const { id, title } = useLocalSearchParams();
+  const { title, slug } = useLocalSearchParams();
   const router = useRouter();
+  const { themeValue } = useContext(C);
 
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -23,7 +26,13 @@ const Comment = () => {
           }}
           style={tw`mr-2`}
         >
-          <X style={tw`text-slate-900 dark:text-slate-100`} size={22} />
+          <Icons.times
+            size={20}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
         </TouchableOpacity>
       ),
     });
@@ -52,16 +61,21 @@ const Comment = () => {
           onPress={() => {
             router.push({
               pathname: "/(models)/comment/add",
-              params: { id, title },
+              params: { slug, title },
             });
           }}
         >
           <View
             style={tw`rounded-input flex-row gap-2 items-center bg-slate-100 dark:bg-slate-800 px-4 py-3`}
           >
-            <MessageCircleMore
+            <Icons.singleComment
               size={20}
-              style={tw`text-slate-700 dark:text-slate-400`}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
             <Text style={tw`text-base text-slate-700 dark:text-slate-400`}>
               Write a comment

@@ -1,16 +1,18 @@
 import { useAuth } from "@clerk/clerk-expo";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigation } from "expo-router";
-import { ArrowLeft } from "lucide-react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import Icons from "../components/Icons";
 import CommentCard from "../components/notifications/CommentCard";
 import FollowCard from "../components/notifications/FollowCard";
 import LikeCard from "../components/notifications/LikeCard";
 import NotificationNavigation from "../components/notifications/Navigation";
+import { colors } from "../constants/Colors";
 import { serverEndPoint } from "../constants/url";
-import fetchData from "../helpers/fetch";
+import { C } from "../contexts/RootContext";
+import fetchData from "../helpers/fetchData";
 import tw from "../lib/tailwind";
 
 export type Notification = {
@@ -31,6 +33,7 @@ export type Notification = {
 const Notifications = () => {
   const navigation = useNavigation();
   const { userId } = useAuth();
+  const { themeValue } = useContext(C);
   const [activeTab, setActiveTab] = React.useState(0);
 
   const { data } = useQuery({
@@ -61,9 +64,14 @@ const Notifications = () => {
             }}
             style={tw`rounded-full p-2`}
           >
-            <ArrowLeft
+            <Icons.arrowLeft
               size={20}
-              style={tw`text-slate-700 dark:text-slate-200`}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           </Pressable>
         </View>

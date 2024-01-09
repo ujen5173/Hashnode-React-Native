@@ -11,7 +11,7 @@ const comments = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: Articles,
     },
-    body: {
+    content: {
       type: String,
       required: true,
     },

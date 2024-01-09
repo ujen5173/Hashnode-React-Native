@@ -1,19 +1,29 @@
-import { UserCheck } from "lucide-react-native";
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Image, Text, View } from "react-native";
 import { Notification } from "../../app/notifications";
+import { colors } from "../../constants/Colors";
+import { C } from "../../contexts/RootContext";
 import tw from "../../lib/tailwind";
+import Icons from "../Icons";
 
 type FollowCardProps = {
   card: Notification;
 };
+
 const FollowCard: FC<FollowCardProps> = ({ card }) => {
+  const { themeValue } = useContext(C);
   return (
     <View
       style={tw`p-4 border-b border-slate-300 dark:border-slate-600 flex-row gap-4`}
     >
       <View style={tw`w-12 h-12 items-center justify-center`}>
-        <UserCheck size={30} style={tw`text-blue-600`} />
+        <Icons.userAdd
+          size={16}
+          fill="none"
+          stroke={
+            themeValue === "dark" ? colors.slate["100"] : colors.slate["600"]
+          }
+        />
       </View>
 
       <View style={tw`flex-1`}>

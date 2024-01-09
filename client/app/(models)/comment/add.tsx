@@ -1,17 +1,26 @@
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { Send, X } from "lucide-react-native";
-import React, { useContext, useEffect, useLayoutEffect, useRef } from "react";
-import { Text, View } from "react-native";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { Pressable, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import Icons from "../../../components/Icons";
 import { colors } from "../../../constants/Colors";
+import { serverEndPoint } from "../../../constants/url";
 import { C } from "../../../contexts/RootContext";
+import fetchData from "../../../helpers/fetchData";
 import tw from "../../../lib/tailwind";
 
 const AddComment = () => {
-  const { themeValue } = useContext(C);
-  const { title } = useLocalSearchParams();
+  const { user, themeValue } = useContext(C);
+  const { title, slug } = useLocalSearchParams();
   const navigation = useNavigation();
   const router = useRouter();
+  const [commentContent, setCommentContent] = useState("");
   const textareaRef = useRef<TextInput>(null);
 
   useEffect(() => {
@@ -36,11 +45,38 @@ const AddComment = () => {
           }}
           style={tw`mr-2`}
         >
-          <X style={tw`text-slate-900 dark:text-slate-100`} size={22} />
+          <Icons.times
+            size={20}
+            fill="none"
+            stroke={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
         </TouchableOpacity>
       ),
     });
   }, []);
+
+  const handleComment = async () => {
+    try {
+      if (!commentContent) return;
+
+      const url = `${serverEndPoint}/api/v1/articles/comment/${slug}`;
+
+      const res = await fetchData(url, {
+        method: "PUT",
+        data: {
+          content: commentContent,
+          sessionUser: user?._id,
+          isReply: false,
+          replyTo: null,
+        },
+      });
+      console.log({ res });
+    } catch (error) {
+      console.log({ error });
+    }
+  };
 
   return (
     <View style={tw`p-4 flex-1 bg-white dark:bg-slate-900`}>
@@ -53,26 +89,28 @@ const AddComment = () => {
       <TextInput
         numberOfLines={10}
         multiline
+        value={commentContent}
+        onChangeText={setCommentContent}
+        maxLength={255}
         ref={textareaRef}
         placeholder="Share your thoughts..."
-        onChange={(e) => {}}
         placeholderTextColor={
           themeValue === "dark" ? colors.slate["300"] : colors.slate["600"]
         }
         style={[
-          tw`border border-slate-300 text-lg mb-4 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg`,
+          tw`border border-slate-300 text-lg mb-4 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg text-slate-900 dark:text-slate-100`,
           { textAlignVertical: "top" },
         ]}
       />
 
       <View style={tw``}>
-        <TouchableOpacity
-          activeOpacity={0.9}
+        <Pressable
+          onPress={handleComment}
           style={tw`w-full flex-row items-center gap-2 justify-center border border-blue-600 px-4 py-2 rounded-full`}
         >
           <Text style={tw`text-lg font-bold text-blue-600`}>Post</Text>
-          <Send style={tw`text-blue-600`} size={20} />
-        </TouchableOpacity>
+          <Icons.send style={tw`text-blue-600`} size={20} />
+        </Pressable>
       </View>
     </View>
   );

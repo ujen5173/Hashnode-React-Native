@@ -1,8 +1,11 @@
-import { Filter } from "lucide-react-native";
+import { useContext } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { FeedType } from "../app/(tabs)";
+import { colors } from "../constants/Colors";
 import { feedLinks } from "../constants/links";
+import { C } from "../contexts/RootContext";
 import tw from "../lib/tailwind";
+import Icons from "./Icons";
 
 const SemiHeader = ({
   feedType,
@@ -13,6 +16,7 @@ const SemiHeader = ({
   setFeedType: React.Dispatch<React.SetStateAction<FeedType>>;
   handlePresentModalPress: () => void;
 }) => {
+  const { themeValue } = useContext(C);
   return (
     <View
       style={tw`border-t border-b bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 flex-row`}
@@ -28,7 +32,7 @@ const SemiHeader = ({
               setFeedType(item.type);
             }}
           >
-            {item.icon(feedType)}
+            {item.icon(feedType, themeValue)}
             <Text
               style={tw`${
                 feedType === item.type
@@ -46,7 +50,13 @@ const SemiHeader = ({
         onPress={handlePresentModalPress}
         style={tw`px-4 border-l flex-row items-center border-slate-300 dark:border-slate-600`}
       >
-        <Filter size={20} style={tw`text-slate-500 dark:text-slate-200`} />
+        <Icons.filter
+          size={20}
+          stroke="none"
+          fill={
+            themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+          }
+        />
       </Pressable>
     </View>
   );

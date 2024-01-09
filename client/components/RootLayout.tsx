@@ -4,7 +4,7 @@ import { useContext, useEffect, useLayoutEffect } from "react";
 import tw, { useDeviceContext } from "twrnc";
 import { serverEndPoint } from "../constants/url";
 import { C, User } from "../contexts/RootContext";
-import fetchData from "../helpers/fetch";
+import fetchData from "../helpers/fetchData";
 import useWarmUpBrowser from "../hooks/useWarmUpBrowser";
 
 const RootLayoutNav = () => {
@@ -41,11 +41,7 @@ const RootLayoutNav = () => {
       if (!isSignedIn) {
         router.push("/onboard");
       } else {
-        router.push({
-          pathname: "/(models)/comment/add",
-          params: { id: "1", title: "hi" },
-        });
-        // router.push("/(tabs)");
+        router.push("/(tabs)");
       }
     }
   }, [isLoaded, isSignedIn]);

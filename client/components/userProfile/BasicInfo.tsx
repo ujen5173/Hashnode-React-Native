@@ -1,8 +1,10 @@
-import { Plus, Share } from "lucide-react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { colors } from "../../constants/Colors";
+import { C } from "../../contexts/RootContext";
 import tw from "../../lib/tailwind";
+import Icons from "../Icons";
 
 const BasicInfo = ({
   data,
@@ -15,6 +17,8 @@ const BasicInfo = ({
     followingCount?: number;
   };
 }) => {
+  const { themeValue } = useContext(C);
+
   return (
     <View style={tw`flex-col items-center`}>
       <Image
@@ -56,9 +60,9 @@ const BasicInfo = ({
         <View style={tw`flex-1`}>
           <TouchableOpacity
             activeOpacity={0.9}
-            style={tw`bg-blue-600 border border-blue-600 rounded-full py-2 px-6 flex-row items-center justify-center`}
+            style={tw`bg-blue-600 gap-1 border border-blue-600 rounded-full py-2 px-6 flex-row items-center justify-center`}
           >
-            <Plus size={18} style={tw`text-slate-100 mr-2`} />
+            <Icons.plus size={16} stroke="none" fill={"#fff"} />
             <Text style={tw`text-white text-base`}>Follow</Text>
           </TouchableOpacity>
         </View>
@@ -66,9 +70,10 @@ const BasicInfo = ({
         <View style={tw`flex-1`}>
           <TouchableOpacity
             activeOpacity={0.9}
-            style={tw`border border-blue-600 rounded-full py-2 px-6 flex-row items-center justify-center`}
+            style={tw`border border-blue-600 rounded-full py-2 px-6 gap-2 flex-row items-center justify-center`}
           >
-            <Share size={18} style={tw`text-blue-600 mr-2`} />
+            {/* <Share size={18} style={tw`text-blue-600 mr-2`} /> */}
+            <Icons.uploadBox size={18} stroke="none" fill={colors.blue[600]} />
             <Text style={tw`text-blue-600 text-base`}>Share Profile</Text>
           </TouchableOpacity>
         </View>

@@ -1,15 +1,9 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Link, Tabs } from "expo-router";
-import {
-  Bell,
-  Bookmark,
-  CircleUserRound,
-  Home,
-  Pencil,
-  Search,
-} from "lucide-react-native";
+import { Home } from "lucide-react-native";
 import { useContext } from "react";
 import { StatusBar, Text, TouchableOpacity, View } from "react-native";
+import Icons from "../../components/Icons";
 import { colors } from "../../constants/Colors";
 import { C } from "../../contexts/RootContext";
 import tw from "../../lib/tailwind";
@@ -36,7 +30,7 @@ export default function TabLayout() {
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                    ? colors.slate["100"]
+                    ? colors.slate["400"]
                     : colors.slate["600"]
                 }
               />
@@ -48,15 +42,25 @@ export default function TabLayout() {
                     activeOpacity={0.9}
                     style={tw`rounded-full p-2`}
                   >
-                    <Pencil
+                    <Icons.pen
                       size={20}
-                      style={tw`text-slate-700 dark:text-slate-200`}
+                      stroke="none"
+                      fill={
+                        themeValue === "dark"
+                          ? colors.slate["400"]
+                          : colors.slate["600"]
+                      }
                     />
                   </TouchableOpacity>
                   <Link href="/notifications" style={tw`rounded-full p-2`}>
-                    <Bell
+                    <Icons.bell
                       size={20}
-                      style={tw`text-slate-700 dark:text-slate-200`}
+                      stroke="none"
+                      fill={
+                        themeValue === "dark"
+                          ? colors.slate["400"]
+                          : colors.slate["600"]
+                      }
                     />
                   </Link>
                 </View>
@@ -73,13 +77,14 @@ export default function TabLayout() {
           {
             label: "search",
             icon: ({ focused }: { focused: boolean }) => (
-              <Search
+              <Icons.search
                 size={22}
-                color={
+                stroke="none"
+                fill={
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                    ? colors.slate["100"]
+                    ? colors.slate["400"]
                     : colors.slate["600"]
                 }
               />
@@ -97,13 +102,14 @@ export default function TabLayout() {
           {
             label: "bookmarks",
             icon: ({ focused }: { focused: boolean }) => (
-              <Bookmark
+              <Icons.bookmarks
                 size={22}
-                color={
+                fill="none"
+                stroke={
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                    ? colors.slate["100"]
+                    ? colors.slate["400"]
                     : colors.slate["600"]
                 }
               />
@@ -121,13 +127,14 @@ export default function TabLayout() {
           {
             label: "profile",
             icon: ({ focused }: { focused: boolean }) => (
-              <CircleUserRound
+              <Icons.userProfile
                 size={22}
-                color={
+                stroke="none"
+                fill={
                   focused
                     ? colors.blue["600"]
                     : themeValue === "dark"
-                    ? colors.slate["100"]
+                    ? colors.slate["400"]
                     : colors.slate["600"]
                 }
               />

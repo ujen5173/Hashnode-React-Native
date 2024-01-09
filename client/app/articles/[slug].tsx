@@ -6,20 +6,13 @@ import {
 import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocalSearchParams, useNavigation } from "expo-router";
-import {
-  ArrowLeft,
-  BookOpen,
-  Bookmark,
-  Flag,
-  Heart,
-  List,
-  MessageCircleMore,
-  MoreVertical,
-  PlusCircle,
-  Share2,
-  X,
-} from "lucide-react-native";
-import React, { useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 import {
   Animated,
   Image,
@@ -32,12 +25,18 @@ import {
 } from "react-native";
 import { Article } from "../(tabs)";
 import ArticlePageLoading from "../../components/ArticlePageLoading";
+import Icons from "../../components/Icons";
+import { colors } from "../../constants/Colors";
 import { clientEndPoint, serverEndPoint } from "../../constants/url";
+import { C } from "../../contexts/RootContext";
 import formatDate from "../../helpers/date";
-import fetchData from "../../helpers/fetch";
+import fetchData from "../../helpers/fetchData";
+import useBookmark from "../../hooks/useBookmark";
 import tw from "../../lib/tailwind";
 
 const SingleArticle = () => {
+  const { themeValue, user } = useContext(C);
+  const bookmarks = useBookmark();
   const scrollY = new Animated.Value(0);
   const scrollYClamped = Animated.diffClamp(scrollY, 0, 60);
   const traslateY = scrollYClamped.interpolate({
@@ -94,9 +93,14 @@ const SingleArticle = () => {
             }}
             style={tw`rounded-full p-2`}
           >
-            <ArrowLeft
+            <Icons.arrowLeft
               size={20}
-              style={tw`text-slate-700 dark:text-slate-200`}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           </Pressable>
         </View>
@@ -108,7 +112,15 @@ const SingleArticle = () => {
             style={tw`p-2 rounded-full`}
             onPress={() => shareListing(data?.data?.title)}
           >
-            <Share2 size={20} style={tw`text-slate-700 dark:text-slate-200`} />
+            <Icons.share
+              size={20}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
+            />
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
@@ -117,9 +129,14 @@ const SingleArticle = () => {
               handlePresentModalPress();
             }}
           >
-            <MoreVertical
+            <Icons.moreVertical
               size={20}
-              style={tw`text-slate-700 dark:text-slate-200`}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           </TouchableOpacity>
         </View>
@@ -209,9 +226,14 @@ const SingleArticle = () => {
               •
             </Text>
             <View style={tw`flex-row gap-2 items-center`}>
-              <BookOpen
+              <Icons.bookOpen
                 size={18}
-                style={tw`text-slate-600 dark:text-slate-400`}
+                stroke="none"
+                fill={
+                  themeValue === "dark"
+                    ? colors.slate["400"]
+                    : colors.slate["600"]
+                }
               />
 
               <Text style={tw`text-base text-slate-600 dark:text-slate-400`}>
@@ -253,33 +275,91 @@ const SingleArticle = () => {
       >
         <View style={tw`flex-row gap-2`}>
           <Pressable style={tw`px-4 py-2 flex-1`}>
-            <List size={22} style={tw`text-slate-700 dark:text-slate-200`} />
+            <Icons.bulletList
+              size={22}
+              stroke="none"
+              fill={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
+            />
           </Pressable>
-          <Pressable style={tw`px-4 py-2 flex-1`}>
-            <Heart size={22} style={tw`text-slate-700 dark:text-slate-200`} />
+          <Pressable
+            style={tw`px-4 py-2 flex-1`}
+            onPress={async () => {
+              try {
+                const url = `${serverEndPoint}/api/v1/articles/like/${data?.data?.slug}`;
+                await fetchData(url, {
+                  method: "PUT",
+                  data: {
+                    sessionUser: user?._id,
+                  },
+                });
+              } catch (error) {
+                console.log({ error });
+              }
+            }}
+          >
+            <Icons.heart
+              size={20}
+              fill={
+                (data?.data?.likes ?? []).length > 0
+                  ? colors.red["500"]
+                  : "none"
+              }
+              stroke={
+                (data?.data?.likes ?? []).length > 0
+                  ? colors.red["500"]
+                  : themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
+            />
           </Pressable>
           <Link
             href={{
               pathname: `/(models)/comment/`,
               params: {
-                id: data?.data?._id || "",
                 title: data?.data?.title || "",
+                slug: data?.data?.slug || "",
               },
             }}
             asChild
           >
             <Pressable style={tw`px-4 py-2 flex-1`}>
-              <MessageCircleMore
+              <Icons.singleComment
                 size={22}
-                style={tw`text-slate-700 dark:text-slate-200`}
+                fill="none"
+                stroke={
+                  themeValue === "dark"
+                    ? colors.slate["400"]
+                    : colors.slate["600"]
+                }
               />
             </Pressable>
           </Link>
           <Pressable style={tw`px-4 py-2 flex-1`}>
-            <Bookmark
-              size={22}
-              style={tw`text-slate-700 dark:text-slate-200`}
-            />
+            {bookmarks.includes(data?.data?._id ?? "") ? (
+              <Icons.bookmarkAdded
+                size={22}
+                fill={
+                  themeValue === "dark"
+                    ? colors.slate["400"]
+                    : colors.slate["600"]
+                }
+              />
+            ) : (
+              <Icons.bookmarkAdd
+                size={22}
+                fill="none"
+                stroke={
+                  themeValue === "dark"
+                    ? colors.slate["400"]
+                    : colors.slate["600"]
+                }
+              />
+            )}
           </Pressable>
         </View>
       </Animated.View>
@@ -311,6 +391,7 @@ const BottomSheet = ({
   name?: string;
   handlePresentModalClose: () => void;
 }) => {
+  const { themeValue } = useContext(C);
   return (
     <View style={tw`flex-1 bg-white dark:bg-slate-800 p-4`}>
       <View style={tw`flex-row justify-between items-center`}>
@@ -318,7 +399,13 @@ const BottomSheet = ({
           More Options
         </Text>
         <Pressable onPress={handlePresentModalClose}>
-          <X size={30} style={tw`text-slate-700 dark:text-slate-200`} />
+          <Icons.times
+            size={20}
+            stroke={"none"}
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
         </Pressable>
       </View>
 
@@ -326,9 +413,12 @@ const BottomSheet = ({
         <View
           style={tw`px-3 py-5 border-b border-slate-300 dark:border-slate-600 flex-row gap-4 items-center`}
         >
-          <PlusCircle
-            size={22}
-            style={tw`text-slate-700 dark:text-slate-200`}
+          <Icons.plus
+            size={20}
+            stroke={"none"}
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
           />
           <View style={tw`flex-row items-center gap-1`}>
             <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
@@ -345,13 +435,25 @@ const BottomSheet = ({
         <View
           style={tw`px-3 py-5 border-b border-slate-300 dark:border-slate-600 flex-row gap-4 items-center`}
         >
-          <Heart size={22} style={tw`text-slate-700 dark:text-slate-200`} />
+          <Icons.heart
+            size={20}
+            fill={"none"}
+            stroke={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
           <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
             Show Likes
           </Text>
         </View>
         <View style={tw`px-3 py-5 flex-row gap-4 items-center`}>
-          <Flag size={22} style={tw`text-slate-700 dark:text-slate-200`} />
+          <Icons.report
+            size={20}
+            stroke={"none"}
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
           <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
             Report
           </Text>

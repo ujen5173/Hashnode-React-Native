@@ -1,23 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import {
-  ArrowLeft,
-  Facebook,
-  Github,
-  Globe,
-  Instagram,
-  Layers,
-  Linkedin,
-  Plus,
-  Twitter,
-  Youtube,
-} from "lucide-react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import { Linking, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import DevCard from "../../components/DevCard";
+import Icons from "../../components/Icons";
+import { colors } from "../../constants/Colors";
 import { serverEndPoint } from "../../constants/url";
-import fetchData from "../../helpers/fetch";
+import { C } from "../../contexts/RootContext";
+import fetchData from "../../helpers/fetchData";
 import tw from "../../lib/tailwind";
 
 type User = {
@@ -41,6 +32,7 @@ type User = {
 };
 
 const DeveloperProfile = () => {
+  const { themeValue } = useContext(C);
   const navigation = useNavigation();
   const { userId } = useLocalSearchParams();
   const url = `${serverEndPoint}/api/v1/users/articles/${userId}`;
@@ -57,14 +49,78 @@ const DeveloperProfile = () => {
   });
 
   const socials: { [key: string]: JSX.Element } = {
-    twitter: <Twitter size={18} style={tw`text-black dark:text-white`} />,
-    github: <Github size={18} style={tw`text-black dark:text-white`} />,
-    website: <Globe size={18} style={tw`text-black dark:text-white`} />,
-    linkedin: <Linkedin size={18} style={tw`text-black dark:text-white`} />,
-    stackoverflow: <Layers size={18} style={tw`text-black dark:text-white`} />,
-    youtube: <Youtube size={18} style={tw`text-black dark:text-white`} />,
-    facebook: <Facebook size={18} style={tw`text-black dark:text-white`} />,
-    instagram: <Instagram size={18} style={tw`text-black dark:text-white`} />,
+    twitter: (
+      <Icons.twitter
+        size={20}
+        fill="none"
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+      />
+    ),
+    github: (
+      <Icons.githubFill
+        size={20}
+        fill="none"
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+      />
+    ),
+    website: (
+      <Icons.website
+        size={20}
+        fill="none"
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+      />
+    ),
+    linkedin: (
+      <Icons.linkedin
+        size={20}
+        fill="none"
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+      />
+    ),
+    stackoverflow: (
+      <Icons.stackoverflow
+        size={20}
+        fill="none"
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+      />
+    ),
+    youtube: (
+      <Icons.youtube
+        size={20}
+        fill="none"
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+      />
+    ),
+    facebook: (
+      <Icons.facebook
+        size={20}
+        fill="none"
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+      />
+    ),
+    instagram: (
+      <Icons.instagram
+        size={20}
+        fill="none"
+        stroke={
+          themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+        }
+      />
+    ),
   };
 
   useLayoutEffect(() => {
@@ -78,9 +134,14 @@ const DeveloperProfile = () => {
             }}
             style={tw`rounded-full p-2`}
           >
-            <ArrowLeft
+            <Icons.arrowLeft
               size={20}
-              style={tw`text-slate-700 dark:text-slate-200`}
+              fill="none"
+              stroke={
+                themeValue === "dark"
+                  ? colors.slate["400"]
+                  : colors.slate["600"]
+              }
             />
           </Pressable>
         </View>
@@ -100,6 +161,7 @@ const DeveloperProfile = () => {
         >
           {userData?.data?.name}'s Blog
         </Text>
+
         <View style={tw`flex-row gap-2 items-center mb-4`}>
           {userData?.data?.social &&
             Object.entries(userData?.data?.social).map(([key, value]) => {
@@ -118,12 +180,20 @@ const DeveloperProfile = () => {
               );
             })}
         </View>
+
         <Pressable
           style={tw`px-4 py-2 rounded-full border mb-2 border-blue-600 flex-row gap-2`}
         >
-          <Plus size={20} style={tw`text-blue-600`} />
+          <Icons.plus
+            size={20}
+            fill="none"
+            stroke={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
           <Text style={tw`text-base text-blue-600`}>Follow</Text>
         </Pressable>
+
         <Text style={tw`text-slate-800 dark:text-slate-300 text-lg font-bold`}>
           {Intl.NumberFormat("en-US", { notation: "compact" }).format(
             userData?.data?.followersCount ?? 0

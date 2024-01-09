@@ -10,6 +10,11 @@ const articles = new mongoose.Schema(
       type: String,
       required: true,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     cover_image: {
       type: String,
       required: false,
@@ -57,15 +62,23 @@ const articles = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    slug: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
     commentsCount: {
-      type: String,
+      type: Number,
       required: false,
+      default: 0,
     },
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "comment",
+      },
+    ],
     readCount: {
       type: Number,
       default: 0,

@@ -1,14 +1,10 @@
-import {
-  AtSign,
-  Bell,
-  FileText,
-  Heart,
-  MessageCircle,
-} from "lucide-react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Pressable, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { colors } from "../../constants/Colors";
+import { C } from "../../contexts/RootContext";
 import tw from "../../lib/tailwind";
+import Icons from "../Icons";
 
 const NotificationNavigation = ({
   activeTab,
@@ -17,68 +13,84 @@ const NotificationNavigation = ({
   activeTab: number;
   setActiveTab: React.Dispatch<React.SetStateAction<number>>;
 }) => {
+  const { themeValue } = useContext(C);
   const options = [
     {
-      icon: (activeTab: number, index: number) => (
-        <Bell
+      icon: (activeTab: boolean) => (
+        <Icons.bell
           size={20}
-          style={tw`${
-            activeTab === index
-              ? "text-blue-600"
-              : "text-slate-600 dark:text-slate-400"
-          } `}
+          stroke="none"
+          fill={
+            activeTab
+              ? colors.blue["600"]
+              : themeValue === "dark"
+              ? colors.slate["400"]
+              : colors.slate["600"]
+          }
         />
       ),
       label: "All",
     },
     {
-      icon: (activeTab: number, index: number) => (
-        <MessageCircle
+      icon: (activeTab: boolean) => (
+        <Icons.singleComment
+          fill="none"
           size={20}
-          style={tw`${
-            activeTab === index
-              ? "text-blue-600"
-              : "text-slate-600 dark:text-slate-400"
-          } `}
+          stroke={
+            activeTab
+              ? colors.blue["600"]
+              : themeValue === "dark"
+              ? colors.slate["400"]
+              : colors.slate["600"]
+          }
         />
       ),
       label: "Comments",
     },
     {
-      icon: (activeTab: number, index: number) => (
-        <Heart
+      icon: (activeTab: boolean) => (
+        <Icons.heart
           size={20}
-          style={tw`${
-            activeTab === index
-              ? "text-blue-600"
-              : "text-slate-600 dark:text-slate-400"
-          } `}
+          fill="none"
+          stroke={
+            activeTab
+              ? colors.blue["600"]
+              : themeValue === "dark"
+              ? colors.slate["400"]
+              : colors.slate["600"]
+          }
         />
       ),
       label: "Likes",
     },
     {
-      icon: (activeTab: number, index: number) => (
-        <AtSign
+      icon: (activeTab: boolean) => (
+        <Icons.atSign
           size={20}
-          style={tw`${
-            activeTab === index
-              ? "text-blue-600"
-              : "text-slate-600 dark:text-slate-400"
-          } `}
+          fill="none"
+          stroke={
+            activeTab
+              ? colors.blue["600"]
+              : themeValue === "dark"
+              ? colors.slate["400"]
+              : colors.slate["600"]
+          }
         />
       ),
       label: "Mentions",
     },
     {
-      icon: (activeTab: number, index: number) => (
-        <FileText
+      icon: (activeTab: boolean) => (
+        <Icons.document
           size={20}
-          style={tw`${
-            activeTab === index
-              ? "text-blue-600"
-              : "text-slate-600 dark:text-slate-400"
-          } `}
+          stroke="none"
+          fill={
+            activeTab
+              ? colors.blue["600"]
+              : themeValue === "dark"
+              ? colors.slate["400"]
+              : colors.slate["600"]
+          }
         />
       ),
       label: "Articles",
@@ -96,12 +108,10 @@ const NotificationNavigation = ({
             onPress={() => setActiveTab(index)}
             key={index}
             style={tw`w-28 flex-row items-center justify-center px-2 py-4 mx-2 border-b-[3px] ${
-              index === activeTab
-                ? "border-blue-300 dark:border-blue-600"
-                : "border-transparent"
+              index === activeTab ? "border-blue-600" : "border-transparent"
             }`}
           >
-            {option.icon(activeTab, index)}
+            {option.icon(activeTab === index)}
             <Text
               style={tw`text-base font-bold  ${
                 index === activeTab
