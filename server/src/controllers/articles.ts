@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import Article from "../db/schema/articles.js";
-import Comment from "../db/schema/comments.js";
 import { Articles } from "../db/schema/index.js";
 import User from "../db/schema/users.js";
 import { Activity, refactorActivityHelper } from "../helpers/activity.js";
@@ -307,62 +306,7 @@ const like = async (req: Request, res: Response) => {
   }
 };
 
-const comment = async (req: Request, res: Response) => {
-  try {
-    const { slug } = req.params;
-    const { content, sessionUser, isReply, replyTo } = req.body;
-
-    const article = await Article.findOne({
-      slug,
-    }).select("_id");
-
-    if (!article) {
-      return res.json({
-        success: false,
-        error: "Internal server error",
-        data: null,
-      });
-    }
-
-    const newComment = await Comment.create({
-      article: article._id,
-      content,
-      user: sessionUser,
-      type: isReply ? "REPLY" : "COMMENT",
-      parent: isReply ? replyTo : null,
-    });
-
-    await Article.findOneAndUpdate(
-      {
-        slug,
-      },
-      {
-        $inc: {
-          commentsCount: 1,
-        },
-        $push: {
-          comments: newComment._id,
-        },
-      }
-    );
-
-    return res.json({
-      success: true,
-      error: null,
-      data: "ok",
-    });
-  } catch (error) {
-    console.log({ error });
-    return res.json({
-      success: false,
-      error: "Internal server error",
-      data: null,
-    });
-  }
-};
-
 export {
-  comment,
   getAll,
   getArticlesByTag,
   like,

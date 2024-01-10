@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { Articles } from "./index.js";
 
 const comments = new mongoose.Schema(
   {
@@ -9,7 +8,7 @@ const comments = new mongoose.Schema(
     },
     article: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: Articles,
+      ref: "article",
     },
     content: {
       type: String,
@@ -18,6 +17,10 @@ const comments = new mongoose.Schema(
     likesCount: {
       type: Number,
       default: 0,
+    },
+    likes: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "user",
     },
     type: {
       type: String,

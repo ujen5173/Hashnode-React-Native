@@ -1,7 +1,6 @@
 import bodyParser from "body-parser";
 import express from "express";
 import {
-  comment,
   getAll,
   getArticlesByTag,
   like,
@@ -18,6 +17,5 @@ router.post("/multiple", bodyParser.json(), multiple);
 router.post("/seed", bodyParser.json(), seedArticles);
 router.get("/:slug", single);
 router.put("/like/:slug", bodyParser.json(), like);
-router.put("/comment/:slug", bodyParser.json(), comment);
 
 export default router;
