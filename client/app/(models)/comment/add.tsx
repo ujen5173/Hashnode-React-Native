@@ -47,8 +47,8 @@ const AddComment = () => {
         >
           <Icons.times
             size={20}
-            fill="none"
-            stroke={
+            stroke="none"
+            fill={
               themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
             }
           />
@@ -61,18 +61,21 @@ const AddComment = () => {
     try {
       if (!commentContent) return;
 
-      const url = `${serverEndPoint}/api/v1/articles/comment/${slug}`;
+      const url = `${serverEndPoint}/api/v1/comment/${slug}?userId=${user?._id}`;
 
       const res = await fetchData(url, {
-        method: "PUT",
+        method: "POST",
         data: {
           content: commentContent,
-          sessionUser: user?._id,
-          isReply: false,
-          replyTo: null,
+          type: "COMMENT",
+          parent: null,
         },
       });
-      console.log({ res });
+
+      if (res.success) {
+        // TODO: show data immediately without refreshing in comments page
+        router.back();
+      }
     } catch (error) {
       console.log({ error });
     }
@@ -109,7 +112,7 @@ const AddComment = () => {
           style={tw`w-full flex-row items-center gap-2 justify-center border border-blue-600 px-4 py-2 rounded-full`}
         >
           <Text style={tw`text-lg font-bold text-blue-600`}>Post</Text>
-          <Icons.send style={tw`text-blue-600`} size={20} />
+          <Icons.send stroke={colors.blue["600"]} fill="none" size={20} />
         </Pressable>
       </View>
     </View>

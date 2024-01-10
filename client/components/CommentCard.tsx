@@ -1,13 +1,51 @@
-import React, { useContext } from "react";
-import { Image, Text, View } from "react-native";
+import React, { FC, useContext, useState } from "react";
+import { Image, Pressable, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { colors } from "../constants/Colors";
+import { serverEndPoint } from "../constants/url";
 import { C } from "../contexts/RootContext";
+import formatDate from "../helpers/date";
+import fetchData from "../helpers/fetchData";
 import tw from "../lib/tailwind";
 import Icons from "./Icons";
 
-const CommentCard = () => {
-  const { themeValue } = useContext(C);
+type CommentProps = {
+  comment: {
+    _id: string;
+    user: {
+      name: string;
+      username: string;
+      tagline: string;
+      image: string;
+    };
+    content: string;
+    createdAt: string;
+    likes: string[];
+    type: "COMMENT" | "REPLY";
+    parent: string;
+    likesCount: number;
+  };
+};
+
+const CommentCard: FC<CommentProps> = ({ comment }) => {
+  const [liked, setLiked] = useState({
+    status: (comment.likes ?? []).length > 0 ? true : false,
+    likesCount: comment.likesCount,
+  });
+
+  const { user, themeValue } = useContext(C);
+
+  const handleLike = async () => {
+    setLiked((prev) => ({
+      status: !prev.status,
+      likesCount: prev.status ? prev.likesCount - 1 : prev.likesCount + 1,
+    }));
+    const url = `${serverEndPoint}/api/v1/comment/${comment._id}/like`;
+    await fetchData(url, {
+      method: "PUT",
+      data: { userId: user?._id },
+    });
+  };
 
   return (
     <View
@@ -17,7 +55,7 @@ const CommentCard = () => {
         <View style={tw`flex-row gap-2 flex-1`}>
           <Image
             source={{
-              uri: "https://picsum.photos/200",
+              uri: comment.user.image,
             }}
             style={tw`w-12 h-12 mt-2 rounded-full`}
           />
@@ -25,15 +63,15 @@ const CommentCard = () => {
             <Text
               style={tw`text-lg font-bold text-slate-900 dark:text-slate-100`}
             >
-              Ujen Basi
+              {comment.user.name}
             </Text>
-            <Text style={tw`text-base text-slate-800 dark:text-slate-200`}>
-              Full stack developer
+            <Text style={tw`text-base text-slate-600 dark:text-slate-300`}>
+              {comment.user.tagline}
             </Text>
             <Text
               style={tw`text-sm font-bold text-slate-600 dark:text-slate-400`}
             >
-              Jan 6, 2023
+              {formatDate(comment.createdAt)}
             </Text>
           </View>
         </View>
@@ -54,16 +92,15 @@ const CommentCard = () => {
       </View>
       <View style={tw`p-2`}>
         <Text style={tw`text-base text-slate-700 dark:text-slate-400`}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-          voluptatibus, voluptas, quidem.
+          {comment.content}
         </Text>
       </View>
       <View style={tw`p-2 flex-row`}>
         <View
-          style={tw`border-r border-slate-300 flex-row gap-2 dark:border-slate-600 px-4 py-2`}
+          style={tw`border-r border-slate-300 flex-row gap-2 items-center dark:border-slate-600 px-4 py-2`}
         >
           <Icons.replyLeft
-            size={20}
+            size={16}
             stroke="none"
             fill={
               themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
@@ -73,15 +110,25 @@ const CommentCard = () => {
             Reply
           </Text>
         </View>
-        <View style={tw`px-4 py-2`}>
+        <Pressable
+          onPress={handleLike}
+          style={tw`px-4 py-2 flex-row gap-2 items-center`}
+        >
           <Icons.heart
-            size={20}
-            fill="none"
+            size={16}
+            fill={liked.status ? colors.red["500"] : "none"}
             stroke={
-              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+              liked.status
+                ? colors.red["500"]
+                : themeValue === "dark"
+                ? colors.slate["400"]
+                : colors.slate["600"]
             }
           />
-        </View>
+          <Text style={tw`text-base text-slate-700 dark:text-slate-400`}>
+            {liked.likesCount}
+          </Text>
+        </Pressable>
       </View>
     </View>
   );

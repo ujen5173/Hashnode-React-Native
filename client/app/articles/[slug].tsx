@@ -26,17 +26,17 @@ import {
 import { Article } from "../(tabs)";
 import ArticlePageLoading from "../../components/ArticlePageLoading";
 import Icons from "../../components/Icons";
+import ArticleActions from "../../components/article/actions";
+import BottomSheet from "../../components/article/bottomSheet";
 import { colors } from "../../constants/Colors";
 import { clientEndPoint, serverEndPoint } from "../../constants/url";
 import { C } from "../../contexts/RootContext";
 import formatDate from "../../helpers/date";
 import fetchData from "../../helpers/fetchData";
-import useBookmark from "../../hooks/useBookmark";
 import tw from "../../lib/tailwind";
 
 const SingleArticle = () => {
-  const { themeValue, user } = useContext(C);
-  const bookmarks = useBookmark();
+  const { themeValue } = useContext(C);
   const scrollY = new Animated.Value(0);
   const scrollYClamped = Animated.diffClamp(scrollY, 0, 60);
   const traslateY = scrollYClamped.interpolate({
@@ -241,6 +241,7 @@ const SingleArticle = () => {
               </Text>
             </View>
           </View>
+
           <Text style={tw`text-lg text-slate-800 dark:text-slate-100 mb-8`}>
             {data?.data?.content}
           </Text>
@@ -265,104 +266,7 @@ const SingleArticle = () => {
         </View>
       </ScrollView>
 
-      <Animated.View
-        style={[
-          tw`absolute bottom-0 left-0 bg-white border-t border-slate-300 dark:border-slate-600 dark:bg-slate-800 w-full px-4 pt-1 pb-4`,
-          {
-            transform: [{ translateY: traslateY }],
-          },
-        ]}
-      >
-        <View style={tw`flex-row gap-2`}>
-          <Pressable style={tw`px-4 py-2 flex-1`}>
-            <Icons.bulletList
-              size={22}
-              stroke="none"
-              fill={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
-          </Pressable>
-          <Pressable
-            style={tw`px-4 py-2 flex-1`}
-            onPress={async () => {
-              try {
-                const url = `${serverEndPoint}/api/v1/articles/like/${data?.data?.slug}`;
-                await fetchData(url, {
-                  method: "PUT",
-                  data: {
-                    sessionUser: user?._id,
-                  },
-                });
-              } catch (error) {
-                console.log({ error });
-              }
-            }}
-          >
-            <Icons.heart
-              size={20}
-              fill={
-                (data?.data?.likes ?? []).length > 0
-                  ? colors.red["500"]
-                  : "none"
-              }
-              stroke={
-                (data?.data?.likes ?? []).length > 0
-                  ? colors.red["500"]
-                  : themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
-          </Pressable>
-          <Link
-            href={{
-              pathname: `/(models)/comment/`,
-              params: {
-                title: data?.data?.title || "",
-                slug: data?.data?.slug || "",
-              },
-            }}
-            asChild
-          >
-            <Pressable style={tw`px-4 py-2 flex-1`}>
-              <Icons.singleComment
-                size={22}
-                fill="none"
-                stroke={
-                  themeValue === "dark"
-                    ? colors.slate["400"]
-                    : colors.slate["600"]
-                }
-              />
-            </Pressable>
-          </Link>
-          <Pressable style={tw`px-4 py-2 flex-1`}>
-            {bookmarks.includes(data?.data?._id ?? "") ? (
-              <Icons.bookmarkAdded
-                size={22}
-                fill={
-                  themeValue === "dark"
-                    ? colors.slate["400"]
-                    : colors.slate["600"]
-                }
-              />
-            ) : (
-              <Icons.bookmarkAdd
-                size={22}
-                fill="none"
-                stroke={
-                  themeValue === "dark"
-                    ? colors.slate["400"]
-                    : colors.slate["600"]
-                }
-              />
-            )}
-          </Pressable>
-        </View>
-      </Animated.View>
+      <ArticleActions traslateY={traslateY} article={data?.data} />
 
       <BottomSheetModal
         ref={bottomSheetModalRef}
@@ -383,82 +287,3 @@ const SingleArticle = () => {
 };
 
 export default SingleArticle;
-
-const BottomSheet = ({
-  name,
-  handlePresentModalClose,
-}: {
-  name?: string;
-  handlePresentModalClose: () => void;
-}) => {
-  const { themeValue } = useContext(C);
-  return (
-    <View style={tw`flex-1 bg-white dark:bg-slate-800 p-4`}>
-      <View style={tw`flex-row justify-between items-center`}>
-        <Text style={tw`text-slate-900 dark:text-white text-xl font-bold`}>
-          More Options
-        </Text>
-        <Pressable onPress={handlePresentModalClose}>
-          <Icons.times
-            size={20}
-            stroke={"none"}
-            fill={
-              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
-            }
-          />
-        </Pressable>
-      </View>
-
-      <View style={tw`py-2`}>
-        <View
-          style={tw`px-3 py-5 border-b border-slate-300 dark:border-slate-600 flex-row gap-4 items-center`}
-        >
-          <Icons.plus
-            size={20}
-            stroke={"none"}
-            fill={
-              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
-            }
-          />
-          <View style={tw`flex-row items-center gap-1`}>
-            <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
-              Follow
-            </Text>
-            <Text
-              style={tw`text-slate-700 dark:text-slate-200 text-lg font-extrabold`}
-            >
-              {name}
-            </Text>
-          </View>
-        </View>
-
-        <View
-          style={tw`px-3 py-5 border-b border-slate-300 dark:border-slate-600 flex-row gap-4 items-center`}
-        >
-          <Icons.heart
-            size={20}
-            fill={"none"}
-            stroke={
-              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
-            }
-          />
-          <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
-            Show Likes
-          </Text>
-        </View>
-        <View style={tw`px-3 py-5 flex-row gap-4 items-center`}>
-          <Icons.report
-            size={20}
-            stroke={"none"}
-            fill={
-              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
-            }
-          />
-          <Text style={tw`text-slate-700 dark:text-slate-200 text-lg`}>
-            Report
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
-};
