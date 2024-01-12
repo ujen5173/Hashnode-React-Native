@@ -12,7 +12,7 @@ const getComments = async (req: Request, res: Response) => {
     if (!article) {
       return res.json({
         success: false,
-        error: "Internal server error",
+        error: "Article not found!",
         data: null,
       });
     }
@@ -21,27 +21,48 @@ const getComments = async (req: Request, res: Response) => {
       article: article._id,
       parent: null,
     })
-      .select("-article -__v -updatedAt")
+      .sort({ createdAt: -1 })
       .populate({
         path: "user",
-        select: "_id name username image tagline",
+        select: "name username image tagline _id",
       })
+      .select("-article -updatedAt")
       .populate({
-        path: "likes",
-        model: "user",
-        match: {
-          _id: userId,
-        },
-        select: "_id",
-      });
+        path: "children",
+        select: "-article -updatedAt",
 
-    if (!comments) {
-      return res.json({
-        success: false,
-        error: "Internal server error",
-        data: null,
+        populate: [
+          {
+            path: "user",
+            select: "name username image tagline _id",
+          },
+          {
+            path: "likes",
+            match: {
+              _id: userId,
+            },
+            select: "_id",
+          },
+          {
+            path: "children",
+            select: "-article -updatedAt",
+
+            populate: [
+              {
+                path: "user",
+                select: "name username image tagline _id",
+              },
+              {
+                path: "likes",
+                match: {
+                  _id: userId,
+                },
+                select: "_id",
+              },
+            ],
+          },
+        ],
       });
-    }
 
     return res.json({
       success: true,
@@ -69,7 +90,7 @@ const newComment = async (req: Request, res: Response) => {
     if (!article) {
       return res.json({
         success: false,
-        error: "Internal server error",
+        error: "Article not found!",
         data: null,
       });
     }
@@ -85,9 +106,22 @@ const newComment = async (req: Request, res: Response) => {
     if (!newData) {
       return res.json({
         success: false,
-        error: "Internal server error",
+        error: "Error creating comment!",
         data: null,
       });
+    }
+
+    if (parent) {
+      await Comments.findOneAndUpdate(
+        {
+          _id: parent,
+        },
+        {
+          $push: {
+            children: newData._id,
+          },
+        }
+      );
     }
 
     const newCommentData = await Article.findOneAndUpdate(
@@ -104,21 +138,13 @@ const newComment = async (req: Request, res: Response) => {
       }
     );
 
-    if (!article) {
-      return res.json({
-        success: false,
-        error: "Internal server error",
-        data: null,
-      });
-    }
-
     return res.json({
       success: true,
       error: null,
       data: newCommentData,
     });
-  } catch (error) {
-    console.log({ error });
+  } catch (err) {
+    console.log({ err });
     return res.json({
       success: false,
       error: "Internal server error",

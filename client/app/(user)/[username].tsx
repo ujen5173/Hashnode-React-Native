@@ -107,45 +107,38 @@ const UserProfile = () => {
     navigation.setOptions({
       headerStyle: tw`bg-slate-100 dark:bg-slate-900`,
       headerLeft: () => (
-        <View style={tw`flex-row gap-2`}>
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={tw`rounded-full p-2`}
-          >
-            <Icons.arrowLeft
-              size={20}
-              fill="none"
-              stroke={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
-          </Pressable>
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            router.back();
+          }}
+          style={tw`mr-2`}
+        >
+          <Icons.times
+            size={20}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
+        </TouchableOpacity>
       ),
       headerRight: () => (
-        <View style={tw``}>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            style={tw`p-2 rounded-full`}
-            onPress={() => {
-              handlePresentModalPress();
-            }}
-          >
-            <Icons.moreVertical
-              size={20}
-              fill="none"
-              stroke={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={tw`p-2 rounded-full`}
+          onPress={() => {
+            handlePresentModalPress();
+          }}
+        >
+          <Icons.moreVertical
+            size={20}
+            fill="none"
+            stroke={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
+        </TouchableOpacity>
       ),
     });
   }, [username]);

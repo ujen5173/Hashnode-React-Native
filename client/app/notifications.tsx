@@ -1,8 +1,8 @@
 import { useAuth } from "@clerk/clerk-expo";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import React, { useContext, useLayoutEffect } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Icons from "../components/Icons";
 import CommentCard from "../components/notifications/CommentCard";
@@ -57,24 +57,21 @@ const Notifications = () => {
       headerTitle: "Notifications",
       headerTitleStyle: tw`text-slate-900 dark:text-white`,
       headerLeft: () => (
-        <View style={tw`flex-row gap-2`}>
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={tw`rounded-full p-2`}
-          >
-            <Icons.arrowLeft
-              size={20}
-              fill="none"
-              stroke={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
-          </Pressable>
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            router.back();
+          }}
+          style={tw`mr-2`}
+        >
+          <Icons.times
+            size={20}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
+        </TouchableOpacity>
       ),
     });
   }, []);

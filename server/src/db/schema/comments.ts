@@ -22,6 +22,12 @@ const comments = new mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "user",
     },
+    children: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "comment",
+      },
+    ],
     type: {
       type: String,
       required: true,

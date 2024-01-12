@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 import { Article } from "../../app/(tabs)";
 import Icons from "../../components/Icons";
@@ -7,6 +7,7 @@ import { colors } from "../../constants/Colors";
 import { serverEndPoint } from "../../constants/url";
 import { C } from "../../contexts/RootContext";
 import fetchData from "../../helpers/fetchData";
+import storage from "../../helpers/storage";
 import useBookmark from "../../hooks/useBookmark";
 import tw from "../../lib/tailwind";
 
@@ -16,6 +17,13 @@ const ArticleActions: FC<{
 }> = ({ traslateY, article }) => {
   const { themeValue, user } = useContext(C);
   const bookmarks = useBookmark();
+  const [bookmarkStatus, setBookmarkStatus] = useState(false);
+
+  useEffect(() => {
+    if (!article) return;
+    setBookmarkStatus(bookmarks.includes(article._id));
+  }, [bookmarks, article]);
+
   const [liked, setLiked] = useState({
     status: (article?.likes ?? []).length > 0 ? true : false,
     likesCount: article?.likesCount,
@@ -104,8 +112,21 @@ const ArticleActions: FC<{
             </Text>
           </Pressable>
         </Link>
-        <Pressable style={tw`px-4 py-2 flex-1`}>
-          {bookmarks.includes(article?._id ?? "") ? (
+        <Pressable
+          onPress={() => {
+            if (!article) return;
+            storage.save({
+              key: "bookmarks",
+              data: bookmarkStatus
+                ? bookmarks.filter((id) => id !== article._id)
+                : [...bookmarks, article._id],
+              expires: null,
+            });
+            setBookmarkStatus(!bookmarkStatus);
+          }}
+          style={tw`px-4 py-2 flex-1`}
+        >
+          {bookmarkStatus ? (
             <Icons.bookmarkAdded
               size={22}
               fill={

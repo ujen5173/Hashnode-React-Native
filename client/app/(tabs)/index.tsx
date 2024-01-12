@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import { View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import Card from "../../components/Card";
 import CardLoading from "../../components/CardLoading";
 import BottomSheetBody from "../../components/FilterModal/BottomSheetBody";
@@ -72,7 +72,7 @@ const HomePage = () => {
     .toLowerCase()
     .replace(" ", "-")}`;
 
-  const { data, isFetching, refetch } = useFetch<Article[]>({
+  const { data, isFetching, refetch, isRefetching } = useFetch<Article[]>({
     queryName: ["articles", feedType],
     url: url,
     requireAuth: true,
@@ -83,7 +83,6 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    console.log("useEffect called!");
     refetch();
   }, [feedType, filters]);
 
@@ -140,6 +139,9 @@ const HomePage = () => {
           <FlatList
             data={data?.data}
             keyExtractor={(item) => item._id}
+            refreshControl={
+              <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+            }
             renderItem={({ item, index }) => (
               <View
                 key={index}

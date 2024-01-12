@@ -17,11 +17,26 @@ import tw from "../../../lib/tailwind";
 
 const AddComment = () => {
   const { user, themeValue } = useContext(C);
-  const { title, slug } = useLocalSearchParams();
+  const {
+    title,
+    slug,
+    type,
+    replyUserName,
+    parentCommentId,
+    parentCommentContent,
+  }: {
+    title?: string | undefined;
+    slug?: string | undefined;
+    type: "COMMENT" | "REPLY";
+    parentCommentId?: string | undefined;
+    parentCommentContent?: string | undefined;
+    replyUserName?: string | undefined;
+  } = useLocalSearchParams();
   const navigation = useNavigation();
   const router = useRouter();
   const [commentContent, setCommentContent] = useState("");
   const textareaRef = useRef<TextInput>(null);
+  const [posting, setPosting] = useState(false);
 
   useEffect(() => {
     const tmout = setTimeout(() => {
@@ -61,22 +76,24 @@ const AddComment = () => {
     try {
       if (!commentContent) return;
 
+      setPosting(true);
       const url = `${serverEndPoint}/api/v1/comment/${slug}?userId=${user?._id}`;
-
       const res = await fetchData(url, {
         method: "POST",
         data: {
           content: commentContent,
-          type: "COMMENT",
-          parent: null,
+          type: type,
+          parent: parentCommentId,
         },
       });
 
+      setPosting(false);
       if (res.success) {
         // TODO: show data immediately without refreshing in comments page
         router.back();
       }
     } catch (error) {
+      setPosting(false);
       console.log({ error });
     }
   };
@@ -86,8 +103,13 @@ const AddComment = () => {
       <Text
         style={tw`text-xl font-bold mb-2 text-slate-600 dark:text-slate-100`}
       >
-        {title}
+        {type === "COMMENT" ? title : `Reply to ${replyUserName}`}
       </Text>
+      {type === "REPLY" && parentCommentContent && (
+        <Text style={tw`text-lg mb-4 text-slate-600 dark:text-slate-400`}>
+          {parentCommentContent}
+        </Text>
+      )}
 
       <TextInput
         numberOfLines={10}
@@ -111,8 +133,12 @@ const AddComment = () => {
           onPress={handleComment}
           style={tw`w-full flex-row items-center gap-2 justify-center border border-blue-600 px-4 py-2 rounded-full`}
         >
-          <Text style={tw`text-lg font-bold text-blue-600`}>Post</Text>
-          <Icons.send stroke={colors.blue["600"]} fill="none" size={20} />
+          <Text style={tw`text-lg font-bold text-blue-600`}>
+            {posting ? "Posting..." : "Post"}
+          </Text>
+          {!posting && (
+            <Icons.send stroke={colors.blue["600"]} fill="none" size={20} />
+          )}
         </Pressable>
       </View>
     </View>

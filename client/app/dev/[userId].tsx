@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useContext, useLayoutEffect } from "react";
 import { Linking, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -127,24 +127,21 @@ const DeveloperProfile = () => {
     navigation.setOptions({
       headerStyle: tw`bg-slate-100 dark:bg-slate-900`,
       headerLeft: () => (
-        <View style={tw`flex-row gap-2`}>
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={tw`rounded-full p-2`}
-          >
-            <Icons.arrowLeft
-              size={20}
-              fill="none"
-              stroke={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
-          </Pressable>
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            router.back();
+          }}
+          style={tw`mr-2`}
+        >
+          <Icons.times
+            size={20}
+            stroke="none"
+            fill={
+              themeValue === "dark" ? colors.slate["400"] : colors.slate["600"]
+            }
+          />
+        </TouchableOpacity>
       ),
     });
   }, []);
