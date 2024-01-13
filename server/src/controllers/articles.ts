@@ -139,7 +139,7 @@ const seedArticles = async (req: Request, res: Response) => {
   try {
     // await Articles.insertMany(articles);
     res.json({
-      sucess: true,
+      success: true,
       message: "Successfully seeded articles",
     });
   } catch (error) {

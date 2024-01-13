@@ -46,6 +46,7 @@
     "react-native-storage": "^1.0.1",
     "react-native-svg": "13.9.0",
     "react-native-svg-uri": "^1.2.3",
+    "react-native-toast-notifications": "^3.4.0",
     "react-native-web": "~0.19.6",
     "twrnc": "^3.6.7",
     "use-debounce": "^10.0.0"

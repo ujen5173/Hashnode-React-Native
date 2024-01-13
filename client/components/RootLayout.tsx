@@ -41,7 +41,7 @@ const RootLayoutNav = () => {
       if (!isSignedIn) {
         router.push("/onboard");
       } else {
-        router.push("/(tabs)");
+        router.push("/(settings)/profile");
       }
     }
   }, [isLoaded, isSignedIn]);
@@ -96,6 +96,12 @@ const RootLayoutNav = () => {
         options={{
           animation: "slide_from_bottom",
           headerTitle: "Coments",
+        }}
+      />
+      <Stack.Screen
+        name="(settings)/profile"
+        options={{
+          headerTitle: "Profile Settings",
         }}
       />
     </Stack>

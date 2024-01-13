@@ -85,6 +85,8 @@ export const profileLinks = {
       },
       label: "My blogs",
       isSwitch: false,
+      isLink: true,
+      link: "(settings)/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -98,6 +100,8 @@ export const profileLinks = {
       ),
       label: "My drafts",
       isSwitch: false,
+      isLink: true,
+      link: "(settings)/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -111,6 +115,8 @@ export const profileLinks = {
       ),
       label: "My reading history",
       isSwitch: false,
+      isLink: true,
+      link: "(settings)/profile",
     },
   ],
   section2: [
@@ -126,6 +132,8 @@ export const profileLinks = {
       ),
       label: "My profile",
       isSwitch: false,
+      isLink: true,
+      link: "(settings)/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -139,6 +147,8 @@ export const profileLinks = {
       ),
       label: "Settings",
       isSwitch: false,
+      isLink: true,
+      link: "(settings)/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -152,6 +162,8 @@ export const profileLinks = {
       ),
       label: "Notifications",
       isSwitch: false,
+      isLink: true,
+      link: "(settings)/profile",
     },
   ],
   section3: [
@@ -167,6 +179,8 @@ export const profileLinks = {
       ),
       label: "Dark Mode",
       isSwitch: true,
+      isLink: true,
+      link: "(settings)/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -180,6 +194,51 @@ export const profileLinks = {
       ),
       label: "Support",
       isSwitch: false,
+      isLink: true,
+      link: "(settings)/profile",
     },
   ],
 };
+
+export const socialmedia = [
+  {
+    name: "Github",
+    label: "github",
+    placeholder: "https://www.github.com/username",
+  },
+  {
+    name: "Twitter",
+    label: "twitter",
+    placeholder: "https://www.twitter.com/username",
+  },
+  {
+    name: "Youtube",
+    label: "youtube",
+    placeholder: "https://www.youtube.com/@username",
+  },
+  {
+    name: "Website",
+    label: "website",
+    placeholder: "https://example.com",
+  },
+  {
+    name: "Facebook",
+    label: "facebook",
+    placeholder: "https://www.facebook.com/username",
+  },
+  {
+    name: "Instagram",
+    label: "instagram",
+    placeholder: "https://instagram.com/username",
+  },
+  {
+    name: "Stackoverflow",
+    label: "stackoverflow",
+    placeholder: "https://stackoverflow.com/username",
+  },
+  {
+    name: "Linkedin",
+    label: "linkedin",
+    placeholder: "https://linkedin.com/in/username",
+  },
+] as const;

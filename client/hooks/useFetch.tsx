@@ -35,13 +35,16 @@ const useFetch = <T,>({
   enabled = false,
 }: Props): UseFetchReturnType<T> => {
   const { user } = useContext(C);
+
   const cleanURL = () => {
     // insert userId to url, check if there is already a query string.
     // if requiredAuth is false, then don't add userId to url.
     if (requireAuth && user?._id) {
       const query = url.includes("?") ? "&" : "?";
+      console.log(`${url}${query}userId=${user._id}`);
       return `${url}${query}userId=${user._id}`;
     }
+    console.log(url);
     return url;
   };
 

@@ -45,7 +45,14 @@ const Profile = () => {
           style={tw`p-2 border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 rounded-lg my-3`}
         >
           {value.map((link, index) => (
-            <View
+            <Pressable
+              onPress={() => {
+                if (link.isLink)
+                  router.push(
+                    // @ts-ignore
+                    link.link
+                  );
+              }}
               key={index}
               style={tw`flex-row justify-between items-center px-2 ${
                 link.isSwitch ? "pb-1" : "py-3"
@@ -81,7 +88,7 @@ const Profile = () => {
                   />
                 )}
               </View>
-            </View>
+            </Pressable>
           ))}
         </View>
       ))}

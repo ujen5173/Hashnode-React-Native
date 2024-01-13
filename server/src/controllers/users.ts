@@ -12,21 +12,21 @@ const getCurrent = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.json({
-        sucess: false,
+        success: false,
         message: "User not found",
         data: null,
       });
     }
 
     res.json({
-      sucess: true,
+      success: true,
       message: "User fetched successfully",
       data: user,
     });
   } catch (error) {
     console.error({ error });
     res.send({
-      sucess: false,
+      success: false,
       message: "Failed to fetch user",
       error: "Internal server error",
     });
@@ -40,21 +40,21 @@ const getUserByUsername = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.json({
-        sucess: false,
+        success: false,
         message: "User not found",
         data: null,
       });
     }
 
     res.json({
-      sucess: true,
+      success: true,
       message: "User fetched successfully",
       data: user,
     });
   } catch (error) {
     console.error({ error });
     res.send({
-      sucess: false,
+      success: false,
       message: "Failed to fetch user",
       error: "Internal server error",
     });
@@ -69,7 +69,7 @@ const userArticles = async (req: Request, res: Response) => {
   );
 
   res.json({
-    sucess: true,
+    success: true,
     message: "User articles fetched successfully",
     data: articles,
   });
@@ -84,17 +84,88 @@ const getUserById = async (req: Request, res: Response) => {
 
   if (!user) {
     return res.json({
-      sucess: false,
+      success: false,
       message: "User not found",
       data: null,
     });
   }
 
   res.json({
-    sucess: true,
+    success: true,
     message: "User fetched successfully",
     data: user,
   });
 };
 
-export { getCurrent, getUserById, getUserByUsername, userArticles };
+const profile = async (req: Request, res: Response) => {
+  const { userId } = req.query;
+  console.log({ userId });
+
+  const user = await Users.findById(userId).select({
+    name: 1,
+    image: 1,
+    email: 1,
+    bio: 1,
+    available: 1,
+    skills: 1,
+    tagline: 1,
+    location: 1,
+    social: 1,
+    username: 1,
+  });
+
+  if (!user) {
+    return res.json({
+      success: false,
+      message: "User not found",
+      data: null,
+    });
+  }
+
+  res.json({
+    success: true,
+    message: "User fetched successfully",
+    data: user,
+  });
+};
+
+const updateProfile = async (req: Request, res: Response) => {
+  const { userId } = req.query;
+  try {
+    const user = await Users.findById(userId);
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+        data: null,
+      });
+    }
+
+    const updatedUser = await Users.findByIdAndUpdate(userId, req.body, {
+      new: true,
+    });
+
+    res.json({
+      success: true,
+      message: "User updated successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.error({ error });
+    res.send({
+      success: false,
+      message: "Failed to update user",
+      error: "Internal server error",
+    });
+  }
+};
+
+export {
+  getCurrent,
+  getUserById,
+  getUserByUsername,
+  profile,
+  updateProfile,
+  userArticles,
+};

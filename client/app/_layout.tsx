@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/clerk-expo";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SplashScreen } from "expo-router";
 import { View } from "react-native";
+import { ToastProvider } from "react-native-toast-notifications";
 import RootLayoutNav from "../components/RootLayout";
 import RootContext from "../contexts/RootContext";
 import { tokenCache } from "../helpers/token";
@@ -24,11 +25,13 @@ export default function RootLayout() {
         publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
         tokenCache={tokenCache}
       >
-        <RootContext>
-          <QueryClientProvider client={queryClient}>
-            <RootLayoutNav />
-          </QueryClientProvider>
-        </RootContext>
+        <ToastProvider offset={50} placement="bottom">
+          <RootContext>
+            <QueryClientProvider client={queryClient}>
+              <RootLayoutNav />
+            </QueryClientProvider>
+          </RootContext>
+        </ToastProvider>
       </ClerkProvider>
     </View>
   );
