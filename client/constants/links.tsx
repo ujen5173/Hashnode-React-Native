@@ -148,7 +148,7 @@ export const profileLinks = {
       label: "Settings",
       isSwitch: false,
       isLink: true,
-      link: "(settings)/profile",
+      link: "(settings)/wrapper",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (

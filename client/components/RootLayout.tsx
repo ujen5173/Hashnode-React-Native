@@ -41,7 +41,7 @@ const RootLayoutNav = () => {
       if (!isSignedIn) {
         router.push("/onboard");
       } else {
-        router.push("/(settings)/profile");
+        router.push("/(settings)/account");
       }
     }
   }, [isLoaded, isSignedIn]);
@@ -99,9 +99,21 @@ const RootLayoutNav = () => {
         }}
       />
       <Stack.Screen
+        name="(settings)/wrapper"
+        options={{
+          headerTitle: "Settings",
+        }}
+      />
+      <Stack.Screen
         name="(settings)/profile"
         options={{
           headerTitle: "Profile Settings",
+        }}
+      />
+      <Stack.Screen
+        name="(settings)/account"
+        options={{
+          headerTitle: "Account Settings",
         }}
       />
     </Stack>
