@@ -24,14 +24,14 @@ import {
   View,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import Icons from "../../components/Icons";
-import UserProfileLoading from "../../components/UserProfileLoading";
-import BasicInfo from "../../components/userProfile/BasicInfo";
-import { colors } from "../../constants/Colors";
-import { serverEndPoint } from "../../constants/url";
-import { C } from "../../contexts/RootContext";
-import fetchData from "../../helpers/fetchData";
-import tw from "../../lib/tailwind";
+import Icons from "../../../components/Icons";
+import UserProfileLoading from "../../../components/UserProfileLoading";
+import BasicInfo from "../../../components/userProfile/BasicInfo";
+import { colors } from "../../../constants/Colors";
+import { serverEndPoint } from "../../../constants/url";
+import { C } from "../../../contexts/RootContext";
+import fetchData from "../../../helpers/fetchData";
+import tw from "../../../lib/tailwind";
 
 type User = {
   _id: string;
@@ -85,7 +85,7 @@ const UserProfile = () => {
   });
 
   if (!user) {
-    router.push("/(models)/onboard");
+    router.replace("/(public)/onboard");
     return null;
   }
 
@@ -495,7 +495,7 @@ const ActivityCard: FC<Props> = ({ index, item, activityLength }) => {
         {item.activity_type === "JOINED" ? (
           <Image
             style={tw`w-6 h-6 rounded-full`}
-            source={require("../../assets/images/icon-transparent.png")}
+            source={require("../../../assets/images/icon-transparent.png")}
             resizeMode="cover"
           />
         ) : (
@@ -519,7 +519,7 @@ const ActivityCard: FC<Props> = ({ index, item, activityLength }) => {
       {item.activity_type !== "JOINED" && (
         <Link
           href={{
-            pathname: `/articles/[slug]`,
+            pathname: `/(auth)/articles/[slug]`,
             params: {
               slug: item.slug,
             },

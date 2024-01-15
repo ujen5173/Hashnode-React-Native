@@ -2,11 +2,11 @@ import { useAuth } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import React, { useContext, useState } from "react";
 import { Image, Pressable, Switch, Text, View } from "react-native";
-import Icons from "../../components/Icons";
-import { colors } from "../../constants/Colors";
-import { profileLinks } from "../../constants/links";
-import { C } from "../../contexts/RootContext";
-import tw from "../../lib/tailwind";
+import Icons from "../../../components/Icons";
+import { colors } from "../../../constants/Colors";
+import { profileLinks } from "../../../constants/links";
+import { C } from "../../../contexts/RootContext";
+import tw from "../../../lib/tailwind";
 
 const Profile = () => {
   const { themeValue, user, setTheme } = useContext(C);
@@ -95,7 +95,7 @@ const Profile = () => {
       <Pressable
         onPress={async () => {
           await signOut();
-          router.push("/(models)/onboard");
+          router.replace("/(public)/onboard");
         }}
         style={tw`flex-row justify-between items-center px-2 border px-4 py-3 rounded-md bg-red-500 border-red-500`}
       >

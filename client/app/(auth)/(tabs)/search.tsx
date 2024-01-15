@@ -7,10 +7,10 @@ import {
   TextInput,
   View,
 } from "react-native";
-import Icons from "../../components/Icons";
-import { colors } from "../../constants/Colors";
-import { C } from "../../contexts/RootContext";
-import tw from "../../lib/tailwind";
+import Icons from "../../../components/Icons";
+import { colors } from "../../../constants/Colors";
+import { C } from "../../../contexts/RootContext";
+import tw from "../../../lib/tailwind";
 
 enum Type {
   Top = "Top",
@@ -89,7 +89,7 @@ export const StartTyping = () => {
         Start typing to search...
       </Text>
 
-      <Image source={require("../../assets/illustrations/search.png")} />
+      <Image source={require("../../../assets/illustrations/search.png")} />
     </View>
   );
 };

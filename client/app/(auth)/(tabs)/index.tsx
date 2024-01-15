@@ -9,15 +9,14 @@ import React, {
 } from "react";
 import { View } from "react-native";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
-import Card from "../../components/Card";
-import CardLoading from "../../components/CardLoading";
-import BottomSheetBody from "../../components/FilterModal/BottomSheetBody";
-import SemiHeader from "../../components/SemiHeader";
-import { serverEndPoint } from "../../constants/url";
-import useBookmark from "../../hooks/useBookmark";
-import useFetch from "../../hooks/useFetch";
-import tw from "../../lib/tailwind";
-
+import Card from "../../../components/Card";
+import CardLoading from "../../../components/CardLoading";
+import BottomSheetBody from "../../../components/FilterModal/BottomSheetBody";
+import SemiHeader from "../../../components/SemiHeader";
+import { serverEndPoint } from "../../../constants/url";
+import useBookmark from "../../../hooks/useBookmark";
+import useFetch from "../../../hooks/useFetch";
+import tw from "../../../lib/tailwind";
 export type Article = {
   _id: string;
   title: string;
@@ -137,7 +136,7 @@ const HomePage = () => {
           </View>
         ) : (
           <FlatList
-            data={data?.data}
+            data={data?.data ?? []}
             keyExtractor={(item) => item._id}
             refreshControl={
               <RefreshControl refreshing={isRefetching} onRefresh={refetch} />

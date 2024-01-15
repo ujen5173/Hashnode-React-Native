@@ -8,12 +8,12 @@ import React, {
 } from "react";
 import { Pressable, Text, View } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import Icons from "../../../components/Icons";
-import { colors } from "../../../constants/Colors";
-import { serverEndPoint } from "../../../constants/url";
-import { C } from "../../../contexts/RootContext";
-import fetchData from "../../../helpers/fetchData";
-import tw from "../../../lib/tailwind";
+import Icons from "../../../../components/Icons";
+import { colors } from "../../../../constants/Colors";
+import { serverEndPoint } from "../../../../constants/url";
+import { C } from "../../../../contexts/RootContext";
+import fetchData from "../../../../helpers/fetchData";
+import tw from "../../../../lib/tailwind";
 
 const AddComment = () => {
   const { user, themeValue } = useContext(C);

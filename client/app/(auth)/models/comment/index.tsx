@@ -18,13 +18,13 @@ import {
   RefreshControl,
   TouchableOpacity,
 } from "react-native-gesture-handler";
-import CommentCard from "../../../components/CommentCard";
-import Icons from "../../../components/Icons";
-import { colors } from "../../../constants/Colors";
-import { serverEndPoint } from "../../../constants/url";
-import { C } from "../../../contexts/RootContext";
-import useFetch from "../../../hooks/useFetch";
-import tw from "../../../lib/tailwind";
+import CommentCard from "../../../../components/CommentCard";
+import Icons from "../../../../components/Icons";
+import { colors } from "../../../../constants/Colors";
+import { serverEndPoint } from "../../../../constants/url";
+import { C } from "../../../../contexts/RootContext";
+import useFetch from "../../../../hooks/useFetch";
+import tw from "../../../../lib/tailwind";
 
 type Comment = {
   _id: string;
@@ -88,7 +88,6 @@ const Comment = () => {
 
   // callbacks
   const handlePresentModalPress = useCallback((commentId: string) => {
-    console.log({ commentId });
     bottomSheetModalRef.current?.present();
   }, []);
   const handlePresentModalClose = useCallback(() => {
@@ -139,7 +138,7 @@ const Comment = () => {
           <Pressable
             onPress={() => {
               router.push({
-                pathname: "/(models)/comment/add",
+                pathname: "/models/comment/add",
                 params: { title, slug, type: "COMMENT" },
               });
             }}

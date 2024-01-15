@@ -116,7 +116,7 @@ const CommentCard: FC<CommentProps> = ({
           <Pressable
             onPress={() => {
               router.push({
-                pathname: "/(models)/comment/add",
+                pathname: "/models/comment/add",
                 params: parentId
                   ? {
                       slug,

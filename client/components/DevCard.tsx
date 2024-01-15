@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import { Image, Text, View } from "react-native";
-import { DevArticleCard } from "../app/dev/[userId]";
+import { DevArticleCard } from "../app/(auth)/dev/[userId]";
 import { colors } from "../constants/Colors";
 import { C } from "../contexts/RootContext";
 import formatDate from "../helpers/date";

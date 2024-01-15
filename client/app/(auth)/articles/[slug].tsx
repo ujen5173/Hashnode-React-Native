@@ -24,16 +24,16 @@ import {
   View,
 } from "react-native";
 import { Article } from "../(tabs)";
-import ArticlePageLoading from "../../components/ArticlePageLoading";
-import Icons from "../../components/Icons";
-import ArticleActions from "../../components/article/actions";
-import BottomSheet from "../../components/article/bottomSheet";
-import { colors } from "../../constants/Colors";
-import { clientEndPoint, serverEndPoint } from "../../constants/url";
-import { C } from "../../contexts/RootContext";
-import formatDate from "../../helpers/date";
-import fetchData from "../../helpers/fetchData";
-import tw from "../../lib/tailwind";
+import ArticlePageLoading from "../../../components/ArticlePageLoading";
+import Icons from "../../../components/Icons";
+import ArticleActions from "../../../components/article/actions";
+import BottomSheet from "../../../components/article/bottomSheet";
+import { colors } from "../../../constants/Colors";
+import { clientEndPoint, serverEndPoint } from "../../../constants/url";
+import { C } from "../../../contexts/RootContext";
+import formatDate from "../../../helpers/date";
+import fetchData from "../../../helpers/fetchData";
+import tw from "../../../lib/tailwind";
 
 const SingleArticle = () => {
   const { themeValue } = useContext(C);

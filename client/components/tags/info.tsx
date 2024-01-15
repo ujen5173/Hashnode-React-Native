@@ -1,7 +1,7 @@
 import React, { FC, useContext } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Tag } from "../../app/tags/[slug]";
+import { Tag } from "../../app/(auth)/tags/[slug]";
 import { colors } from "../../constants/Colors";
 import { C } from "../../contexts/RootContext";
 import tw from "../../lib/tailwind";

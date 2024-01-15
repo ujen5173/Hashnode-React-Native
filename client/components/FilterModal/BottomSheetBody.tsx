@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { forwardRef, useContext, useRef, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useDebouncedCallback } from "use-debounce";
-import { Tag } from "../../app/(tabs)";
+import { Tag } from "../../app/(auth)/(tabs)";
 import { colors } from "../../constants/Colors";
 import { serverEndPoint } from "../../constants/url";
 import { C } from "../../contexts/RootContext";

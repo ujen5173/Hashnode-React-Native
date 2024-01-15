@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
-import { Article } from "../../app/(tabs)";
+import { Article } from "../../app/(auth)/(tabs)";
 import Icons from "../../components/Icons";
 import { colors } from "../../constants/Colors";
 import { serverEndPoint } from "../../constants/url";
@@ -89,7 +89,7 @@ const ArticleActions: FC<{
         </Pressable>
         <Link
           href={{
-            pathname: `/(models)/comment/`,
+            pathname: `/models/comment/`,
             params: {
               title: article?.title || "",
               slug: article?.slug || "",

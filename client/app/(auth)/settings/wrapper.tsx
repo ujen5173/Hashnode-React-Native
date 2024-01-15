@@ -1,10 +1,10 @@
 import { router, useNavigation } from "expo-router";
 import React, { useContext, useLayoutEffect } from "react";
 import { Pressable, Text, View } from "react-native";
-import Icons from "../../components/Icons";
-import { colors } from "../../constants/Colors";
-import { C } from "../../contexts/RootContext";
-import tw from "../../lib/tailwind";
+import Icons from "../../../components/Icons";
+import { colors } from "../../../constants/Colors";
+import { C } from "../../../contexts/RootContext";
+import tw from "../../../lib/tailwind";
 
 const SettingsProvider = () => {
   const { themeValue } = useContext(C);
@@ -43,7 +43,7 @@ const SettingsProvider = () => {
       <Pressable
         onPress={() =>
           router.push({
-            pathname: "/(settings)/profile",
+            pathname: "/settings/profile",
           })
         }
         style={tw`flex-row items-center justify-between p-4 border-b border-slate-300 dark:border-slate-600`}
@@ -73,7 +73,7 @@ const SettingsProvider = () => {
       <Pressable
         onPress={() =>
           router.push({
-            pathname: "/(settings)/account",
+            pathname: "/settings/account",
           })
         }
         style={tw`flex-row items-center justify-between p-4 border-b border-slate-300 dark:border-slate-600`}

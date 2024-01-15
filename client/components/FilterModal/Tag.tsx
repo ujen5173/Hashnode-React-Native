@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Pressable, Text } from "react-native";
-import { Tag } from "../../app/(tabs)";
+import { Tag } from "../../app/(auth)/(tabs)";
 import tw from "../../lib/tailwind";
 
 type Props = {

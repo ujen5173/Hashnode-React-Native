@@ -9,6 +9,7 @@ import useWarmUpBrowser from "../../hooks/useWarmUpBrowser";
 import tw from "../../lib/tailwind";
 
 const Login = () => {
+  console.log("ONBOARD RENDER");
   useWarmUpBrowser();
 
   const { themeValue } = useContext(C);
@@ -18,7 +19,7 @@ const Login = () => {
 
   return (
     <View
-      style={tw`flex-1 items-center justify-center bg-slate-200 dark:bg-slate-900`}
+      style={tw`flex-1 items-center justify-center bg-slate-100 dark:bg-slate-900`}
     >
       <View style={tw`h-52`} />
       <View style={tw`mb-12 w-11/12`}>
@@ -67,15 +68,7 @@ const Login = () => {
             activeOpacity={0.9}
             style={tw`primary-btn bg-black`}
           >
-            <Icons.githubFill
-              size={20}
-              fill="none"
-              stroke={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
+            <Icons.githubFill size={20} stroke="none" fill={"#fff"} />
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
@@ -94,43 +87,19 @@ const Login = () => {
             }}
             style={tw`primary-btn bg-gray-100`}
           >
-            <Icons.google
-              size={20}
-              fill="none"
-              stroke={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
+            <Icons.google size={20} stroke="none" fill={colors.slate["950"]} />
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
             style={tw`primary-btn bg-blue-500`}
           >
-            <Icons.facebook
-              size={20}
-              fill="none"
-              stroke={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
+            <Icons.facebook size={20} stroke="none" fill={"#fff"} />
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.9}
             style={tw`primary-btn bg-cyan-500`}
           >
-            <Icons.linkedin
-              size={20}
-              fill="none"
-              stroke={
-                themeValue === "dark"
-                  ? colors.slate["400"]
-                  : colors.slate["600"]
-              }
-            />
+            <Icons.linkedin size={20} stroke="none" fill={"#fff"} />
           </TouchableOpacity>
         </View>
       </View>

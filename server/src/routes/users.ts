@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import { recentActivities } from "../controllers/articles.js";
 import {
+  deleteAccount,
   getCurrent,
   getUserById,
   getUserByUsername,
@@ -21,5 +22,6 @@ router.get("/articles/:userId", userArticles);
 router.get("/articles/recent_activities/:username", recentActivities);
 
 router.put("/update", bodyParser.json(), updateProfile);
+router.delete("/delete", bodyParser.json(), deleteAccount);
 
 export default router;

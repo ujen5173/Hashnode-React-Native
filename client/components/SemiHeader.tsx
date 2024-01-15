@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { FeedType } from "../app/(tabs)";
+import { FeedType } from "../app/(auth)/(tabs)";
 import { colors } from "../constants/Colors";
 import { feedLinks } from "../constants/links";
 import { C } from "../contexts/RootContext";

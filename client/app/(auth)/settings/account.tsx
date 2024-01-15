@@ -1,15 +1,17 @@
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import React, { useContext, useLayoutEffect, useState } from "react";
 import { Modal, Pressable, Text, View } from "react-native";
-import Icons from "../../components/Icons";
-import { colors } from "../../constants/Colors";
-import { C } from "../../contexts/RootContext";
-import tw from "../../lib/tailwind";
+import Icons from "../../../components/Icons";
+import { colors } from "../../../constants/Colors";
+import { serverEndPoint } from "../../../constants/url";
+import { C } from "../../../contexts/RootContext";
+import fetchData from "../../../helpers/fetchData";
+import tw from "../../../lib/tailwind";
 
 const Account = () => {
   const navigation = useNavigation();
 
-  const { themeValue } = useContext(C);
+  const { themeValue, user } = useContext(C);
   const [modalVisible, setModalVisible] = useState(false);
 
   useLayoutEffect(() => {
@@ -65,9 +67,26 @@ const Account = () => {
         title="Are you sure you want to delete your account?"
         loading={loading}
         accept={async () => {
+          if (!user) {
+            return;
+          }
+
           setLoading(true);
+
           await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          const url = `${serverEndPoint}/api/v1/users/delete?userId=${user._id}`;
+          const res = await fetchData(url, {
+            method: "DELETE",
+          });
+
           setLoading(false);
+
+          if (res.success) {
+            router.push({
+              pathname: "/onboard",
+            });
+          }
         }}
         modelAcceptText="Delete Account"
         modelAcceptingText="Deleting..."

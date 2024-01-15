@@ -41,10 +41,8 @@ const useFetch = <T,>({
     // if requiredAuth is false, then don't add userId to url.
     if (requireAuth && user?._id) {
       const query = url.includes("?") ? "&" : "?";
-      console.log(`${url}${query}userId=${user._id}`);
       return `${url}${query}userId=${user._id}`;
     }
-    console.log(url);
     return url;
   };
 

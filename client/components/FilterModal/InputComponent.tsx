@@ -1,7 +1,7 @@
 import { LoaderIcon } from "lucide-react-native";
 import React, { FC } from "react";
 import { FlatList, Text, View } from "react-native";
-import { Tag } from "../../app/(tabs)";
+import { Tag } from "../../app/(auth)/(tabs)";
 import tw from "../../lib/tailwind";
 import TagComponent from "./Tag";
 

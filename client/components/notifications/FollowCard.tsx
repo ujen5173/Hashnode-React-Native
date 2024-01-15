@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import { Image, Text, View } from "react-native";
-import { Notification } from "../../app/notifications";
+import { Notification } from "../../app/(auth)/notifications";
 import { colors } from "../../constants/Colors";
 import { C } from "../../contexts/RootContext";
 import tw from "../../lib/tailwind";

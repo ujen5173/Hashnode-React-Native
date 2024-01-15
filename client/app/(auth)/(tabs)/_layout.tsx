@@ -3,10 +3,10 @@ import { Link, Tabs } from "expo-router";
 import { Home } from "lucide-react-native";
 import { useContext } from "react";
 import { StatusBar, Text, TouchableOpacity, View } from "react-native";
-import Icons from "../../components/Icons";
-import { colors } from "../../constants/Colors";
-import { C } from "../../contexts/RootContext";
-import tw from "../../lib/tailwind";
+import Icons from "../../../components/Icons";
+import { colors } from "../../../constants/Colors";
+import { C } from "../../../contexts/RootContext";
+import tw from "../../../lib/tailwind";
 
 export default function TabLayout() {
   const { themeValue } = useContext(C);

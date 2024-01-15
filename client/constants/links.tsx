@@ -86,7 +86,7 @@ export const profileLinks = {
       label: "My blogs",
       isSwitch: false,
       isLink: true,
-      link: "(settings)/profile",
+      link: "settings/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -101,7 +101,7 @@ export const profileLinks = {
       label: "My drafts",
       isSwitch: false,
       isLink: true,
-      link: "(settings)/profile",
+      link: "settings/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -116,7 +116,7 @@ export const profileLinks = {
       label: "My reading history",
       isSwitch: false,
       isLink: true,
-      link: "(settings)/profile",
+      link: "settings/profile",
     },
   ],
   section2: [
@@ -133,7 +133,7 @@ export const profileLinks = {
       label: "My profile",
       isSwitch: false,
       isLink: true,
-      link: "(settings)/profile",
+      link: "settings/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -148,7 +148,7 @@ export const profileLinks = {
       label: "Settings",
       isSwitch: false,
       isLink: true,
-      link: "(settings)/wrapper",
+      link: "settings/wrapper",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -163,7 +163,7 @@ export const profileLinks = {
       label: "Notifications",
       isSwitch: false,
       isLink: true,
-      link: "(settings)/profile",
+      link: "settings/profile",
     },
   ],
   section3: [
@@ -180,7 +180,7 @@ export const profileLinks = {
       label: "Dark Mode",
       isSwitch: true,
       isLink: true,
-      link: "(settings)/profile",
+      link: "settings/profile",
     },
     {
       icon: (themeValue: "light" | "dark" | null | undefined) => (
@@ -195,7 +195,7 @@ export const profileLinks = {
       label: "Support",
       isSwitch: false,
       isLink: true,
-      link: "(settings)/profile",
+      link: "settings/profile",
     },
   ],
 };

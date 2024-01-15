@@ -3,13 +3,13 @@ import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useContext, useLayoutEffect } from "react";
 import { Linking, Pressable, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import DevCard from "../../components/DevCard";
-import Icons from "../../components/Icons";
-import { colors } from "../../constants/Colors";
-import { serverEndPoint } from "../../constants/url";
-import { C } from "../../contexts/RootContext";
-import fetchData from "../../helpers/fetchData";
-import tw from "../../lib/tailwind";
+import DevCard from "../../../components/DevCard";
+import Icons from "../../../components/Icons";
+import { colors } from "../../../constants/Colors";
+import { serverEndPoint } from "../../../constants/url";
+import { C } from "../../../contexts/RootContext";
+import fetchData from "../../../helpers/fetchData";
+import tw from "../../../lib/tailwind";
 
 type User = {
   _id: string;
@@ -201,7 +201,7 @@ const DeveloperProfile = () => {
 
       {/* Developer navigations */}
       <View
-        style={tw`sticky top-0 left-0 w-full border-b border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900`}
+        style={tw`absolute top-0 left-0 w-full border-b border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-900`}
       >
         <View style={tw`flex-row gap-2 px-2`}>
           <Pressable

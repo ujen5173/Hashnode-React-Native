@@ -3,12 +3,12 @@ import React from "react";
 import { Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Article } from ".";
-import Card from "../../components/Card";
-import CardLoading from "../../components/CardLoading";
-import { serverEndPoint } from "../../constants/url";
-import fetchData from "../../helpers/fetchData";
-import useBookmark from "../../hooks/useBookmark";
-import tw from "../../lib/tailwind";
+import Card from "../../../components/Card";
+import CardLoading from "../../../components/CardLoading";
+import { serverEndPoint } from "../../../constants/url";
+import fetchData from "../../../helpers/fetchData";
+import useBookmark from "../../../hooks/useBookmark";
+import tw from "../../../lib/tailwind";
 
 const Bookmarks = () => {
   const bookmarks = useBookmark();

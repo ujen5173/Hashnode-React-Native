@@ -5,15 +5,15 @@ import React, { useContext, useLayoutEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Article } from "../(tabs)";
-import Card from "../../components/Card";
-import Icons from "../../components/Icons";
-import TagsInfoHeader from "../../components/tags/info";
-import { colors } from "../../constants/Colors";
-import { serverEndPoint } from "../../constants/url";
-import { C } from "../../contexts/RootContext";
-import fetchData from "../../helpers/fetchData";
-import useBookmark from "../../hooks/useBookmark";
-import tw from "../../lib/tailwind";
+import Card from "../../../components/Card";
+import Icons from "../../../components/Icons";
+import TagsInfoHeader from "../../../components/tags/info";
+import { colors } from "../../../constants/Colors";
+import { serverEndPoint } from "../../../constants/url";
+import { C } from "../../../contexts/RootContext";
+import fetchData from "../../../helpers/fetchData";
+import useBookmark from "../../../hooks/useBookmark";
+import tw from "../../../lib/tailwind";
 
 export type Tag = {
   _id: string;

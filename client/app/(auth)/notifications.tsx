@@ -4,16 +4,16 @@ import { router, useNavigation } from "expo-router";
 import React, { useContext, useLayoutEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import Icons from "../components/Icons";
-import CommentCard from "../components/notifications/CommentCard";
-import FollowCard from "../components/notifications/FollowCard";
-import LikeCard from "../components/notifications/LikeCard";
-import NotificationNavigation from "../components/notifications/Navigation";
-import { colors } from "../constants/Colors";
-import { serverEndPoint } from "../constants/url";
-import { C } from "../contexts/RootContext";
-import fetchData from "../helpers/fetchData";
-import tw from "../lib/tailwind";
+import Icons from "../../components/Icons";
+import CommentCard from "../../components/notifications/CommentCard";
+import FollowCard from "../../components/notifications/FollowCard";
+import LikeCard from "../../components/notifications/LikeCard";
+import NotificationNavigation from "../../components/notifications/Navigation";
+import { colors } from "../../constants/Colors";
+import { serverEndPoint } from "../../constants/url";
+import { C } from "../../contexts/RootContext";
+import fetchData from "../../helpers/fetchData";
+import tw from "../../lib/tailwind";
 
 export type Notification = {
   _id: string;

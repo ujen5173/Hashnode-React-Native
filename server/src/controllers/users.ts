@@ -1,5 +1,10 @@
+import { Clerk } from "@clerk/clerk-sdk-node";
 import { Request, Response } from "express";
 import { Articles, Users } from "../db/schema/index.js";
+
+const clerkClient = Clerk({
+  secretKey: "sk_test_e3JwcMeUtz69IHgh9PfUQzxepfWoqzDkHM7apIdOHe",
+});
 
 const getCurrent = async (req: Request, res: Response) => {
   try {
@@ -99,7 +104,6 @@ const getUserById = async (req: Request, res: Response) => {
 
 const profile = async (req: Request, res: Response) => {
   const { userId } = req.query;
-  console.log({ userId });
 
   const user = await Users.findById(userId).select({
     name: 1,
@@ -161,7 +165,41 @@ const updateProfile = async (req: Request, res: Response) => {
   }
 };
 
+const deleteAccount = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.query;
+
+    const user = await Users.findById(userId, "userId");
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found",
+        data: null,
+      });
+    }
+
+    await clerkClient.users.deleteUser(user.userId);
+
+    await Users.findByIdAndDelete(userId);
+
+    res.json({
+      success: true,
+      message: "User deleted successfully",
+      data: null,
+    });
+  } catch (err) {
+    console.error({ err });
+    res.send({
+      success: false,
+      message: "Failed to delete user",
+      error: "Internal server error",
+    });
+  }
+};
+
 export {
+  deleteAccount,
   getCurrent,
   getUserById,
   getUserByUsername,

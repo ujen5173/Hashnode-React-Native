@@ -13,13 +13,13 @@ import {
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useToast } from "react-native-toast-notifications";
-import Icons from "../../components/Icons";
-import { colors } from "../../constants/Colors";
-import { socialmedia } from "../../constants/links";
-import { serverEndPoint } from "../../constants/url";
-import { C } from "../../contexts/RootContext";
-import fetchData from "../../helpers/fetchData";
-import tw from "../../lib/tailwind";
+import Icons from "../../../components/Icons";
+import { colors } from "../../../constants/Colors";
+import { socialmedia } from "../../../constants/links";
+import { serverEndPoint } from "../../../constants/url";
+import { C } from "../../../contexts/RootContext";
+import fetchData from "../../../helpers/fetchData";
+import tw from "../../../lib/tailwind";
 
 type User = {
   name: string;

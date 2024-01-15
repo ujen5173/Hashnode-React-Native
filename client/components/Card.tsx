@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import React, { FC, useContext } from "react";
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
-import { Article } from "../app/(tabs)";
+import { Article } from "../app/(auth)/(tabs)";
 import { colors } from "../constants/Colors";
 import { C } from "../contexts/RootContext";
 import formatDate from "../helpers/date";
@@ -20,7 +20,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
   const [hasBookmark, setHasBookmark] = React.useState(
     bookmarks.includes(article._id)
   );
-
+  const { content: _, ...rest } = article;
   const handleBookmark = async () => {
     storage.save({
       key: "bookmarks",
@@ -36,7 +36,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
     <View style={tw`bg-white flex-1 dark:bg-slate-900 p-4`}>
       <View style={tw`flex-row gap-2 items-center mb-3`}>
         <View>
-          <Link href={`/(user)/${article.user.username}`}>
+          <Link href={`/user/eva_j`}>
             <View>
               <Image
                 style={tw`w-12 h-12 rounded-full`}
@@ -47,7 +47,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
         </View>
 
         <View>
-          <Link href={`/(user)/${article.user.username}`}>
+          <Link href={`/user/eva_j`}>
             <Text
               style={tw`leading-1 text-slate-800 dark:text-slate-200 text-lg font-bold`}
             >
@@ -89,7 +89,7 @@ const Card: FC<CardProps> = ({ bookmarks, article }) => {
         <View style={tw`flex-row items-center gap-2 mt-2 mb-3`}>
           <Link href={`/articles/${article.slug}`}>
             <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>
-              {article.user.username}.hashnode.dev
+              {/* {article.ueva_jde.dev */}
             </Text>
           </Link>
           <Text style={tw`text-sm text-slate-600 dark:text-slate-400`}>•</Text>

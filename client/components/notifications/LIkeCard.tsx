@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Image, Text, View } from "react-native";
-import { Notification } from "../../app/notifications";
+import { Notification } from "../../app/(auth)/notifications";
 import tw from "../../lib/tailwind";
 
 type LikeCardProps = {
